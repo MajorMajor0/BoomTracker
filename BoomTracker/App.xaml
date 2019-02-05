@@ -1,9 +1,44 @@
 ﻿<Application x:Class="BoomTracker.App"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:BoomTracker"
-             StartupUri="MainWindow.xaml">
-    <Application.Resources>
-         
-    </Application.Resources>
+			 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+			 xmlns:local="clr-namespace:BoomTracker"
+			 StartupUri="MainWindow.xaml">
+	<Application.Resources>
+		<ResourceDictionary>
+			<Style x:Key="CButtonStyle"
+				   TargetType="Button">
+				<Setter Property="Content"
+						Value="{Binding Command.Content, RelativeSource={RelativeSource Self}}" />
+				<Setter Property="ToolTip"
+						Value="{Binding Command.ToolTip, RelativeSource={RelativeSource Self}}" />
+			</Style>
+
+			<Style x:Key="DissapearingCButtonStyle"
+				   TargetType="Button"
+				   BasedOn="{StaticResource CButtonStyle}">
+				<Setter Property="Visibility"
+						Value="{Binding IsEnabled, RelativeSource={RelativeSource Self}, Converter={StaticResource booleanToVisibilityConverter}}" />
+			</Style>
+
+			<Style x:Key="CMenuItemStyle"
+				   TargetType="MenuItem">
+				<Setter Property="Header"
+						Value="{Binding Command.Content, RelativeSource={RelativeSource Self}}" />
+				<Setter Property="ToolTip"
+						Value="{Binding Command.ToolTip, RelativeSource={RelativeSource Self}}" />
+				<Setter Property="Visibility"
+						Value="{Binding IsEnabled,
+                                        RelativeSource={RelativeSource Self},
+                                        Mode=OneWay,
+                                        Converter={StaticResource booleanToVisibilityConverter}}" />
+			</Style>
+
+			<Style x:Key="CContextMenuItemStyle"
+				   TargetType="MenuItem"
+				   BasedOn="{StaticResource CMenuItemStyle}">
+				<Setter Property="DataContext"
+						Value="{Binding PlacementTarget.Tag, RelativeSource={RelativeSource AncestorType=ContextMenu}}" />
+			</Style>
+		</ResourceDictionary>
+	</Application.Resources>
 </Application>

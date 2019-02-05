@@ -3,23 +3,44 @@
 		xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 		xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+		xmlns:local="clr-namespace:BoomTracker"
 		xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 		Title="MainWindow"
 		Width="500"
 		Height="450"
-		mc:Ignorable="d">
+		mc:Ignorable="d"
+		Closing="MainWindow_Closing">
+	<Window.DataContext>
+		<local:MainWindowViewModel />
+	</Window.DataContext>
 	<Grid>
 		<Grid.RowDefinitions>
 			<RowDefinition Height="*" />
 			<RowDefinition Height="130" />
 		</Grid.RowDefinitions>
 
-		<Image x:Name="MainImage" />
+		<Image x:Name="MainImage"
+		Source="{Binding MainImage}"/>
 
 		<StackPanel Orientation="Horizontal"
 					Grid.Row="1"
 					Margin="5,5,5,10">
-			<StackPanel Width="150"
+			<StackPanel.Resources>
+				<Style x:Key="ControlButtonStyle"
+					   TargetType="Button"
+					   BasedOn="{StaticResource CButtonStyle}">
+					<Setter Property="Width"
+							Value="70" />
+					<Setter Property="Height"
+							Value="20" />
+					<Setter Property="Margin"
+							Value="5" />
+					<Setter Property="VerticalAlignment"
+							Value="Bottom" />
+				</Style>
+
+			</StackPanel.Resources>
+			<StackPanel Width="200"
 						VerticalAlignment="Bottom">
 				<TextBlock Text="Select video source" />
 				<ComboBox x:Name="ImageSourceComboBox"
@@ -27,7 +48,7 @@
 						  ItemsSource="{Binding VideoDevices}"
 						  SelectedItem="{Binding CurrentDevice}" />
 				<StackPanel Orientation="Horizontal"
-				Margin="0,15,0,0">
+							Margin="0,15,0,0">
 					<TextBox Width="30"
 							 Margin="2"
 							 Text="{Binding ElementName=Main_Window, Path=DataContext.RectX}" />
@@ -40,28 +61,34 @@
 					<TextBox Width="30"
 							 Margin="2"
 							 Text="{Binding ElementName=Main_Window, Path=DataContext.RectHeight}" />
+					<TextBox Width="30"
+							 Margin="2"
+							 Text="{Binding ElementName=Main_Window, Path=DataContext.Threshold}" />
 				</StackPanel>
 				<StackPanel Orientation="Horizontal">
 					<TextBlock Width="30"
-							 Margin="2"
-							 Text="X" 
-							 TextAlignment="Center"/>
+							   Margin="2"
+							   Text="X"
+							   TextAlignment="Center" />
 					<TextBlock Width="30"
-							 Margin="2"
-							 Text="Y" 
-							 TextAlignment="Center"/>
+							   Margin="2"
+							   Text="Y"
+							   TextAlignment="Center" />
 					<TextBlock Width="30"
-							 Margin="2"
-							 TextAlignment="Center"
-							 Text="W" />
+							   Margin="2"
+							   TextAlignment="Center"
+							   Text="W" />
 					<TextBlock Width="30"
-							 Margin="2"
-							 TextAlignment="Center"
-							 Text="H" />
+							   Margin="2"
+							   TextAlignment="Center"
+							   Text="H" />
+					<TextBlock Width="30"
+							   Margin="2"
+							   TextAlignment="Center"
+							   Text="Thr" />
 				</StackPanel>
 
-				<StackPanel Orientation="Horizontal"
-				>
+				<StackPanel Orientation="Horizontal">
 					<TextBox Width="30"
 							 Margin="2"
 							 Text="{Binding ElementName=Main_Window, Path=DataContext.Rect2X}" />
@@ -77,28 +104,14 @@
 				</StackPanel>
 			</StackPanel>
 
-			<Button Width="
-							 70"
-					Height="
-							 20"
-					Margin="15,0,0,0"
-					Click="StartButton_Click"
-					Content="Start"
-					VerticalAlignment="Bottom" />
+			<Button Style="{StaticResource ControlButtonStyle}"
+					Command="{Binding StartCommand}" />
 
-			<Button Width="70"
-					Height="20"
-					Margin="15,0,0,0"
-					Click="StopButton_Click"
-					Content="Stop"
-					VerticalAlignment="Bottom" />
+			<Button Style="{StaticResource ControlButtonStyle}"
+					Command="{Binding StopCommand}" />
 
-			<Button Width="70"
-					Height="20"
-					Margin="15,0,0,0"
-					Click="ImageButton_Click"
-					Content="Image"
-					VerticalAlignment="Bottom" />
+			<Button Style="{StaticResource ControlButtonStyle}"
+					Command="{Binding ImageCommand}" />
 		</StackPanel>
 
 

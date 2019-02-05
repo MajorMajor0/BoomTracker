@@ -21,7 +21,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;PLATFORMNET45</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -30,7 +30,7 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
+    <DefineConstants>TRACE;PLATFORMNET45</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -71,6 +71,13 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Command.cs" />
+    <Compile Include="FileLocation.cs" />
+    <Compile Include="Galasoft.MvvmLight\RelayCommand.cs" />
+    <Compile Include="Galasoft.MvvmLight\WeakAction.cs" />
+    <Compile Include="Galasoft.MvvmLight\WeakFunc.cs" />
+    <Compile Include="MainWindowViewModel.Commands.cs" />
+    <Compile Include="MainWindowViewModel.cs" />
     <Compile Include="TetrisWindow.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
