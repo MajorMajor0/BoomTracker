@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -12,12 +13,28 @@ using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using AForge.Video;
 using AForge.Video.DirectShow;
+using Tesseract;
+
 
 namespace BoomTracker
 {
 	public partial class MainWindowViewModel : INotifyPropertyChanged
 	{
-		private bool grabNextScreen;
+		private TesseractEngine ocr = new TesseractEngine(FileLocation.TesseractData, "eng");
+
+		private string ones;
+		public string Ones
+		{
+			get => ones;
+			set
+			{
+				if (value != ones)
+				{
+					ones = value;
+					OnPropertyChanged(nameof(Ones));
+				}
+			}
+		}
 
 		private BitmapImage mainImage;
 
@@ -31,21 +48,33 @@ namespace BoomTracker
 			}
 		}
 
+		private BitmapImage sliceImage;
+
+		public BitmapImage SliceImage
+		{
+			get => mainImage;
+			set
+			{
+				mainImage = value;
+				OnPropertyChanged(nameof(SliceImage));
+			}
+		}
+
 		public int Threshold
 		{
 			get => TetrisWindow.BlockThreshold;
 			set => TetrisWindow.BlockThreshold = value;
 		}
 
-		public int RectX { get; set; } = TetrisWindow.PlayingField.LeftPixel;
-		public int RectY { get; set; } = TetrisWindow.PlayingField.TopPixel;
-		public int RectWidth { get; set; } = TetrisWindow.PlayingField.Width;
-		public int RectHeight { get; set; } = TetrisWindow.PlayingField.Height;
+		public int RectX { get; set; } = TetrisWindow.PlayingField.Rectangle.Left;
+		public int RectY { get; set; } = TetrisWindow.PlayingField.Rectangle.Top;
+		public int RectWidth { get; set; } = TetrisWindow.PlayingField.Rectangle.Width;
+		public int RectHeight { get; set; } = TetrisWindow.PlayingField.Rectangle.Height;
 
-		public int Rect2X { get; set; }
-		public int Rect2Y { get; set; }
-		public int Rect2Width { get; set; }
-		public int Rect2Height { get; set; }
+		public int Rect2X { get; set; } = TetrisWindow.NextField.Rectangle.Left;
+		public int Rect2Y { get; set; } = TetrisWindow.NextField.Rectangle.Top;
+		public int Rect2Width { get; set; } = TetrisWindow.NextField.Rectangle.Width;
+		public int Rect2Height { get; set; } = TetrisWindow.NextField.Rectangle.Height;
 
 		public ObservableCollection<FilterInfo> VideoDevices { get; set; }
 
@@ -66,6 +95,7 @@ namespace BoomTracker
 		public MainWindowViewModel()
 		{
 			GetVideoDevices();
+			ocr.SetVariable("tessedit_char_whitelist", "0123456789");
 		}
 
 		private void GetVideoDevices()
@@ -132,23 +162,44 @@ namespace BoomTracker
 			//var x = Grayscale.CommonAlgorithms.BT709.Apply(bm);
 		}
 
+		Pen orangePen = new Pen(Color.Orange, 1);
+		Pen bluePen = new Pen(Color.Blue, 1);
+		Pen greenPen = new Pen(Color.Green, 2);
 
 		private void Paint(Bitmap bitmap)
 		{
-			using (Graphics g = Graphics.FromImage(bitmap))
+			BitmapImage bi;
 
-			using (Pen bluePen = new Pen(Color.Orange, 1))
-			using (Pen redPen = new Pen(Color.Red, 2))
-			using (Pen greenPen = new Pen(Color.Green, 2))
+
+			using (Graphics g = Graphics.FromImage(bitmap))
+			using (Bitmap bm0 = bitmap.Clone(TetrisWindow.ScoreField.ScoreRectangles[0], System.Drawing.Imaging.PixelFormat.DontCare))
+			using (var pix = PixConverter.ToPix(bm0))
+			using (var page = ocr.Process(bm0, PageSegMode.SingleBlock))
 			{
+
+				var o = page.GetText();
+				Ones = o;
+
+				bi = bm0.ToBitmapImage();
+				bi.Freeze();
+				SliceImage = bi;
+
+				g.DrawRectangle(orangePen, TetrisWindow.PlayingField.Rectangle);
+				g.DrawRectangle(orangePen, TetrisWindow.NextField.Rectangle);
+				g.DrawRectangle(orangePen, TetrisWindow.ScoreField.Rectangle);
+				g.DrawRectangle(orangePen, TetrisWindow.LineField.Rectangle);
+				g.DrawRectangle(orangePen, TetrisWindow.LevelField.Rectangle);
+				g.DrawRectangle(bluePen, TetrisWindow.ScoreField.ScoreRectangles[0]);
+
 				g.DrawRectangle(bluePen, RectX, RectY, RectWidth, RectHeight);
-				g.DrawRectangle(redPen, Rect2X, Rect2Y, Rect2Width, Rect2Height);
+
+
+
 
 				for (int i = 0; i < TetrisWindow.PlayingField.HorizontalSquares; i++)
 				{
 					for (int j = 0; j < TetrisWindow.PlayingField.VerticalSquares; j++)
 					{
-
 						int x = TetrisWindow.PlayingField.GridPoints[i, j, 0];
 						int y = TetrisWindow.PlayingField.GridPoints[i, j, 1];
 
@@ -164,7 +215,6 @@ namespace BoomTracker
 				}
 			}
 		}
-
 
 
 

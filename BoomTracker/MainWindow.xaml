@@ -20,7 +20,7 @@
 		</Grid.RowDefinitions>
 
 		<Image x:Name="MainImage"
-		Source="{Binding MainImage}"/>
+			   Source="{Binding MainImage}" />
 
 		<StackPanel Orientation="Horizontal"
 					Grid.Row="1"
@@ -40,6 +40,7 @@
 				</Style>
 
 			</StackPanel.Resources>
+
 			<StackPanel Width="200"
 						VerticalAlignment="Bottom">
 				<TextBlock Text="Select video source" />
@@ -51,19 +52,19 @@
 							Margin="0,15,0,0">
 					<TextBox Width="30"
 							 Margin="2"
-							 Text="{Binding ElementName=Main_Window, Path=DataContext.RectX}" />
+							 Text="{Binding ElementName=Main_Window, Path=DataContext.RectX, UpdateSourceTrigger=PropertyChanged}" />
 					<TextBox Width="30"
 							 Margin="2"
-							 Text="{Binding ElementName=Main_Window, Path=DataContext.RectY}" />
+							 Text="{Binding ElementName=Main_Window, Path=DataContext.RectY, UpdateSourceTrigger=PropertyChanged}" />
 					<TextBox Width="30"
 							 Margin="2"
-							 Text="{Binding ElementName=Main_Window, Path=DataContext.RectWidth}" />
+							 Text="{Binding ElementName=Main_Window, Path=DataContext.RectWidth, UpdateSourceTrigger=PropertyChanged}" />
 					<TextBox Width="30"
 							 Margin="2"
-							 Text="{Binding ElementName=Main_Window, Path=DataContext.RectHeight}" />
+							 Text="{Binding ElementName=Main_Window, Path=DataContext.RectHeight, UpdateSourceTrigger=PropertyChanged}" />
 					<TextBox Width="30"
 							 Margin="2"
-							 Text="{Binding ElementName=Main_Window, Path=DataContext.Threshold}" />
+							 Text="{Binding ElementName=Main_Window, Path=DataContext.Threshold, UpdateSourceTrigger=PropertyChanged}" />
 				</StackPanel>
 				<StackPanel Orientation="Horizontal">
 					<TextBlock Width="30"
@@ -91,27 +92,41 @@
 				<StackPanel Orientation="Horizontal">
 					<TextBox Width="30"
 							 Margin="2"
-							 Text="{Binding ElementName=Main_Window, Path=DataContext.Rect2X}" />
+							 Text="{Binding ElementName=Main_Window, Path=DataContext.Rect2X, UpdateSourceTrigger=PropertyChanged}" />
 					<TextBox Width="30"
 							 Margin="2"
-							 Text="{Binding ElementName=Main_Window, Path=DataContext.Rect2Y}" />
+							 Text="{Binding ElementName=Main_Window, Path=DataContext.Rect2Y, UpdateSourceTrigger=PropertyChanged}" />
 					<TextBox Width="30"
 							 Margin="2"
-							 Text="{Binding ElementName=Main_Window, Path=DataContext.Rect2Width}" />
+							 Text="{Binding ElementName=Main_Window, Path=DataContext.Rect2Width, UpdateSourceTrigger=PropertyChanged}" />
 					<TextBox Width="30"
 							 Margin="2"
-							 Text="{Binding ElementName=Main_Window, Path=DataContext.Rect2Height}" />
+							 Text="{Binding ElementName=Main_Window, Path=DataContext.Rect2Height, UpdateSourceTrigger=PropertyChanged}" />
+				</StackPanel>
+			</StackPanel>
+			<StackPanel>
+				<StackPanel Orientation="Horizontal">
+					<Image x:Name="SliceImage"
+						   Width="30"
+						   Height="30"
+						   Source="{Binding SliceImage}" />
+					<TextBlock Text="{Binding Ones, FallbackValue=0}" />
+				</StackPanel>
+
+
+				<StackPanel Orientation="Horizontal">
+					<Button Style="{StaticResource ControlButtonStyle}"
+							Command="{Binding StartCommand}" />
+
+					<Button Style="{StaticResource ControlButtonStyle}"
+							Command="{Binding StopCommand}" />
+
+					<Button Style="{StaticResource ControlButtonStyle}"
+							Command="{Binding ImageCommand}" />
 				</StackPanel>
 			</StackPanel>
 
-			<Button Style="{StaticResource ControlButtonStyle}"
-					Command="{Binding StartCommand}" />
 
-			<Button Style="{StaticResource ControlButtonStyle}"
-					Command="{Binding StopCommand}" />
-
-			<Button Style="{StaticResource ControlButtonStyle}"
-					Command="{Binding ImageCommand}" />
 		</StackPanel>
 
 

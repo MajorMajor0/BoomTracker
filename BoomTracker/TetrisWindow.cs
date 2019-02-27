@@ -14,18 +14,18 @@ namespace BoomTracker
 
 		public static class PlayingField
 		{
-			public static int LeftPixel => 280;
-			public static int TopPixel => 82;
-			public static int RightPixel => 495;
-			public static int BottomPixel => 422;
+			public static Rectangle Rectangle { get; } = new Rectangle
+			{
+				X = 280,
+				Y = 82,
+				Width = 215,
+				Height = 340
+			};
 
 			public static int VerticalSquares => 20;
 			public static int HorizontalSquares => 10;
 
 			public static int[,,] GridPoints { get; set; }
-
-			public static int Height { get; set; }
-			public static int Width { get; set; }
 
 			static PlayingField()
 			{
@@ -34,14 +34,14 @@ namespace BoomTracker
 				int vertOffset = SquareHeight / 2;
 				int horizontalOffset = SquareWidth / 2;
 
-				for (int i = 0; i < PlayingField.HorizontalSquares; i++)
+				for (int i = 0; i < HorizontalSquares; i++)
 				{
-					for (int j = 0; j < PlayingField.VerticalSquares; j++)
+					for (int j = 0; j < VerticalSquares; j++)
 					{
-						int x = PlayingField.LeftPixel + i * SquareWidth + horizontalOffset - i*3/4;
-						int y = PlayingField.TopPixel + j * SquareHeight + vertOffset;
-						PlayingField.GridPoints[i, j, 0] = x;
-						PlayingField.GridPoints[i, j, 1] = y;
+						int x = Rectangle.Left + i * SquareWidth + horizontalOffset - i * 3 / 4;
+						int y = Rectangle.Top + j * SquareHeight + vertOffset;
+						GridPoints[i, j, 0] = x;
+						GridPoints[i, j, 1] = y;
 						//Debug.WriteLine($"[{x}, {y}]");
 					}
 				}
@@ -50,14 +50,69 @@ namespace BoomTracker
 
 		public static class NextField
 		{
-			public static int LeftPixel => 522;
-			public static int TopPixel => 225;
-			public static int RightPixel => 612;
-			public static int BottomPixel => 315;
-
-			public static int Height { get; set; }
-			public static int Width { get; set; }
+			public static Rectangle Rectangle { get; } = new Rectangle
+			{
+				X = 535,
+				Y = 200,
+				Width = 87,
+				Height = 88
+			};
 		}
+
+		public static class ScoreField
+		{
+			public static Rectangle Rectangle { get; } = new Rectangle
+			{
+				X = 529,
+				Y = 25,
+				Width = 144,
+				Height = 131
+			};
+
+			public static Rectangle[] ScoreRectangles { get; set; }
+
+			static ScoreField()
+			{
+				int h = 18;
+				int y = 115;
+				int w = 22;
+
+				ScoreRectangles = new Rectangle[]
+				{
+					new Rectangle { X = 642,  Y = y, Height = h, Width = w },
+					new Rectangle { X = 621,  Y = y, Height = h, Width = w },
+					new Rectangle { X = 599,  Y = y, Height = h, Width = w },
+					new Rectangle { X = 578,  Y = y, Height = h, Width = w },
+					new Rectangle { X = 557,  Y = y, Height = h, Width = w },
+					new Rectangle { X = 535,  Y = y, Height = h, Width = w }
+
+				};
+
+			}
+		}
+
+		public static class LineField
+		{
+			public static Rectangle Rectangle { get; } = new Rectangle
+			{
+				X = 274,
+				Y = 25,
+				Width = 229,
+				Height = 29
+			};
+		}
+
+		public static class LevelField
+		{
+			public static Rectangle Rectangle { get; } = new Rectangle
+			{
+				X = 529,
+				Y = 314,
+				Width = 122,
+				Height = 46
+			};
+		}
+
 
 		public static List<bool[,]> History;
 
@@ -66,20 +121,15 @@ namespace BoomTracker
 
 		static TetrisWindow()
 		{
-			PlayingField.Height = PlayingField.BottomPixel - PlayingField.TopPixel;
-			PlayingField.Width = PlayingField.RightPixel - PlayingField.LeftPixel;
+			SquareHeight = (int)Math.Round(((double)PlayingField.Rectangle.Height / (double)PlayingField.VerticalSquares), MidpointRounding.AwayFromZero);
 
-			NextField.Height = NextField.BottomPixel - NextField.TopPixel;
-			NextField.Width = NextField.RightPixel - NextField.LeftPixel;
-
-			SquareHeight = (int)Math.Round(((double)PlayingField.Height / (double)PlayingField.VerticalSquares), MidpointRounding.AwayFromZero);
-
-			SquareWidth = (int)Math.Round(((double)PlayingField.Width / (double)PlayingField.HorizontalSquares), MidpointRounding.AwayFromZero);
+			SquareWidth = (int)Math.Round(((double)PlayingField.Rectangle.Width / (double)PlayingField.HorizontalSquares), MidpointRounding.AwayFromZero);
 		}
 
 		public static bool HasBlock(Color color)
 		{
 			return color.R + color.G + color.B > BlockThreshold;
 		}
+
 	}
 }

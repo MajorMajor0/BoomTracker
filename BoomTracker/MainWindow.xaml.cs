@@ -32,13 +32,11 @@ namespace BoomTracker
 	{
 		private MainWindowViewModel MWVM;
 
-
 		public MainWindow()
 		{
 			InitializeComponent();
 			MWVM = new MainWindowViewModel();
 			DataContext = MWVM;
-
 		}
 
 		private void MainWindow_Closing(object sender, CancelEventArgs e)
@@ -46,11 +44,8 @@ namespace BoomTracker
 			MWVM.Stop();
 		}
 
-
 		private void ImageButton_Click(object sender, RoutedEventArgs e)
 		{
-
-
 		}
 
 	
