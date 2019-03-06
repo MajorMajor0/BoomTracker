@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using AForge.Video;
 using AForge.Video.DirectShow;
+using AForge.Imaging.Filters;
 using Tesseract;
 
 
@@ -20,22 +21,40 @@ namespace BoomTracker
 {
 	public partial class MainWindowViewModel : INotifyPropertyChanged
 	{
-		private TesseractEngine ocr = new TesseractEngine(FileLocation.TesseractData, "eng");
 
-		private string ones;
-		public string Ones
+
+		public Game Game { get; } = new Game();
+
+		private Game.State state;
+		public Game.State State
 		{
-			get => ones;
+			get => state;
 			set
 			{
-				if (value != ones)
+				state = value;
+				OnPropertyChanged(nameof(State));
+				OnPropertyChanged(nameof(Game));
+			}
+		}
+
+		private double[] averager = new double[60];
+		int iav = 0;
+
+		private string timer;
+		public string Timer
+		{
+			get => timer;
+			set
+			{
+				if (value != timer)
 				{
-					ones = value;
-					OnPropertyChanged(nameof(Ones));
+					timer = value;
+					OnPropertyChanged(nameof(Timer));
 				}
 			}
 		}
 
+		private Stopwatch watch = Stopwatch.StartNew();
 		private BitmapImage mainImage;
 
 		public BitmapImage MainImage
@@ -48,15 +67,36 @@ namespace BoomTracker
 			}
 		}
 
-		private BitmapImage sliceImage;
-
-		public BitmapImage SliceImage
+		private BitmapImage levelImage;
+		public BitmapImage LevelImage
 		{
-			get => mainImage;
+			get => levelImage;
 			set
 			{
-				mainImage = value;
-				OnPropertyChanged(nameof(SliceImage));
+				levelImage = value;
+				OnPropertyChanged(nameof(LevelImage));
+			}
+		}
+
+		private BitmapImage linesImage;
+		public BitmapImage LinesImage
+		{
+			get => linesImage;
+			set
+			{
+				linesImage = value;
+				OnPropertyChanged(nameof(LinesImage));
+			}
+		}
+
+		private BitmapImage scoreImage;
+		public BitmapImage ScoreImage
+		{
+			get => scoreImage;
+			set
+			{
+				scoreImage = value;
+				OnPropertyChanged(nameof(ScoreImage));
 			}
 		}
 
@@ -92,10 +132,29 @@ namespace BoomTracker
 
 		private IVideoSource videoSource;
 
+
+
+		public Threshold ThresholdFilter { get; set; } = new Threshold(15);
+		public Grayscale GsFilter { get; set; } = new Grayscale(0, .1, 0);
+
+		private static int scale => 4;
+		private ResizeBicubic resizeBicubic =
+		new ResizeBicubic(
+		TetrisWindow.ScoreField.ScoreRectangle.Width * scale,
+		TetrisWindow.ScoreField.ScoreRectangle.Height * scale);
+
+
+		private ResizeBilinear resizeBilinear =
+		new ResizeBilinear(
+		TetrisWindow.ScoreField.ScoreRectangle.Width * scale,
+		TetrisWindow.ScoreField.ScoreRectangle.Height * scale);
+
+
 		public MainWindowViewModel()
 		{
 			GetVideoDevices();
-			ocr.SetVariable("tessedit_char_whitelist", "0123456789");
+			ThresholdFilter = new Threshold(15);
+			State = new Game.State();
 		}
 
 		private void GetVideoDevices()
@@ -117,29 +176,51 @@ namespace BoomTracker
 			}
 		}
 
-		private void OnNewFrame(object sender, NewFrameEventArgs eventArgs)
+		private static bool block;
+		private static bool evenFrame;
+		private async void OnNewFrame(object sender, NewFrameEventArgs eventArgs)
 		{
-			try
+			evenFrame = !evenFrame;
+
+			if (!block && evenFrame)
 			{
-				BitmapImage bi;
-				using (var bitmap = (Bitmap)eventArgs.Frame.Clone())
+				watch.Restart();
+				try
 				{
-					Paint(bitmap);
-					bi = bitmap.ToBitmapImage();
+					BitmapImage bi;
+
+					using (var bitmap = (Bitmap)eventArgs.Frame.Clone())
+					{
+						block = true;
+						//State = await Game.StoreState(bitmap);
+						block = false;
+						DrawFields(bitmap);
+						bi = bitmap.ToBitmapImage();
+					}
+
+					// Avoid cross thread operations and prevent leaks
+					bi.Freeze();
+					MainImage = bi;
 				}
 
-				// Avoid cross thread operations and prevent leaks
-				bi.Freeze();
-				MainImage = bi;
-			}
+				catch (Exception ex)
+				{
+					MessageBox.Show($"Error on _videoSource_NewFrame:\n{ex.Message}",
+					"Error",
+					MessageBoxButton.OK,
+					MessageBoxImage.Error);
+					Stop();
+				}
 
-			catch (Exception ex)
-			{
-				MessageBox.Show($"Error on _videoSource_NewFrame:\n{ex.Message}",
-				"Error",
-				MessageBoxButton.OK,
-				MessageBoxImage.Error);
-				Stop();
+				if (iav < averager.Length)
+				{
+					averager[iav++] = watch.ElapsedMilliseconds;
+				}
+				else
+				{
+					iav = 0;
+					Timer = Math.Round(averager.Average(), 1).ToString();
+				}
 			}
 		}
 
@@ -162,61 +243,110 @@ namespace BoomTracker
 			//var x = Grayscale.CommonAlgorithms.BT709.Apply(bm);
 		}
 
+		//private async Task Paint(Bitmap bitmap)
+		//{
+		//	using (Graphics g = Graphics.FromImage(bitmap))
+		//	{
+		//		DrawFields(g);
+		//	}
+
+		//	using (Bitmap scoreBitmap = bitmap.Clone(TetrisWindow.ScoreField.ScoreRectangle, System.Drawing.Imaging.PixelFormat.DontCare))
+		//	using (Bitmap linesBitmap = bitmap.Clone(TetrisWindow.LineField.LinesRectangle, System.Drawing.Imaging.PixelFormat.DontCare))
+		//	using (Bitmap levelBitmap = bitmap.Clone(TetrisWindow.LevelField.LevelRectangle, System.Drawing.Imaging.PixelFormat.DontCare))
+		//	{
+
+		//		List<Task> tasks = new List<Task>();
+
+		//		tasks.Add(Task.Run(() =>
+		//		{
+		//			//var scoreBitmapGs = GsFilter.Apply(scoreBitmap);
+		//			//scoreBitmapGs = ThresholdFilter.Apply(scoreBitmapGs);
+		//			var scoreBitmap2 = resizeBilinear.Apply(scoreBitmap);
+		//			using (var scorePage = scoreOCR.Process(scoreBitmap2, PageSegMode.SingleWord))
+		//			{
+		//				Score = scorePage.GetText();
+		//				scoreImage = scoreBitmap2.ToBitmapImage();
+		//				scoreImage.Freeze();
+		//				ScoreImage = scoreImage;
+		//			}
+		//		}
+		//		));
+
+		//		tasks.Add(Task.Run(() =>
+		//		{
+		//			using (var linesPage = lineOCR.Process(linesBitmap, PageSegMode.SingleWord))
+		//			{
+		//				Lines = linesPage.GetText();
+		//				linesImage = linesBitmap.ToBitmapImage();
+		//				linesImage.Freeze();
+		//				LinesImage = linesImage;
+		//			}
+		//		}
+		//		));
+
+		//		tasks.Add(Task.Run(() =>
+		//		{
+		//			using (var levelPage = levelOCR.Process(levelBitmap, PageSegMode.SingleWord))
+		//			{
+		//				Level = levelPage.GetText();
+		//				levelImage = levelBitmap.ToBitmapImage();
+		//				levelImage.Freeze();
+		//				LevelImage = levelImage;
+		//			}
+		//		}
+		//		));
+
+		//		await Task.WhenAll(tasks);
+
+		//		//for (int i = 0; i < TetrisWindow.PlayingField.HorizontalSquares; i++)
+		//		//{
+		//		//	for (int j = 0; j < TetrisWindow.PlayingField.VerticalSquares; j++)
+		//		//	{
+		//		//		int x = TetrisWindow.PlayingField.GridPoints[i, j, 0];
+		//		//		int y = TetrisWindow.PlayingField.GridPoints[i, j, 1];
+
+		//		//		Color color = bitmap.GetPixel(x, y);
+
+		//		//		if (TetrisWindow.HasBlock(color))
+		//		//		{
+		//		//			g.DrawEllipse(greenPen, x, y, 1, 1);
+		//		//		}
+		//		//	}
+		//		//}
+		//	}
+		//}
+
+
 		Pen orangePen = new Pen(Color.Orange, 1);
 		Pen bluePen = new Pen(Color.Blue, 1);
 		Pen greenPen = new Pen(Color.Green, 2);
-
-		private void Paint(Bitmap bitmap)
+		private void DrawFields(Bitmap bitmap)
 		{
-			BitmapImage bi;
-
-
 			using (Graphics g = Graphics.FromImage(bitmap))
-			using (Bitmap bm0 = bitmap.Clone(TetrisWindow.ScoreField.ScoreRectangles[0], System.Drawing.Imaging.PixelFormat.DontCare))
-			using (var pix = PixConverter.ToPix(bm0))
-			using (var page = ocr.Process(bm0, PageSegMode.SingleBlock))
 			{
-
-				var o = page.GetText();
-				Ones = o;
-
-				bi = bm0.ToBitmapImage();
-				bi.Freeze();
-				SliceImage = bi;
-
-				g.DrawRectangle(orangePen, TetrisWindow.PlayingField.Rectangle);
-				g.DrawRectangle(orangePen, TetrisWindow.NextField.Rectangle);
-				g.DrawRectangle(orangePen, TetrisWindow.ScoreField.Rectangle);
-				g.DrawRectangle(orangePen, TetrisWindow.LineField.Rectangle);
-				g.DrawRectangle(orangePen, TetrisWindow.LevelField.Rectangle);
-				g.DrawRectangle(bluePen, TetrisWindow.ScoreField.ScoreRectangles[0]);
-
-				g.DrawRectangle(bluePen, RectX, RectY, RectWidth, RectHeight);
-
-
-
-
-				for (int i = 0; i < TetrisWindow.PlayingField.HorizontalSquares; i++)
+				foreach (var xy in TetrisWindow.PlayingField.GridPixels)
 				{
-					for (int j = 0; j < TetrisWindow.PlayingField.VerticalSquares; j++)
-					{
-						int x = TetrisWindow.PlayingField.GridPoints[i, j, 0];
-						int y = TetrisWindow.PlayingField.GridPoints[i, j, 1];
+					bitmap.SetPixel(xy[0], xy[1], Color.Blue);
 
-						Color color = bitmap.GetPixel(x, y);
-
-						if (TetrisWindow.HasBlock(color))
-						{
-							g.DrawEllipse(greenPen, x, y, 1, 1);
-						}
-
-						//Debug.WriteLine($"({x}, {y})");
-					}
 				}
+
+				//foreach (var rect in TetrisWindow.PlayingField.GridRectangles)
+				//{
+				//	g.DrawRectangle(orangePen, rect);
+				//}
+				//g.DrawRectangle(bluePen, RectX, RectY, RectWidth, RectHeight);
 			}
+
+
+			//g.DrawRectangle(orangePen, TetrisWindow.LineField.LinesRectangle);
+			//g.DrawRectangle(orangePen, TetrisWindow.PlayingField.Rectangle);
+			//g.DrawRectangle(orangePen, TetrisWindow.NextField.Rectangle);
+			//g.DrawRectangle(orangePen, TetrisWindow.ScoreField.Rectangle);
+			//g.DrawRectangle(orangePen, TetrisWindow.LineField.Rectangle);
+			//g.DrawRectangle(orangePen, TetrisWindow.LevelField.Rectangle);
+			//g.DrawRectangle(bluePen, TetrisWindow.ScoreField.ScoreRectangle);
+
 		}
-
-
 
 		public event PropertyChangedEventHandler PropertyChanged;
 

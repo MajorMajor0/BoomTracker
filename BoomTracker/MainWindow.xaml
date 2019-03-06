@@ -6,7 +6,7 @@
 		xmlns:local="clr-namespace:BoomTracker"
 		xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 		Title="MainWindow"
-		Width="500"
+		Width="600"
 		Height="450"
 		mc:Ignorable="d"
 		Closing="MainWindow_Closing">
@@ -18,7 +18,54 @@
 			<RowDefinition Height="*" />
 			<RowDefinition Height="130" />
 		</Grid.RowDefinitions>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="*" />
+			<ColumnDefinition Width="70" />
+			<ColumnDefinition Width="150" />
+		</Grid.ColumnDefinitions>
+		<!--<Viewbox Stretch="Uniform"
+				 StretchDirection="Both">
 
+			<Grid Height="160"
+				  Width="80"
+				  x:Name="PlayingField"
+				  Background="Black">
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="1*" />
+					<ColumnDefinition Width="1*" />
+					<ColumnDefinition Width="1*" />
+					<ColumnDefinition Width="1*" />
+					<ColumnDefinition Width="1*" />
+					<ColumnDefinition Width="1*" />
+					<ColumnDefinition Width="1*" />
+					<ColumnDefinition Width="1*" />
+					<ColumnDefinition Width="1*" />
+					<ColumnDefinition Width="1*" />
+				</Grid.ColumnDefinitions>
+				<Grid.RowDefinitions>
+					<RowDefinition Height="1*" />
+					<RowDefinition Height="1*" />
+					<RowDefinition Height="1*" />
+					<RowDefinition Height="1*" />
+					<RowDefinition Height="1*" />
+					<RowDefinition Height="1*" />
+					<RowDefinition Height="1*" />
+					<RowDefinition Height="1*" />
+					<RowDefinition Height="1*" />
+					<RowDefinition Height="1*" />
+					<RowDefinition Height="1*" />
+					<RowDefinition Height="1*" />
+					<RowDefinition Height="1*" />
+					<RowDefinition Height="1*" />
+					<RowDefinition Height="1*" />
+					<RowDefinition Height="1*" />
+					<RowDefinition Height="1*" />
+					<RowDefinition Height="1*" />
+					<RowDefinition Height="1*" />
+					<RowDefinition Height="1*" />
+				</Grid.RowDefinitions>
+			</Grid>
+		</Viewbox>-->
 		<Image x:Name="MainImage"
 			   Source="{Binding MainImage}" />
 
@@ -41,7 +88,8 @@
 
 			</StackPanel.Resources>
 
-			<StackPanel Width="200"
+			<StackPanel x:Name="BoxesStackPanel"
+						Width="200"
 						VerticalAlignment="Bottom">
 				<TextBlock Text="Select video source" />
 				<ComboBox x:Name="ImageSourceComboBox"
@@ -104,31 +152,188 @@
 							 Text="{Binding ElementName=Main_Window, Path=DataContext.Rect2Height, UpdateSourceTrigger=PropertyChanged}" />
 				</StackPanel>
 			</StackPanel>
-			<StackPanel>
-				<StackPanel Orientation="Horizontal">
-					<Image x:Name="SliceImage"
-						   Width="30"
-						   Height="30"
-						   Source="{Binding SliceImage}" />
-					<TextBlock Text="{Binding Ones, FallbackValue=0}" />
-				</StackPanel>
 
+			<StackPanel x:Name="ButtonsStackpanel"
+						Orientation="Vertical"
+						Margin="5">
+				<Button Style="{StaticResource ControlButtonStyle}"
+						Command="{Binding StartCommand}" />
 
-				<StackPanel Orientation="Horizontal">
-					<Button Style="{StaticResource ControlButtonStyle}"
-							Command="{Binding StartCommand}" />
+				<Button Style="{StaticResource ControlButtonStyle}"
+						Command="{Binding StopCommand}" />
 
-					<Button Style="{StaticResource ControlButtonStyle}"
-							Command="{Binding StopCommand}" />
-
-					<Button Style="{StaticResource ControlButtonStyle}"
-							Command="{Binding ImageCommand}" />
-				</StackPanel>
+				<Button Style="{StaticResource ControlButtonStyle}"
+						Command="{Binding ImageCommand}" />
 			</StackPanel>
 
+			<StackPanel Orientation="Vertical"
+						Width="40"
+						Margin="0,15,0,0">
 
+				<TextBox Width="30"
+						 Margin="2"
+						 Text="{Binding ThresholdFilter.ThresholdValue, UpdateSourceTrigger=PropertyChanged}" />
+
+			</StackPanel>
+			<StackPanel Orientation="Vertical">
+
+				<TextBlock Width="30"
+						   Margin="2"
+						   Text="Thr" />
+
+			</StackPanel>
 		</StackPanel>
 
+		<StackPanel x:Name="StatsStackPanel"
+					Grid.Column="1"
+					Margin="10,30,5,5"
+					Grid.ColumnSpan="2">
+
+			<Grid x:Name="ScoreGrid"
+				  Height="40">
+
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="70" />
+					<ColumnDefinition Width="*" />
+				</Grid.ColumnDefinitions>
+
+				<Image x:Name="ScoreImage"
+					   Grid.Column="1"
+					   Width="130"
+					   Height="20"
+					   HorizontalAlignment="Right"
+					   VerticalAlignment="Top"
+					   Source="{Binding ScoreImage}" />
+
+				<Label x:Name="ScoreLabel"
+					   Content="{Binding State.Score, FallbackValue=000000}"
+					   Padding="0"
+					   HorizontalContentAlignment="Right"
+					   Grid.Column="1"
+					   HorizontalAlignment="Right"
+					   VerticalAlignment="Bottom"
+					   Height="25"
+					   Width="65"
+					   FontSize="20">
+					<Label.RenderTransform>
+						<ScaleTransform ScaleX="2"
+										CenterX="65" />
+					</Label.RenderTransform>
+				</Label>
+				<Label Content="Score: "
+					   Padding="0"
+					   HorizontalAlignment="Left"
+					   VerticalAlignment="Bottom"
+					   Height="25"
+					   FontSize="20" />
+			</Grid>
+
+			<Grid x:Name="LinesGrid"
+				  Height="40"
+				  Margin="0,15,0,0">
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="70" />
+					<ColumnDefinition Width="*" />
+				</Grid.ColumnDefinitions>
+
+				<Image x:Name="LinesImage"
+					   Grid.Column="1"
+					   HorizontalAlignment="Right"
+					   VerticalAlignment="Top"
+					   Height="20"
+					   Source="{Binding LinesImage}" />
+
+				<Label x:Name="LinesLabel"
+					   Content="{Binding State.Lines, FallbackValue=000}"
+					   Padding="0"
+					   HorizontalContentAlignment="Right"
+					   Grid.Column="1"
+					   HorizontalAlignment="Right"
+					   VerticalAlignment="Bottom"
+					   Height="25"
+					   Width="65"
+					   FontSize="20">
+					<Label.RenderTransform>
+						<ScaleTransform ScaleX="2"
+										CenterX="65" />
+					</Label.RenderTransform>
+				</Label>
+
+				<Label Content="Lines: "
+					   Padding="0"
+					   HorizontalAlignment="Left"
+					   VerticalAlignment="Bottom"
+					   Height="25"
+					   FontSize="20" />
+			</Grid>
+
+			<Grid x:Name="LevelGrid"
+				  Height="40"
+				  Margin="0,15,0,0">
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="70" />
+					<ColumnDefinition Width="*" />
+				</Grid.ColumnDefinitions>
+
+				<Image x:Name="LevelImage"
+					   Grid.Column="1"
+					   HorizontalAlignment="Right"
+					   VerticalAlignment="Top"
+					   Height="20"
+					   Source="{Binding LevelImage}" />
+
+				<Label x:Name="LevelLabel"
+					   Content="{Binding State.Level, FallbackValue=000}"
+					   Padding="0"
+					   HorizontalContentAlignment="Right"
+					   Grid.Column="1"
+					   HorizontalAlignment="Right"
+					   VerticalAlignment="Bottom"
+					   Height="25"
+					   Width="65"
+					   FontSize="20">
+					<Label.RenderTransform>
+						<ScaleTransform ScaleX="2"
+										CenterX="65" />
+					</Label.RenderTransform>
+				</Label>
+
+				<Label Content="Level: "
+					   Padding="0"
+					   HorizontalAlignment="Left"
+					   VerticalAlignment="Bottom"
+					   Height="25"
+					   FontSize="20" />
+			</Grid>
+
+			<TextBlock x:Name="TimerTextBlock"
+					   FontSize="20"
+					   Margin="0,15,0,0"
+					   Foreground="Blue">
+				<TextBlock.Text>
+					<MultiBinding StringFormat="{}Time: {0}">
+						<Binding Path="Timer"
+								 TargetNullValue="000"
+								 FallbackValue="000" />
+					</MultiBinding>
+				</TextBlock.Text>
+
+			</TextBlock>
+
+			<TextBlock x:Name="StatesTextBlock"
+					   FontSize="20"
+					   Margin="0,15,0,0"
+					   Foreground="Blue">
+				<TextBlock.Text>
+					<MultiBinding StringFormat="{}States: {0}">
+						<Binding Path="Game.States.Count"
+								 TargetNullValue="0000"
+								 FallbackValue="0000" />
+					</MultiBinding>
+				</TextBlock.Text>
+
+			</TextBlock>
+		</StackPanel>
 
 
 	</Grid>

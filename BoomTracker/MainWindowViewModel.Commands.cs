@@ -59,7 +59,7 @@ namespace BoomTracker
 
 			Bitmap bitmap = GetImage();
 
-			Paint(bitmap);
+			//Paint(bitmap);
 			MainImage = bitmap.ToBitmapImage();
 		}
 

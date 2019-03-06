@@ -76,11 +76,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Converters.cs" />
+    <Compile Include="Dictionary1.cs" />
+    <Compile Include="OCR.cs" />
     <Compile Include="Command.cs" />
     <Compile Include="FileLocation.cs" />
     <Compile Include="Galasoft.MvvmLight\RelayCommand.cs" />
     <Compile Include="Galasoft.MvvmLight\WeakAction.cs" />
     <Compile Include="Galasoft.MvvmLight\WeakFunc.cs" />
+    <Compile Include="Game.cs" />
     <Compile Include="MainWindowViewModel.Commands.cs" />
     <Compile Include="MainWindowViewModel.cs" />
     <Compile Include="TetrisWindow.cs" />

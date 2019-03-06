@@ -37,6 +37,82 @@ namespace BoomTracker
 			InitializeComponent();
 			MWVM = new MainWindowViewModel();
 			DataContext = MWVM;
+
+			System.Windows.Media.Brush whiteBrush = new SolidColorBrush(Colors.White);
+			System.Windows.Media.Brush blueBrush = new SolidColorBrush(Colors.Blue);
+
+			var ha = HorizontalAlignment.Stretch;
+			var va = VerticalAlignment.Stretch;
+			var margin = new Thickness(.5);
+			var padding = new Thickness(0);
+			double fontSize = 7;
+
+			//for (int i = 0; i < 10; i++)
+			//{
+			//	for (int j = 0; j < 20; j++)
+			//	{
+			//		Label label = new Label
+			//		{
+			//			HorizontalAlignment = ha,
+			//			VerticalAlignment = va,
+			//			Foreground = blueBrush,
+			//			FontFamily = new System.Windows.Media.FontFamily("Tetris"),
+			//			FontSize = fontSize,
+			//			Margin = margin,
+			//			Padding = padding,
+			//		};
+
+			//		var contentBinding = new Binding($"State.Grid[{i}][{j}]");
+			//		contentBinding.Source = DataContext;
+			//		contentBinding.Mode = BindingMode.OneWay;
+			//		label.SetBinding(ContentProperty, contentBinding);
+
+			//		var backgroundBinding = new Binding($"State.Grid[{i}][{j}]");
+			//		backgroundBinding.Source = DataContext;
+			//		backgroundBinding.Converter = new Converters.BackGroundColorConverter();
+			//		backgroundBinding.Mode = BindingMode.OneWay;
+			//		label.SetBinding(BackgroundProperty, backgroundBinding);
+
+			//		Grid.SetColumn(label, i);
+			//		Grid.SetRow(label, j);
+
+			//		PlayingField.Children.Add(label);
+			//	}
+			//}
+
+			//Label block = new Label
+			//{
+			//	HorizontalAlignment = ha,
+			//	VerticalAlignment = va,
+			//	Background = whiteBrush,
+			//	Foreground = blueBrush,
+			//	FontFamily = new System.Windows.Media.FontFamily("Tetris"),
+			//	FontSize = fontSize,
+			//	Content = 'A',
+			//	Margin = margin,
+			//	Padding = padding,
+			//};
+
+
+			//Grid.SetColumn(block, 1);
+			//Grid.SetRow(block, 1);
+
+			//PlayingField.Children.Add(block);
+
+			//TextBlock block2 = new TextBlock
+			//{
+			//	HorizontalAlignment = ha,
+			//	VerticalAlignment = va,
+			//	Background = whiteBrush,
+			//	Foreground = blueBrush,
+			//	FontFamily = new System.Windows.Media.FontFamily("Tetris"),
+			//	FontSize = fontSize,
+			//	Text = "A",
+			//	Margin = margin,
+			//	Padding = padding,
+			//};
+
+
 		}
 
 		private void MainWindow_Closing(object sender, CancelEventArgs e)
@@ -48,7 +124,7 @@ namespace BoomTracker
 		{
 		}
 
-	
+
 		public event PropertyChangedEventHandler PropertyChanged;
 
 		protected void OnPropertyChanged(string propertyName)
