@@ -10,73 +10,95 @@ namespace BoomTracker
 {
 	public static class TetrisWindow
 	{
-		public static int BlockThreshold { get; set; } = 10;
+		// Bitmap size produced by USB converter
+		public static double ImageWidth => 720;
+		public static double ImageHeight => 480;
+
+		// Output NES resolution (generated resolution = 256 x 240)
+		public static double NESHeight => 224;
+		public static double NESWidth => 256;
 
 		public static class PlayingField
 		{
 			public static Rectangle Rectangle { get; } = new Rectangle
 			{
+				// Playing field rectangle measured directly in bitmap
 				X = 280,
-				Y = 82,
+				Y = 80,
 				Width = 215,
 				Height = 340
 			};
 
-			public static int VerticalSquares => 20;
-			public static int HorizontalSquares => 10;
+			public static int Nrows => 20;
+			public static int NColumns => 10;
 
-			public static int SquareHeight => 17;
-			public static int SquareWidth => 22;
+			/// <summary>Displayed height of one Tetris block</summary>
+			public static double BlockHeight { get; }
+			/// <summary>Displayed width of one Tetris block</summary>
+			public static double BlockWidth { get; }
+			/// <summary>Displayed width of margin around Tetris block</summary>
+			public static double BlockMargin => 2;
 
-			public static int[,,] GridPoints { get; set; }
-			public static Rectangle[,] GridRectangles { get; set; }
+			/// <summary>Height of one Tetris block in NES resolution</summary>
+			private static int BlockHeightNes => 7;
+			/// <summary>Width of one Tetris block in NES resolution</summary>
+			private static int BlockWidthNes => 7;
 
-			public static int[,,][] GridPixels { get; set; }
+			/// <summary>X Y Point at center of block[i,j]</summary>
+			public static int[,,] BlockCenters { get; set; }
+
+			/// <summary>Rectangle field at center of block to read average color</summary>
+			public static Rectangle[,] BlockFields { get; set; }
+
+			public static int[,,][] BlockPixels { get; set; }
 
 			static PlayingField()
 			{
-				GridPoints = new int[HorizontalSquares, VerticalSquares, 2];
-				GridRectangles = new Rectangle[HorizontalSquares, VerticalSquares];
-				GridPixels = new int[HorizontalSquares, VerticalSquares, 35][];
+				BlockHeight = BlockHeightNes * ImageHeight / NESHeight;
+				BlockWidth = BlockWidthNes * ImageWidth / NESWidth;
+				BlockWidth = 19.4;
 
-				int yOffset = 7;
-				int xOffset = 11;
+				BlockCenters = new int[NColumns, Nrows, 2];
+				BlockFields = new Rectangle[NColumns, Nrows];
 
-				int yRectOffset = 6;
-				int xRectOffset = 7;
 
-				int RectHeight = 5;
-				int RectWidth = 7;
+				// Empirically measured from bitmap as the best spot to put the measureing field
+				int yRectOffset = 7;
+				int xRectOffset = 8;
 
-				for (int i = 0; i < HorizontalSquares; i++)
+				int FieldHeight = 5;
+				int FieldWidth = 6;
+
+				BlockPixels = new int[NColumns, Nrows, FieldHeight * FieldWidth][];
+				for (int i = 0; i < NColumns; i++)
 				{
-					for (int j = 0; j < VerticalSquares; j++)
+					for (int j = 0; j < Nrows; j++)
 					{
-						int x0 = Rectangle.Left + i * SquareWidth - i * 3 / 4;
-						int y0 = Rectangle.Top + j * SquareHeight;
+						// Top left corner of current block
+						double x0 = (double)Rectangle.Left + BlockMargin + (double)i * (BlockWidth + BlockMargin);
+						double y0 = (double)Rectangle.Top + BlockMargin + (double)j * (BlockHeight + BlockMargin);
 
-						int x = x0 + xOffset;
-						int y = y0 + yOffset;
+						BlockCenters[i, j, 0] = (int)(x0 + BlockWidth / 2);
+						BlockCenters[i, j, 1] = (int)(y0 + BlockHeight / 2);
 
-						GridPoints[i, j, 0] = x;
-						GridPoints[i, j, 1] = y;
-
-						GridRectangles[i, j] = new Rectangle(x0 + xRectOffset, y0 + yRectOffset, xRectOffset, yRectOffset);
-						Debug.WriteLine($"{GridRectangles[i, j].X}, {GridRectangles[i, j].Y}");
+						BlockFields[i, j] = new Rectangle((int)x0 + xRectOffset, (int)y0 + yRectOffset, FieldWidth, FieldHeight);
+						Debug.WriteLine($"{BlockFields[i, j].X}, {BlockFields[i, j].Y}");
 
 						// Numbers to be added to rectangle top left corner to get x/y position of pixel k
 						int xsub = 0;
 						int ysub;
 
-						for (int k = 0; k < 35; k++)
+						for (int k = 0; k < FieldWidth * FieldHeight; k++)
 						{
+							BlockPixels[i, j, k] = new int[2];
 
-							ysub = k / (RectWidth);
-							GridPixels[i, j, k] = new int[2];
-							GridPixels[i, j, k][0] = GridRectangles[i, j].X + xsub;
-							GridPixels[i, j, k][1] = GridRectangles[i, j].Y + ysub;
+							// Y offset is the row that the pixel is in
+							ysub = k / (FieldWidth);
 
-							if (xsub++ == RectWidth - 1)
+							BlockPixels[i, j, k][0] = BlockFields[i, j].X + xsub;
+							BlockPixels[i, j, k][1] = BlockFields[i, j].Y + ysub;
+
+							if (xsub++ == FieldWidth - 1)
 							{
 								xsub = 0;
 							}
@@ -189,10 +211,5 @@ namespace BoomTracker
 		}
 
 		public static List<bool[,]> History;
-
-		public static bool HasBlock(Color color)
-		{
-			return color.R + color.G + color.B > BlockThreshold;
-		}
 	}
 }

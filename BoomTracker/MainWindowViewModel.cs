@@ -100,12 +100,6 @@ namespace BoomTracker
 			}
 		}
 
-		public int Threshold
-		{
-			get => TetrisWindow.BlockThreshold;
-			set => TetrisWindow.BlockThreshold = value;
-		}
-
 		public int RectX { get; set; } = TetrisWindow.PlayingField.Rectangle.Left;
 		public int RectY { get; set; } = TetrisWindow.PlayingField.Rectangle.Top;
 		public int RectWidth { get; set; } = TetrisWindow.PlayingField.Rectangle.Width;
@@ -178,6 +172,7 @@ namespace BoomTracker
 
 		private static bool block;
 		private static bool evenFrame;
+		private static bool taskKiller = false;
 		private async void OnNewFrame(object sender, NewFrameEventArgs eventArgs)
 		{
 			evenFrame = !evenFrame;
@@ -185,32 +180,39 @@ namespace BoomTracker
 			if (!block && evenFrame)
 			{
 				watch.Restart();
-				try
-				{
+				//try
+				//{
 					BitmapImage bi;
 
 					using (var bitmap = (Bitmap)eventArgs.Frame.Clone())
 					{
 						block = true;
-						//State = await Game.StoreState(bitmap);
+						State = await Game.StoreState(bitmap);
 						block = false;
+
 						DrawFields(bitmap);
+
+						if (Game.States.Count == 40)
+						{
+							bitmap.Save(@"C:\Source\BoomTracker\BoomTracker\Resources\Level0_2.bmp");
+						}
+
 						bi = bitmap.ToBitmapImage();
 					}
 
 					// Avoid cross thread operations and prevent leaks
 					bi.Freeze();
 					MainImage = bi;
-				}
+				//}
 
-				catch (Exception ex)
-				{
-					MessageBox.Show($"Error on _videoSource_NewFrame:\n{ex.Message}",
-					"Error",
-					MessageBoxButton.OK,
-					MessageBoxImage.Error);
-					Stop();
-				}
+				//catch (Exception ex)
+				//{
+				//	MessageBox.Show($"Error on _videoSource_NewFrame:\n{ex.Message}",
+				//	"Error",
+				//	MessageBoxButton.OK,
+				//	MessageBoxImage.Error);
+				//	Stop();
+				//}
 
 				if (iav < averager.Length)
 				{
@@ -324,10 +326,9 @@ namespace BoomTracker
 		{
 			using (Graphics g = Graphics.FromImage(bitmap))
 			{
-				foreach (var xy in TetrisWindow.PlayingField.GridPixels)
+				foreach (var xy in TetrisWindow.PlayingField.BlockPixels)
 				{
-					bitmap.SetPixel(xy[0], xy[1], Color.Blue);
-
+					bitmap.SetPixel(xy[0], xy[1], Color.Red);
 				}
 
 				//foreach (var rect in TetrisWindow.PlayingField.GridRectangles)

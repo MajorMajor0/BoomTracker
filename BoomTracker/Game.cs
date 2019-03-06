@@ -107,29 +107,29 @@ namespace BoomTracker
 
 			public void GetGrid(Bitmap bitmap)
 			{
-				BitmapData bmpData = bitmap.LockBits(
-					TetrisWindow.PlayingField.Rectangle,
-					ImageLockMode.ReadWrite,
-					bitmap.PixelFormat);
+				//BitmapData bmpData = bitmap.LockBits(
+				//	TetrisWindow.PlayingField.Rectangle,
+				//	ImageLockMode.ReadWrite,
+				//	bitmap.PixelFormat);
 
-				// Get the address of the first line.
-				IntPtr pointer = bmpData.Scan0;
+				//// Get the address of the first line.
+				//IntPtr pointer = bmpData.Scan0;
 
-				// Declare an array to hold the bytes of the bitmap.
-				int nBytes = Math.Abs(bmpData.Stride) * bitmap.Height;
-				byte[] rgbValues = new byte[nBytes];
+				//// Declare an array to hold the bytes of the bitmap.
+				//int nBytes = Math.Abs(bmpData.Stride) * bitmap.Height;
+				//byte[] rgbValues = new byte[nBytes];
 
-				// Copy the RGB values into the array.
-				System.Runtime.InteropServices.Marshal.Copy(pointer, rgbValues, 0, nBytes);
+				//// Copy the RGB values into the array.
+				//System.Runtime.InteropServices.Marshal.Copy(pointer, rgbValues, 0, nBytes);
 
-				for (int i = 0; i <= 10; i++)
-				{
-					for (int j = 0; j < 20; j++)
-					{
+				//for (int i = 0; i <= 10; i++)
+				//{
+				//	for (int j = 0; j < 20; j++)
+				//	{
 
-					}
+				//	}
 
-				}
+				//}
 
 
 				//for (int i = 0; i < TetrisWindow.PlayingField.HorizontalSquares; i++)
