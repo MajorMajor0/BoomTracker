@@ -6,17 +6,24 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using System.Drawing.Imaging;
+using System.Windows.Media.Imaging;
+
 namespace BoomTracker
 {
-	public static class TetrisWindow
+	public static class Tetris
 	{
+		public static PixelFormat PixelFormat => PixelFormat.Format24bppRgb;
+
+		private static byte BytesPerPixel;
+
 		// Bitmap size produced by USB converter
-		public static double ImageWidth => 720;
-		public static double ImageHeight => 480;
+		public static double ImageWidth = 720.0;
+		public static double ImageHeight = 480.0;
 
 		// Output NES resolution (generated resolution = 256 x 240)
-		public static double NESHeight => 224;
-		public static double NESWidth => 256;
+		public static double NESHeight = 224.0;
+		public static double NESWidth = 256.0;
 
 		public static class PlayingField
 		{
@@ -33,43 +40,48 @@ namespace BoomTracker
 			public static int NColumns => 10;
 
 			/// <summary>Displayed height of one Tetris block</summary>
-			public static double BlockHeight { get; }
+			public static double BlockHeight { get; set; }
 			/// <summary>Displayed width of one Tetris block</summary>
-			public static double BlockWidth { get; }
+			public static double BlockWidth { get; set; }
 			/// <summary>Displayed width of margin around Tetris block</summary>
 			public static double BlockMargin => 2;
 
 			/// <summary>Height of one Tetris block in NES resolution</summary>
-			private static int BlockHeightNes => 7;
+			private static double BlockHeightNes = 7.0;
 			/// <summary>Width of one Tetris block in NES resolution</summary>
-			private static int BlockWidthNes => 7;
+			private static double BlockWidthNes = 7.0;
 
 			/// <summary>X Y Point at center of block[i,j]</summary>
 			public static int[,,] BlockCenters { get; set; }
 
 			/// <summary>Rectangle field at center of block to read average color</summary>
 			public static Rectangle[,] BlockFields { get; set; }
+			public static int FieldHeight => 5;
+			public static int FieldWidth => 6;
 
+			/// <summary>X Y position of pixels in block[i,j]</summary>
 			public static int[,,][] BlockPixels { get; set; }
+
+			/// <summary>Array at ij contains the addresses of pixels in block[i,j] int[3] = [blue][green][red]</summary>
+			public static int[,][] BlockAddresses { get; set; }
 
 			static PlayingField()
 			{
 				BlockHeight = BlockHeightNes * ImageHeight / NESHeight;
-				BlockWidth = BlockWidthNes * ImageWidth / NESWidth;
+				//BlockWidth = BlockWidthNes * ImageWidth / NESWidth;
+
+				// Measured manually from bitmap
 				BlockWidth = 19.4;
 
 				BlockCenters = new int[NColumns, Nrows, 2];
 				BlockFields = new Rectangle[NColumns, Nrows];
 
-
 				// Empirically measured from bitmap as the best spot to put the measureing field
 				int yRectOffset = 7;
 				int xRectOffset = 8;
 
-				int FieldHeight = 5;
-				int FieldWidth = 6;
-
 				BlockPixels = new int[NColumns, Nrows, FieldHeight * FieldWidth][];
+				BlockAddresses = new int[NColumns, Nrows][];
 				for (int i = 0; i < NColumns; i++)
 				{
 					for (int j = 0; j < Nrows; j++)
@@ -88,15 +100,26 @@ namespace BoomTracker
 						int xsub = 0;
 						int ysub;
 
+						// Set pixels and addresses
+						BlockAddresses[i, j] = new int[FieldHeight * FieldWidth];
 						for (int k = 0; k < FieldWidth * FieldHeight; k++)
 						{
 							BlockPixels[i, j, k] = new int[2];
 
+							// Set the xy pixel[k] of rectangle[i,j]
 							// Y offset is the row that the pixel is in
 							ysub = k / (FieldWidth);
 
-							BlockPixels[i, j, k][0] = BlockFields[i, j].X + xsub;
-							BlockPixels[i, j, k][1] = BlockFields[i, j].Y + ysub;
+							int x = BlockFields[i, j].X + xsub;
+							int y = BlockFields[i, j].Y + ysub;
+
+							BlockPixels[i, j, k][0] = x;
+							BlockPixels[i, j, k][1] = y;
+
+							// Set pixel address
+							int pixel = BytesPerPixel * (x + (int)ImageWidth * y);
+
+							BlockAddresses[i, j][k] = pixel;
 
 							if (xsub++ == FieldWidth - 1)
 							{
@@ -210,6 +233,25 @@ namespace BoomTracker
 			}
 		}
 
-		public static List<bool[,]> History;
+		static Tetris()
+		{
+			BytesPerPixel = BppDictionary[PixelFormat];
+		}
+
+		public static Dictionary<PixelFormat, byte> BppDictionary = new Dictionary<PixelFormat, byte>
+		{
+			{ PixelFormat.Format16bppArgb1555, 2 },
+			{ PixelFormat.Format16bppGrayScale, 2 },
+			{ PixelFormat.Format16bppRgb555, 2 },
+			{ PixelFormat.Format16bppRgb565, 2 },
+			{ PixelFormat.Format1bppIndexed, 1 },
+			{ PixelFormat.Format24bppRgb, 3 },
+			{ PixelFormat.Format32bppArgb, 4 },
+			{ PixelFormat.Format32bppRgb, 4 },
+			{ PixelFormat.Format48bppRgb, 6 },
+			{ PixelFormat.Format64bppArgb, 8 },
+			{ PixelFormat.Format64bppPArgb, 8 },
+			{ PixelFormat.Format8bppIndexed, 1 }
+		};
 	}
 }

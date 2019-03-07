@@ -161,9 +161,9 @@ namespace BoomTracker
 		{
 			State state = new State();
 
-			using (Bitmap scoreBitmap = bitmap.Clone(TetrisWindow.ScoreField.ScoreRectangle, PixelFormat.DontCare))
-			using (Bitmap linesBitmap = bitmap.Clone(TetrisWindow.LineField.LinesRectangle, PixelFormat.DontCare))
-			using (Bitmap levelBitmap = bitmap.Clone(TetrisWindow.LevelField.LevelRectangle, PixelFormat.DontCare))
+			using (Bitmap scoreBitmap = bitmap.Clone(Tetris.ScoreField.ScoreRectangle, PixelFormat.DontCare))
+			using (Bitmap linesBitmap = bitmap.Clone(Tetris.LineField.LinesRectangle, PixelFormat.DontCare))
+			using (Bitmap levelBitmap = bitmap.Clone(Tetris.LevelField.LevelRectangle, PixelFormat.DontCare))
 			{
 				Task<int>[] tasks = new Task<int>[3];
 
