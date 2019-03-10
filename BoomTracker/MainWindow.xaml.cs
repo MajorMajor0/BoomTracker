@@ -40,6 +40,7 @@ namespace BoomTracker
 
 			System.Windows.Media.Brush whiteBrush = new SolidColorBrush(Colors.White);
 			System.Windows.Media.Brush blueBrush = new SolidColorBrush(Colors.Blue);
+			System.Windows.Media.Brush blackBrush = new SolidColorBrush(Colors.Black);
 
 			var ha = HorizontalAlignment.Stretch;
 			var va = VerticalAlignment.Stretch;
@@ -47,70 +48,48 @@ namespace BoomTracker
 			var padding = new Thickness(0);
 			double fontSize = 7;
 
-			//for (int i = 0; i < 10; i++)
-			//{
-			//	for (int j = 0; j < 20; j++)
-			//	{
-			//		Label label = new Label
-			//		{
-			//			HorizontalAlignment = ha,
-			//			VerticalAlignment = va,
-			//			Foreground = blueBrush,
-			//			FontFamily = new System.Windows.Media.FontFamily("Tetris"),
-			//			FontSize = fontSize,
-			//			Margin = margin,
-			//			Padding = padding,
-			//		};
+			var converter1 = new Converters.CharToColorConverter();
+			var converter2 = new Converters.BackGroundColorConverter();
 
-			//		var contentBinding = new Binding($"State.Grid[{i}][{j}]");
-			//		contentBinding.Source = DataContext;
-			//		contentBinding.Mode = BindingMode.OneWay;
-			//		label.SetBinding(ContentProperty, contentBinding);
+			for (int i = 0; i < 10; i++)
+			{
+				for (int j = 0; j < 20; j++)
+				{
+					Label label = new Label
+					{
+						HorizontalAlignment = ha,
+						VerticalAlignment = va,
+						FontFamily = new System.Windows.Media.FontFamily("Tetris"),
+						FontSize = fontSize,
+						Margin = margin,
+						Padding = padding,
 
-			//		var backgroundBinding = new Binding($"State.Grid[{i}][{j}]");
-			//		backgroundBinding.Source = DataContext;
-			//		backgroundBinding.Converter = new Converters.BackGroundColorConverter();
-			//		backgroundBinding.Mode = BindingMode.OneWay;
-			//		label.SetBinding(BackgroundProperty, backgroundBinding);
+					};
 
-			//		Grid.SetColumn(label, i);
-			//		Grid.SetRow(label, j);
+					var contentBinding = new Binding($"State.Grid[{i}][{j}]");
+					contentBinding.Source = DataContext;
+					contentBinding.Mode = BindingMode.OneWay;
+					label.SetBinding(ContentProperty, contentBinding);
 
-			//		PlayingField.Children.Add(label);
-			//	}
-			//}
+					var backgroundBinding = new Binding($"State.Grid[{i}][{j}]");
+					backgroundBinding.Source = DataContext;
+					backgroundBinding.Converter = new Converters.BackGroundColorConverter();
+					backgroundBinding.Mode = BindingMode.OneWay;
+					label.SetBinding(BackgroundProperty, backgroundBinding);
 
-			//Label block = new Label
-			//{
-			//	HorizontalAlignment = ha,
-			//	VerticalAlignment = va,
-			//	Background = whiteBrush,
-			//	Foreground = blueBrush,
-			//	FontFamily = new System.Windows.Media.FontFamily("Tetris"),
-			//	FontSize = fontSize,
-			//	Content = 'A',
-			//	Margin = margin,
-			//	Padding = padding,
-			//};
+					var foregroundBinding = new MultiBinding();
+					foregroundBinding.Mode = BindingMode.OneWay;
+					foregroundBinding.Converter = new Converters.CharToColorConverter();
+					foregroundBinding.Bindings.Add(new Binding($"State.Level"));
+					foregroundBinding.Bindings.Add(new Binding($"State.Grid[{i}][{j}]"));
+					label.SetBinding(ForegroundProperty, foregroundBinding);
 
+					Grid.SetColumn(label, i);
+					Grid.SetRow(label, j);
 
-			//Grid.SetColumn(block, 1);
-			//Grid.SetRow(block, 1);
-
-			//PlayingField.Children.Add(block);
-
-			//TextBlock block2 = new TextBlock
-			//{
-			//	HorizontalAlignment = ha,
-			//	VerticalAlignment = va,
-			//	Background = whiteBrush,
-			//	Foreground = blueBrush,
-			//	FontFamily = new System.Windows.Media.FontFamily("Tetris"),
-			//	FontSize = fontSize,
-			//	Text = "A",
-			//	Margin = margin,
-			//	Padding = padding,
-			//};
+					PlayingField.Children.Add(label);
+				}
+			}
 
 
 		}

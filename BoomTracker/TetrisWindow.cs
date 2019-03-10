@@ -94,7 +94,6 @@ namespace BoomTracker
 						BlockCenters[i, j, 1] = (int)(y0 + BlockHeight / 2);
 
 						BlockFields[i, j] = new Rectangle((int)x0 + xRectOffset, (int)y0 + yRectOffset, FieldWidth, FieldHeight);
-						Debug.WriteLine($"{BlockFields[i, j].X}, {BlockFields[i, j].Y}");
 
 						// Numbers to be added to rectangle top left corner to get x/y position of pixel k
 						int xsub = 0;

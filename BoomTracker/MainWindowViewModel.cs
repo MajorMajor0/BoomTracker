@@ -146,7 +146,6 @@ namespace BoomTracker
 
 		private static bool block;
 		private static bool evenFrame;
-		private static bool taskKiller = false;
 		private async void OnNewFrame(object sender, NewFrameEventArgs eventArgs)
 		{
 			evenFrame = !evenFrame;
@@ -154,9 +153,9 @@ namespace BoomTracker
 			if (!block && evenFrame)
 			{
 				watch.Restart();
-				//try
-				//{
-				BitmapImage bi;
+				try
+				{
+					BitmapImage bi;
 
 				using (var bitmap = (Bitmap)eventArgs.Frame.Clone())
 				{
@@ -164,12 +163,7 @@ namespace BoomTracker
 					State = await Game.StoreState(bitmap);
 					block = false;
 
-					DrawFields(bitmap);
-
-					if (Game.States.Count == 40)
-					{
-						bitmap.Save(@"C:\Source\BoomTracker\BoomTracker\Resources\Level0_4.bmp");
-					}
+					//DrawFields(bitmap);
 
 					bi = bitmap.ToBitmapImage();
 				}
@@ -177,18 +171,18 @@ namespace BoomTracker
 				// Avoid cross thread operations and prevent leaks
 				bi.Freeze();
 				MainImage = bi;
-				//}
+			}
 
-				//catch (Exception ex)
-				//{
-				//	MessageBox.Show($"Error on _videoSource_NewFrame:\n{ex.Message}",
-				//	"Error",
-				//	MessageBoxButton.OK,
-				//	MessageBoxImage.Error);
-				//	Stop();
-				//}
+				catch (Exception ex)
+			{
+				MessageBox.Show($"Error on _videoSource_NewFrame:\n{ex.Message}",
+				"Error",
+				MessageBoxButton.OK,
+				MessageBoxImage.Error);
+				Stop();
+			}
 
-				if (iav < averager.Length)
+			if (iav < averager.Length)
 				{
 					averager[iav++] = watch.ElapsedMilliseconds;
 				}
@@ -222,45 +216,20 @@ namespace BoomTracker
 		Pen orangePen = new Pen(Color.Orange, 1);
 		Pen bluePen = new Pen(Color.Blue, 1);
 		Pen greenPen = new Pen(Color.Green, 2);
-		private unsafe void DrawFields(Bitmap bitmap)
+		private void DrawFields(Bitmap bitmap)
 		{
-			BitmapData bmData = bitmap.LockBits(
-			new Rectangle(0, 0, (int)Tetris.ImageWidth, (int)Tetris.ImageHeight),
-			ImageLockMode.ReadWrite,
-			Tetris.PixelFormat);
-
-			byte* scan0 = (byte*)bmData.Scan0.ToPointer();
-
-			for (int i = 0; i < Tetris.PlayingField.NColumns; i++)
-			{
-				for (int j = 0; j < Tetris.PlayingField.Nrows; j++)
-				{
-					for (int k = 0; k < Tetris.PlayingField.FieldWidth * Tetris.PlayingField.FieldHeight; k++)
-					{
-						int address = Tetris.PlayingField.BlockAddresses[i, j][k];
-						scan0[address] = 0; // Blue
-						scan0[address + 1] = 0; // Green
-						scan0[address + 2] = 255; // Red
-					}
-				}
-			}
-
-			bitmap.UnlockBits(bmData);
-
-
-
-			//using (Graphics g = Graphics.FromImage(bitmap))
+		//using (Graphics g = Graphics.FromImage(bitmap))
 			//{
-			//foreach (var xy in TetrisWindow.PlayingField.BlockPixels)
-			//{
-			//	bitmap.SetPixel(xy[0], xy[1], Color.Red);
-			//}
+			//	foreach (var xy in Tetris.PlayingField.BlockPixels)
+			//	{
+			//		bitmap.SetPixel(xy[0], xy[1], Color.Red);
+			//	}
 
-			//foreach (var rect in TetrisWindow.PlayingField.GridRectangles)
-			//{
-			//	g.DrawRectangle(orangePen, rect);
-			//}
-			//g.DrawRectangle(bluePen, RectX, RectY, RectWidth, RectHeight);
+			//	//foreach (var rect in Tetris.PlayingField.BlockFields)
+			//	//{
+			//	//	g.DrawRectangle(orangePen, rect);
+			//	//}
+			//	//g.DrawRectangle(bluePen, RectX, RectY, RectWidth, RectHeight);
 			//}
 
 
@@ -271,7 +240,7 @@ namespace BoomTracker
 			//g.DrawRectangle(orangePen, TetrisWindow.LineField.Rectangle);
 			//g.DrawRectangle(orangePen, TetrisWindow.LevelField.Rectangle);
 			//g.DrawRectangle(bluePen, TetrisWindow.ScoreField.ScoreRectangle);
-
+			//Debug.WriteLine(watch.ElapsedMilliseconds);
 		}
 
 		public event PropertyChangedEventHandler PropertyChanged;

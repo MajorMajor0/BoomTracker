@@ -88,6 +88,7 @@
     <Compile Include="Game.cs" />
     <Compile Include="MainWindowViewModel.Commands.cs" />
     <Compile Include="MainWindowViewModel.cs" />
+    <Compile Include="Palette.cs" />
     <Compile Include="TetrisWindow.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
