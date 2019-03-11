@@ -22,7 +22,6 @@ namespace BoomTracker
 {
 	class Converters
 	{
-
 		public class BackGroundColorConverter : IValueConverter
 		{
 			private static SolidColorBrush white => new SolidColorBrush(Colors.White);
@@ -43,8 +42,6 @@ namespace BoomTracker
 				throw new NotImplementedException();
 			}
 		}
-
-		
 
 		public class CharToColorConverter : IMultiValueConverter
 		{
@@ -100,7 +97,5 @@ namespace BoomTracker
 				}
 			}
 		}
-
-
 	}
 }

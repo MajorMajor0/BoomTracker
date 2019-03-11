@@ -20,19 +20,7 @@ namespace BoomTracker
 	{
 		public Game Game { get; } = new Game();
 
-		private Game.State state = new Game.State();
-		public Game.State State
-		{
-			get => state;
-			set
-			{
-				state = value;
-				OnPropertyChanged(nameof(State));
-				OnPropertyChanged(nameof(Game));
-			}
-		}
-
-		private double[] averager = new double[60];
+		private double[] timeAverager = new double[60];
 		int iav = 0;
 
 		private string timer;
@@ -122,6 +110,7 @@ namespace BoomTracker
 
 		public MainWindowViewModel()
 		{
+			InitializeCommands();
 			GetVideoDevices();
 		}
 
@@ -148,7 +137,7 @@ namespace BoomTracker
 		private static bool evenFrame;
 		private async void OnNewFrame(object sender, NewFrameEventArgs eventArgs)
 		{
-			evenFrame = !evenFrame;
+			evenFrame = true;
 
 			if (!block && evenFrame)
 			{
@@ -160,10 +149,8 @@ namespace BoomTracker
 				using (var bitmap = (Bitmap)eventArgs.Frame.Clone())
 				{
 					block = true;
-					State = await Game.StoreState(bitmap);
+					await Game.StoreState(bitmap);
 					block = false;
-
-					//DrawFields(bitmap);
 
 					bi = bitmap.ToBitmapImage();
 				}
@@ -182,66 +169,37 @@ namespace BoomTracker
 				Stop();
 			}
 
-			if (iav < averager.Length)
+			if (iav < timeAverager.Length)
 				{
-					averager[iav++] = watch.ElapsedMilliseconds;
+					timeAverager[iav++] = watch.ElapsedMilliseconds;
 				}
 				else
 				{
 					iav = 0;
-					Timer = Math.Round(averager.Average(), 1).ToString();
+					Timer = Math.Round(timeAverager.Average(), 1).ToString();
 				}
 			}
 		}
 
-		private Bitmap GetImage()
-		{
-			Bitmap returner = null;
-			string fileName = @"C:\Source\BoomTracker\BoomTracker\Resources\Level2.bmp";
-			try
-			{
-				Bitmap bm = (Bitmap)Image.FromFile(fileName);
-				returner = bm;
-			}
+		//private Pen orangePen = new Pen(Color.Orange, 1);
+		//private Pen bluePen = new Pen(Color.Blue, 1);
+		//private void DrawFields(Bitmap bitmap)
+		//{
+		//	using (Graphics g = Graphics.FromImage(bitmap))
+		//	{
+		//		foreach (var xy in Tetris.PlayingField.BlockPixels)
+		//		{
+		//			bitmap.SetPixel(xy[0], xy[1], Color.Red);
+		//		}
 
-			catch
-			{
-				MessageBox.Show($"{fileName} bonked.");
-			}
-
-			return returner;
-			//var x = Grayscale.CommonAlgorithms.BT709.Apply(bm);
-		}
-
-		Pen orangePen = new Pen(Color.Orange, 1);
-		Pen bluePen = new Pen(Color.Blue, 1);
-		Pen greenPen = new Pen(Color.Green, 2);
-		private void DrawFields(Bitmap bitmap)
-		{
-		//using (Graphics g = Graphics.FromImage(bitmap))
-			//{
-			//	foreach (var xy in Tetris.PlayingField.BlockPixels)
-			//	{
-			//		bitmap.SetPixel(xy[0], xy[1], Color.Red);
-			//	}
-
-			//	//foreach (var rect in Tetris.PlayingField.BlockFields)
-			//	//{
-			//	//	g.DrawRectangle(orangePen, rect);
-			//	//}
-			//	//g.DrawRectangle(bluePen, RectX, RectY, RectWidth, RectHeight);
-			//}
-
-
-			//g.DrawRectangle(orangePen, TetrisWindow.LineField.LinesRectangle);
-			//g.DrawRectangle(orangePen, TetrisWindow.PlayingField.Rectangle);
-			//g.DrawRectangle(orangePen, TetrisWindow.NextField.Rectangle);
-			//g.DrawRectangle(orangePen, TetrisWindow.ScoreField.Rectangle);
-			//g.DrawRectangle(orangePen, TetrisWindow.LineField.Rectangle);
-			//g.DrawRectangle(orangePen, TetrisWindow.LevelField.Rectangle);
-			//g.DrawRectangle(bluePen, TetrisWindow.ScoreField.ScoreRectangle);
-			//Debug.WriteLine(watch.ElapsedMilliseconds);
-		}
+		//		foreach (var rect in Tetris.PlayingField.BlockFields)
+		//		{
+		//			g.DrawRectangle(orangePen, rect);
+		//		}
+		//		g.DrawRectangle(bluePen, RectX, RectY, RectWidth, RectHeight);
+		//		g.DrawRectangle(orangePen, Tetris.LineField.LinesRectangle);
+		//	}	
+		//}
 
 		public event PropertyChangedEventHandler PropertyChanged;
 

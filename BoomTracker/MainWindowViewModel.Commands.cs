@@ -11,7 +11,14 @@ namespace BoomTracker
 {
 	public partial class MainWindowViewModel
 	{
-		public Command StartCommand => new Command(Start, StartCanExecute, "Start", "Start the selected camera.");
+		private void InitializeCommands()
+		{
+			StartCommand = new Command(Start, StartCanExecute, "Start", "Start the selected camera.");
+			StopCommand = new Command(Stop, StopCanExecute, "Stop", "Stop the selected camera.");
+			ScreenshotCommand = new Command(Screenshot, ScreenShotCanExecute, "Screen Shot", "Save screen shot to file.");
+		}
+
+		public Command StartCommand { get; private set; }
 
 		private bool StartCanExecute()
 		{
@@ -29,7 +36,7 @@ namespace BoomTracker
 		}
 
 
-		public Command StopCommand => new Command(Stop, StopCanExecute, "Stop", "Stop the selected camera.");
+		public Command StopCommand { get; private set; }
 
 		private bool StopCanExecute()
 		{
@@ -46,24 +53,8 @@ namespace BoomTracker
 		}
 
 
-		public Command ImageCommand => new Command(SetImage, ImageCanExecute, "Load Static", "Get static image from file.");
+		public Command ScreenshotCommand { get; private set; }
 
-		private bool ImageCanExecute()
-		{
-			return true;
-		}
-
-		private void SetImage()
-		{
-			Stop();
-
-			Bitmap bitmap = GetImage();
-
-			//Paint(bitmap);
-			MainImage = bitmap.ToBitmapImage();
-		}
-
-		public Command ScreenshotCommand => new Command(Screenshot, ScreenShotCanExecute, "Screen Shot", "Save screen shot to file.");
 		private bool ScreenShotCanExecute()
 		{
 			return true;
@@ -72,7 +63,7 @@ namespace BoomTracker
 		private void Screenshot()
 		{
 			string fileName = $"Screen {DateTime.Now.ToString()}";
-			
+
 		}
 	}
 }

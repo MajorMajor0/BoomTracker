@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
@@ -10,17 +11,76 @@ using Tesseract;
 
 namespace BoomTracker
 {
-	public class Game
+	public class Game : INotifyPropertyChanged
 	{
 		private OCR ocr = new OCR();
 
-		public byte StartLevel { get; set; }
+		private char?[][] currentGrid = new char?[10][];
+		public char?[][] CurrentGrid
+		{
+			get => currentGrid;
+			set
+			{
+				currentGrid = value;
+				OnPropertyChanged(nameof(CurrentGrid));
+			}
+		}
 
-		public byte EndLevel { get; set; }
+		public int StartLevel { get; set; }
+
+
+		public int FinalLevel { get; set; }
+
+		public int FinalLines { get; set; }
+
+		public int FinalScore { get; set; }
+
 
 		private int currentLevel;
+		public int CurrentLevel
+		{
+			get => currentLevel;
+			set
+			{
+				if (value == currentLevel + 1 || currentScore == 0)
+				{
+					currentLevel = value;
+					OnPropertyChanged(nameof(CurrentLevel));
+				}
+			}
+		}
 
-		public int Score { get; set; }
+		private int currentLines;
+		public int CurrentLines
+		{
+			get => currentLines;
+			set
+			{
+				if (value == currentLines + 1 ||
+					value == currentLines + 2 ||
+					value == currentLines + 3 ||
+					value == currentLines + 4 ||
+					currentScore == 0)
+				{
+					currentLines = value;
+					OnPropertyChanged(nameof(CurrentLines));
+				}
+			}
+		}
+
+		private int currentScore;
+		public int CurrentScore
+		{
+			get => currentScore;
+			set
+			{
+				if (currentScore != value)
+				{
+					currentScore = value;
+					OnPropertyChanged(nameof(CurrentScore));
+				}
+			}
+		}
 
 		public List<State> States { get; set; } = new List<State>();
 
@@ -28,18 +88,7 @@ namespace BoomTracker
 		{
 			public char?[][] Grid { get; set; } = new char?[10][];
 
-			private int level;
-			public int Level
-			{
-				get => level;
-				set
-				{
-					if (value == level + 1)
-					{
-						level = value;
-					}
-				}
-			}
+			public int Level { get; set; }
 
 			public int Lines { get; set; }
 
@@ -53,7 +102,7 @@ namespace BoomTracker
 				}
 			}
 
-			public unsafe void GetGrid(Bitmap bitmap, int level)
+			public unsafe char?[][] GetGrid(Bitmap bitmap, int level)
 			{
 				Stopwatch watch = Stopwatch.StartNew();
 				BitmapData bmData = bitmap.LockBits(
@@ -93,14 +142,19 @@ namespace BoomTracker
 						{
 							Grid[i][j] = null;
 						}
-
-						if (colorCheck > 10 && Grid[i][j] == null)
-						{
-						}
 					}
 				}
 
 				bitmap.UnlockBits(bmData);
+				return Grid;
+			}
+		}
+
+		public Game()
+		{
+			for (int i = 0; i < 10; i++)
+			{
+				CurrentGrid[i] = new char?[20];
 			}
 		}
 
@@ -108,9 +162,9 @@ namespace BoomTracker
 		{
 			State state = new State();
 
-			using (Bitmap scoreBitmap = bitmap.Clone(Tetris.ScoreField.ScoreRectangle, PixelFormat.DontCare))
-			using (Bitmap linesBitmap = bitmap.Clone(Tetris.LineField.LinesRectangle, PixelFormat.DontCare))
-			using (Bitmap levelBitmap = bitmap.Clone(Tetris.LevelField.LevelRectangle, PixelFormat.DontCare))
+			using (Bitmap scoreBitmap = bitmap.Clone(Tetris.ScoreField.ScoreRectangle, Tetris.PixelFormat))
+			using (Bitmap linesBitmap = bitmap.Clone(Tetris.LineField.LinesRectangle, Tetris.PixelFormat))
+			using (Bitmap levelBitmap = bitmap.Clone(Tetris.LevelField.LevelRectangle, Tetris.PixelFormat))
 			{
 				Task<int>[] tasks = new Task<int>[3];
 
@@ -118,17 +172,26 @@ namespace BoomTracker
 				tasks[1] = Task.Run(() => ocr.ReadNumber(linesBitmap, 1));
 				tasks[2] = Task.Run(() => ocr.ReadNumber(levelBitmap, 2));
 
-				Task getGrid = Task.Run(() => { state.GetGrid(bitmap, currentLevel); });
+				CurrentLevel = await tasks[2];
+				CurrentGrid = state.GetGrid(bitmap, CurrentLevel);
+				CurrentScore = await tasks[0];
+				CurrentLines = await tasks[1];
 
-				state.Score = await tasks[0];
-				state.Lines = await tasks[1];
-				state.Level = await tasks[2];
-				currentLevel = state.Level;
-				await getGrid;
+				state.Score = currentScore;
+				state.Lines = currentLines;
+				state.Level = CurrentLevel;
 			}
 
 			States.Add(state);
+			OnPropertyChanged(nameof(States));
 			return state;
+		}
+
+		public event PropertyChangedEventHandler PropertyChanged;
+
+		protected void OnPropertyChanged(string prop)
+		{
+			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));
 		}
 	}
 }

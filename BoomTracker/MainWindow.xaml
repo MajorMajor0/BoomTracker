@@ -117,9 +117,7 @@
 					<TextBox Width="30"
 							 Margin="2"
 							 Text="{Binding ElementName=Main_Window, Path=DataContext.RectHeight, UpdateSourceTrigger=PropertyChanged}" />
-					<TextBox Width="30"
-							 Margin="2"
-							 Text="{Binding ElementName=Main_Window, Path=DataContext.Threshold, UpdateSourceTrigger=PropertyChanged}" />
+					
 				</StackPanel>
 				<StackPanel Orientation="Horizontal">
 					<TextBlock Width="30"
@@ -138,10 +136,6 @@
 							   Margin="2"
 							   TextAlignment="Center"
 							   Text="H" />
-					<TextBlock Width="30"
-							   Margin="2"
-							   TextAlignment="Center"
-							   Text="Thr" />
 				</StackPanel>
 
 				<StackPanel Orientation="Horizontal">
@@ -169,26 +163,8 @@
 				<Button Style="{StaticResource ControlButtonStyle}"
 						Command="{Binding StopCommand}" />
 
-				<Button Style="{StaticResource ControlButtonStyle}"
-						Command="{Binding ImageCommand}" />
 			</StackPanel>
 
-			<StackPanel Orientation="Vertical"
-						Width="40"
-						Margin="0,15,0,0">
-
-				<TextBox Width="30"
-						 Margin="2"
-						 Text="{Binding ThresholdFilter.ThresholdValue, UpdateSourceTrigger=PropertyChanged}" />
-
-			</StackPanel>
-			<StackPanel Orientation="Vertical">
-
-				<TextBlock Width="30"
-						   Margin="2"
-						   Text="Thr" />
-
-			</StackPanel>
 		</StackPanel>
 
 		<StackPanel x:Name="StatsStackPanel"
@@ -213,7 +189,7 @@
 					   Source="{Binding ScoreImage}" />
 
 				<Label x:Name="ScoreLabel"
-					   Content="{Binding State.Score, FallbackValue=000000}"
+					   Content="{Binding Game.CurrentScore, FallbackValue=000000}"
 					   Padding="0"
 					   HorizontalContentAlignment="Right"
 					   Grid.Column="1"
@@ -251,7 +227,7 @@
 					   Source="{Binding LinesImage}" />
 
 				<Label x:Name="LinesLabel"
-					   Content="{Binding State.Lines, FallbackValue=000}"
+					   Content="{Binding Game.CurrentLines, FallbackValue=000}"
 					   Padding="0"
 					   HorizontalContentAlignment="Right"
 					   Grid.Column="1"
@@ -290,7 +266,7 @@
 					   Source="{Binding LevelImage}" />
 
 				<Label x:Name="LevelLabel"
-					   Content="{Binding State.Level, FallbackValue=000}"
+					   Content="{Binding Game.CurrentLevel, FallbackValue=000}"
 					   Padding="0"
 					   HorizontalContentAlignment="Right"
 					   Grid.Column="1"
