@@ -47,9 +47,9 @@ namespace BoomTracker
 			public static double BlockMargin => 2;
 
 			/// <summary>Height of one Tetris block in NES resolution</summary>
-			private static double BlockHeightNes = 7.0;
+			private static readonly double BlockHeightNes = 7.0;
 			/// <summary>Width of one Tetris block in NES resolution</summary>
-			private static double BlockWidthNes = 7.0;
+			private static readonly double BlockWidthNes = 7.0;
 
 			/// <summary>X Y Point at center of block[i,j]</summary>
 			public static int[,,] BlockCenters { get; set; }

@@ -142,6 +142,8 @@ namespace BoomTracker
 						{
 							Grid[i][j] = null;
 						}
+
+						//Debug.WriteLine($"{colors[2] / Nk}\t{colors[1] / Nk}\t{colors[0] / Nk}");
 					}
 				}
 

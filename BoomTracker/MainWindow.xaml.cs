@@ -66,20 +66,26 @@ namespace BoomTracker
 
 					};
 
-					var contentBinding = new Binding($"Game.CurrentGrid[{i}][{j}]");
-					contentBinding.Source = DataContext;
-					contentBinding.Mode = BindingMode.OneWay;
+					var contentBinding = new Binding($"Game.CurrentGrid[{i}][{j}]")
+					{
+						Source = DataContext,
+						Mode = BindingMode.OneWay
+					};
 					label.SetBinding(ContentProperty, contentBinding);
 
-					var backgroundBinding = new Binding($"Game.CurrentGrid[{i}][{j}]");
-					backgroundBinding.Source = DataContext;
-					backgroundBinding.Converter = new Converters.BackGroundColorConverter();
-					backgroundBinding.Mode = BindingMode.OneWay;
+					var backgroundBinding = new Binding($"Game.CurrentGrid[{i}][{j}]")
+					{
+						Source = DataContext,
+						Converter = new Converters.BackGroundColorConverter(),
+						Mode = BindingMode.OneWay
+					};
 					label.SetBinding(BackgroundProperty, backgroundBinding);
 
-					var foregroundBinding = new MultiBinding();
-					foregroundBinding.Mode = BindingMode.OneWay;
-					foregroundBinding.Converter = new Converters.CharToColorConverter();
+					var foregroundBinding = new MultiBinding
+					{
+						Mode = BindingMode.OneWay,
+						Converter = new Converters.CharToColorConverter()
+					};
 					foregroundBinding.Bindings.Add(new Binding($"Game.CurrentLevel"));
 					foregroundBinding.Bindings.Add(new Binding($"Game.CurrentGrid[{i}][{j}]"));
 					label.SetBinding(ForegroundProperty, foregroundBinding);

@@ -45,7 +45,7 @@ namespace BoomTracker
 
 		public class CharToColorConverter : IMultiValueConverter
 		{
-			private static Brush blackBrush = new SolidColorBrush(Colors.Black);
+			private static readonly Brush blackBrush = new SolidColorBrush(Colors.Black);
 
 			/// <summary>
 			/// Dictionary to match a char value to a brush for display in the playing field
@@ -88,11 +88,11 @@ namespace BoomTracker
 				for (int level = 0; level < Palette.ScanTarget.B.Length; level++)
 				{
 					var dict = new Dictionary<char, SolidColorBrush>
-				{
-					{ 'A', new SolidColorBrush(Color.FromArgb(255, Palette. Average.C[level, 0], Palette. Average.C[level, 1], Palette. Average.C[level, 2])) },
-					{ 'B', new SolidColorBrush(Color.FromArgb(255, Palette. Average.B[level, 0], Palette. Average.B[level, 1], Palette. Average.B[level, 2])) },
-					{ 'C', new SolidColorBrush(Color.FromArgb(255, Palette. Average.C[level, 0], Palette. Average.C[level, 1], Palette. Average.C[level, 2])) }
-				};
+					{
+						{ 'A', new SolidColorBrush(Color.FromArgb(255, Palette.Average.C[level, 0], Palette.Average.C[level, 1], Palette.Average.C[level, 2])) },
+						{ 'B', new SolidColorBrush(Color.FromArgb(255, Palette.Average.B[level, 0], Palette.Average.B[level, 1], Palette.Average.B[level, 2])) },
+						{ 'C', new SolidColorBrush(Color.FromArgb(255, Palette.Average.C[level, 0], Palette.Average.C[level, 1], Palette.Average.C[level, 2])) }
+					};
 					BrushDictionary.Add(dict);
 				}
 			}

@@ -7,22 +7,30 @@ namespace BoomTracker
 	public static class Palette
 	{
 		/// <summary>How far to look above and below teh color value and still get a hit</summary>
-		public static int ScanWidth = 35;
+		public static int ScanWidth = 20;
 
 		public static int BlackThreshold = 3;
 
 		public static class ScanTarget
 		{
+			// Based on midpoints, red + green
 			public static int[] B { get; } = new int[]
 			{
 				200,
-				146
+				305,
+				309,
+				269,
+				232
 			};
 
+			// Based on midpoints, red + green
 			public static int[] C { get; } = new int[]
 			{
-				56,
-				306
+				 56,
+				146,
+				162,
+				 51,
+				189
 			};
 		}
 
@@ -30,34 +38,34 @@ namespace BoomTracker
 		{
 			public static byte[,] B { get; } = new byte[,]
 			{
-				{  35, 165, 255 }, // Level 0
-				{   0, 146,   0 }, // Level 1
-				{ 100, 100, 100 },
-				{ 100, 100, 100 },
-				{ 100, 100, 100 },
-				{ 100, 100, 100 },
-				{ 100, 100, 100 },
-				{ 100, 100, 100 },
-				{ 100, 100, 100 },
-				{ 100, 100, 100 },
+				{  35, 165, 255 }, // Level  0
+				{  98, 208,   0 }, // Level  1
+				{ 246,  63, 255 }, // Level  2
+				{  30, 239,   0 }, // Level  3
+				{ 1,   231,  81 }, // Level  4
+				{ 100, 100, 100 }, // Level  5
+				{ 100, 100, 100 }, // Level  6
+				{ 100, 100, 100 }, // Level  7
+				{ 100, 100, 100 }, // Level  8
+				{ 100, 100, 100 }, // Level  9
 				{  35, 165, 255 }, // Level 10
 				{   0, 146,   0 }, // Level 11
 			};
 
 			public static byte[,] C { get; } = new byte[,]
 			{
-				{  46,  10, 255 }, // Level 0
-				{  98, 208,   0 }, // Level 1
-				{ 100, 100, 100 },
-				{ 100, 100, 100 },
-				{ 100, 100, 100 },
-				{ 100, 100, 100 },
-				{ 100, 100, 100 },
-				{ 100, 100, 100 },
-				{ 100, 100, 100 },
-				{ 100, 100, 100 },
-				{  46,  10, 255 }, // Level 0
-				{  98, 208,   0 }, // Level 1
+				{  46,  10, 255 }, // Level  0
+				{   0, 146,   0 }, // Level  1
+				{ 162,   0, 219 }, // Level  2
+				{  41,  10, 238 }, // Level  3
+				{ 189,   0,  69 }, // Level  4
+				{ 100, 100, 100 }, // Level  5
+				{ 100, 100, 100 }, // Level  6
+				{ 100, 100, 100 }, // Level  7
+				{ 100, 100, 100 }, // Level  8
+				{ 100, 100, 100 }, // Level  9
+				{  46,  10, 255 }, // Level 10
+				{  98, 208,   0 }, // Level 11
 			};
 		}
 
@@ -65,34 +73,34 @@ namespace BoomTracker
 		{
 			public static byte[,] B { get; } = new byte[,]
 			{
-				{  34, 167, 255 }, // Level 0
-				{   0, 145,   0 }, // Level 1
-				{ 100, 100, 100 },
-				{ 100, 100, 100 },
-				{ 100, 100, 100 },
-				{ 100, 100, 100 },
-				{ 100, 100, 100 },
-				{ 100, 100, 100 },
-				{ 100, 100, 100 },
-				{ 100, 100, 100 },
-				{  34, 167, 255 }, // Level 0
-				{   0, 145,   0 }, // Level 1
+				{  34, 167, 255 }, // Level  0
+				{  95, 213,   0 }, // Level  1
+				{ 246,  63, 255 }, // Level  2
+				{ 29,  239,   0 }, // Level  3
+				{ 0,   231,  80 }, // Level  4
+				{ 100, 100, 100 }, // Level  5
+				{ 100, 100, 100 }, // Level  6
+				{ 100, 100, 100 }, // Level  7
+				{ 100, 100, 100 }, // Level  8
+				{ 100, 100, 100 }, // Level  9
+				{  34, 167, 255 }, // Level 10
+				{   0, 145,   0 }, // Level 11
 			};
 
 			public static byte[,] C { get; } = new byte[,]
 			{
-				{  46,  10, 255 }, // Level 0
-				{  95, 213,   0 }, // Level 1
-				{ 100, 100, 100 },
-				{ 100, 100, 100 },
-				{ 100, 100, 100 },
-				{ 100, 100, 100 },
-				{ 100, 100, 100 },
-				{ 100, 100, 100 },
-				{ 100, 100, 100 },
-				{ 100, 100, 100 },
-				{  46,  10, 255 }, // Level 0
-				{  95, 213,   0 }, // Level 1
+				{  46,  10, 255 }, // Level  0
+				{   0, 145,   0 }, // Level  1
+				{ 173,   0, 235 }, // Level  2
+				{ 45,   10, 255 }, // Level  3
+				{ 190,   0,  68 }, // Level  4
+				{ 100, 100, 100 }, // Level  5
+				{ 100, 100, 100 }, // Level  6
+				{ 100, 100, 100 }, // Level  7
+				{ 100, 100, 100 }, // Level  8
+				{ 100, 100, 100 }, // Level  9
+				{  46,  10, 255 }, // Level 10
+				{  95, 213,   0 }, // Level 11
 			};
 		}
 
@@ -100,34 +108,34 @@ namespace BoomTracker
 		{
 			public static byte[,] B { get; } = new byte[,]
 			{
-				{  34, 167, 255 }, // Level 0
-				{   0, 145,   0 }, // Level 1
-				{ 100, 100, 100 },
-				{ 100, 100, 100 },
-				{ 100, 100, 100 },
-				{ 100, 100, 100 },
-				{ 100, 100, 100 },
-				{ 100, 100, 100 },
-				{ 100, 100, 100 },
-				{ 100, 100, 100 },
-				{  34, 167, 255 }, // Level 0
-				{   0, 145,   0 }, // Level 1
+				{  34, 167, 255 }, // Level  0
+				{  96, 213,   0 }, // Level  1
+				{ 247,  63, 255 }, // Level  2
+				{  29, 239,   0 }, // Level  3
+				{   0, 231,  80 }, // Level  4
+				{ 100, 100, 100 }, // Level  5
+				{ 100, 100, 100 }, // Level  6
+				{ 100, 100, 100 }, // Level  7
+				{ 100, 100, 100 }, // Level  8
+				{ 100, 100, 100 }, // Level  9
+				{  34, 167, 255 }, // Level 10
+				{   0, 145,   0 }, // Level 11
 			};
 
 			public static byte[,] C { get; } = new byte[,]
 			{
-				{  46,  10, 255 }, // Level 0
-				{  96, 213,   0 }, // Level 1
-				{ 100, 100, 100 },
-				{ 100, 100, 100 },
-				{ 100, 100, 100 },
-				{ 100, 100, 100 },
-				{ 100, 100, 100 },
-				{ 100, 100, 100 },
-				{ 100, 100, 100 },
-				{ 100, 100, 100 },
-				{  46,  10, 255 }, // Level 0
-				{  96, 213,   0 }, // Level 1
+				{  46,  10, 255 }, // Level  0
+				{   0, 145,   0 }, // Level  1
+				{ 173,   0, 235 }, // Level  2
+				{  45,  10, 255 }, // Level  3
+				{ 190,   0,  68 }, // Level  4
+				{ 100, 100, 100 }, // Level  5
+				{ 100, 100, 100 }, // Level  6
+				{ 100, 100, 100 }, // Level  7
+				{ 100, 100, 100 }, // Level  8
+				{ 100, 100, 100 }, // Level  9
+				{  46,  10, 255 }, // Level 10
+				{  96, 213,   0 }, // Level 11
 			};
 		}
 
@@ -155,6 +163,7 @@ namespace BoomTracker
 			{
 				var dict = new Dictionary<int, char?>();
 
+		
 				// Add dictionary entries corresponding to 'B'
 				//for (int i = bColors[level, colorChoice] - colorScanWidth; i < bColors[level, colorChoice] + colorScanWidth; i++)
 				for (int i = ScanTarget.B[level] - ScanWidth; i < ScanTarget.B[level] + ScanWidth; i++)
@@ -182,6 +191,10 @@ namespace BoomTracker
 				//for (int i = cColors[level, colorChoice] - colorScanWidth; i < cColors[level, colorChoice] + colorScanWidth; i++)
 				for (int i = ScanTarget.C[level] - ScanWidth; i < ScanTarget.C[level] + ScanWidth; i++)
 				{
+					if (level == 4)
+					{
+
+					}
 					// Toss overflow and underflow. Cut off at 2 to allow for black background.
 					if (i >= BlackThreshold)
 					{
