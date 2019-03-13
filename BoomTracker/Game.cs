@@ -150,6 +150,7 @@ namespace BoomTracker
 				bitmap.UnlockBits(bmData);
 				return Grid;
 			}
+
 		}
 
 		public Game()
@@ -187,6 +188,36 @@ namespace BoomTracker
 			States.Add(state);
 			OnPropertyChanged(nameof(States));
 			return state;
+		}
+
+		/// <summary>Check whether the designated rectangle contains any non-black pixels. THe rectangle is selected to be all black during a game and all non-black during menu screens
+		/// </summary>
+		/// <param name="bitmap"></param>
+		/// <returns></returns>
+		public unsafe bool CheckIfGameIsOn(Bitmap bitmap)
+		{
+			Stopwatch watch = Stopwatch.StartNew();
+			BitmapData bmData = bitmap.LockBits(
+			Tetris.IsGameRectangle,
+			ImageLockMode.ReadOnly,
+			Tetris.PixelFormat);
+
+			byte* scan0 = (byte*)bmData.Scan0.ToPointer();
+
+			int Nk = bmData.Stride * bmData.Height;
+
+			// Starting with 2 for red (0 = blue, 1 = green), advance by teh number of bytes per pixel to check red pixel
+			for (int i = 2; i < Tetris.PlayingField.NColumns; i += Tetris.BppDictionary[Tetris.PixelFormat])
+			{
+				// Red
+				if (scan0[i] > Palette.BlackThreshold)
+				{
+					return false;
+				}
+			}
+
+			bitmap.UnlockBits(bmData);
+			return true;
 		}
 
 		public event PropertyChangedEventHandler PropertyChanged;

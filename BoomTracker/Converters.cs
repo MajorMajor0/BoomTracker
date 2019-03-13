@@ -89,9 +89,9 @@ namespace BoomTracker
 				{
 					var dict = new Dictionary<char, SolidColorBrush>
 					{
-						{ 'A', new SolidColorBrush(Color.FromArgb(255, Palette.Average.C[level, 0], Palette.Average.C[level, 1], Palette.Average.C[level, 2])) },
-						{ 'B', new SolidColorBrush(Color.FromArgb(255, Palette.Average.B[level, 0], Palette.Average.B[level, 1], Palette.Average.B[level, 2])) },
-						{ 'C', new SolidColorBrush(Color.FromArgb(255, Palette.Average.C[level, 0], Palette.Average.C[level, 1], Palette.Average.C[level, 2])) }
+						{ 'A', new SolidColorBrush(Color.FromArgb(255, Palette.Mode.C[level, 0], Palette.Mode.C[level, 1], Palette.Mode.C[level, 2])) },
+						{ 'B', new SolidColorBrush(Color.FromArgb(255, Palette.Mode.B[level, 0], Palette.Mode.B[level, 1], Palette.Mode.B[level, 2])) },
+						{ 'C', new SolidColorBrush(Color.FromArgb(255, Palette.Mode.C[level, 0], Palette.Mode.C[level, 1], Palette.Mode.C[level, 2])) }
 					};
 					BrushDictionary.Add(dict);
 				}

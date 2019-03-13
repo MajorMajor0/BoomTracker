@@ -7,14 +7,14 @@
 		xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 		Title="MainWindow"
 		Width="600"
-		Height="450"
+		Height="600"
 		mc:Ignorable="d"
 		Closing="MainWindow_Closing"
 		Background="Gray">
 	<Window.DataContext>
 		<local:MainWindowViewModel />
 	</Window.DataContext>
-	<Grid>
+	<Grid x:Name="WindowGrid">
 		<Grid.RowDefinitions>
 			<RowDefinition Height="*" />
 			<RowDefinition Height="130" />
@@ -24,54 +24,92 @@
 			<ColumnDefinition Width="70" />
 			<ColumnDefinition Width="150" />
 		</Grid.ColumnDefinitions>
-		<Viewbox Stretch="Uniform"
-				 StretchDirection="Both">
-			<Border Margin="10"
-					CornerRadius="1"
-					BorderThickness="1"
-					Background="Black"
-					BorderBrush="#FF9EFAED">
-				<Grid Height="160"
-					  Width="80"
-					  x:Name="PlayingField"
-					  HorizontalAlignment="Stretch"
-					  VerticalAlignment="Stretch">
-					<Grid.ColumnDefinitions>
-						<ColumnDefinition Width="1*" />
-						<ColumnDefinition Width="1*" />
-						<ColumnDefinition Width="1*" />
-						<ColumnDefinition Width="1*" />
-						<ColumnDefinition Width="1*" />
-						<ColumnDefinition Width="1*" />
-						<ColumnDefinition Width="1*" />
-						<ColumnDefinition Width="1*" />
-						<ColumnDefinition Width="1*" />
-						<ColumnDefinition Width="1*" />
-					</Grid.ColumnDefinitions>
-					<Grid.RowDefinitions>
-						<RowDefinition Height="1*" />
-						<RowDefinition Height="1*" />
-						<RowDefinition Height="1*" />
-						<RowDefinition Height="1*" />
-						<RowDefinition Height="1*" />
-						<RowDefinition Height="1*" />
-						<RowDefinition Height="1*" />
-						<RowDefinition Height="1*" />
-						<RowDefinition Height="1*" />
-						<RowDefinition Height="1*" />
-						<RowDefinition Height="1*" />
-						<RowDefinition Height="1*" />
-						<RowDefinition Height="1*" />
-						<RowDefinition Height="1*" />
-						<RowDefinition Height="1*" />
-						<RowDefinition Height="1*" />
-						<RowDefinition Height="1*" />
-						<RowDefinition Height="1*" />
-						<RowDefinition Height="1*" />
-						<RowDefinition Height="1*" />
-					</Grid.RowDefinitions>
-				</Grid>
-			</Border>
+
+		<Viewbox x:Name="TetrisViewBox"
+				 Margin="10">
+			<Grid x:Name="TetrisGrid"
+				  HorizontalAlignment="Center"
+				  VerticalAlignment="Center">
+				<Grid.RowDefinitions>
+					<RowDefinition Height="15" />
+					<RowDefinition Height="160" />
+				</Grid.RowDefinitions>
+
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="80" />
+				</Grid.ColumnDefinitions>
+
+
+				<Border CornerRadius="1"
+						BorderThickness="1"
+						Background="Black"
+						BorderBrush="#FF9EFAED">
+
+					<TextBlock x:Name="LinesTextBlock"
+							   Foreground="White"
+							   FontSize="7"
+							   HorizontalAlignment="Right"
+							   VerticalAlignment="Center"
+							   Margin="0,0,5,0"
+							   FontFamily="Press Start">
+						<TextBlock.Text>
+							<MultiBinding StringFormat="{}LINES-{0:000}">
+								<Binding Path="Game.CurrentLines"
+										 TargetNullValue="000"
+										 FallbackValue="000" />
+							</MultiBinding>
+						</TextBlock.Text>
+					</TextBlock>
+
+				</Border>
+
+
+				<Border x:Name="PlayingFieldBorder"
+						Grid.Row="1"
+						CornerRadius="1"
+						BorderThickness="1"
+						Background="Black"
+						BorderBrush="#FF9EFAED">
+					<Grid 
+						  x:Name="PlayingField">
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition Width="1*" />
+							<ColumnDefinition Width="1*" />
+							<ColumnDefinition Width="1*" />
+							<ColumnDefinition Width="1*" />
+							<ColumnDefinition Width="1*" />
+							<ColumnDefinition Width="1*" />
+							<ColumnDefinition Width="1*" />
+							<ColumnDefinition Width="1*" />
+							<ColumnDefinition Width="1*" />
+							<ColumnDefinition Width="1*" />
+						</Grid.ColumnDefinitions>
+						<Grid.RowDefinitions>
+							<RowDefinition Height="1*" />
+							<RowDefinition Height="1*" />
+							<RowDefinition Height="1*" />
+							<RowDefinition Height="1*" />
+							<RowDefinition Height="1*" />
+							<RowDefinition Height="1*" />
+							<RowDefinition Height="1*" />
+							<RowDefinition Height="1*" />
+							<RowDefinition Height="1*" />
+							<RowDefinition Height="1*" />
+							<RowDefinition Height="1*" />
+							<RowDefinition Height="1*" />
+							<RowDefinition Height="1*" />
+							<RowDefinition Height="1*" />
+							<RowDefinition Height="1*" />
+							<RowDefinition Height="1*" />
+							<RowDefinition Height="1*" />
+							<RowDefinition Height="1*" />
+							<RowDefinition Height="1*" />
+							<RowDefinition Height="1*" />
+						</Grid.RowDefinitions>
+					</Grid>
+				</Border>
+
+			</Grid>
 		</Viewbox>
 		<!--<Image x:Name="MainImage"
 			   Source="{Binding MainImage}" />-->
@@ -117,7 +155,7 @@
 					<TextBox Width="30"
 							 Margin="2"
 							 Text="{Binding ElementName=Main_Window, Path=DataContext.RectHeight, UpdateSourceTrigger=PropertyChanged}" />
-					
+
 				</StackPanel>
 				<StackPanel Orientation="Horizontal">
 					<TextBlock Width="30"
@@ -172,83 +210,9 @@
 					Margin="10,30,5,5"
 					Grid.ColumnSpan="2">
 
-			<Grid x:Name="ScoreGrid"
-				  Height="40">
 
-				<Grid.ColumnDefinitions>
-					<ColumnDefinition Width="70" />
-					<ColumnDefinition Width="*" />
-				</Grid.ColumnDefinitions>
 
-				<Image x:Name="ScoreImage"
-					   Grid.Column="1"
-					   Width="130"
-					   Height="20"
-					   HorizontalAlignment="Right"
-					   VerticalAlignment="Top"
-					   Source="{Binding ScoreImage}" />
 
-				<Label x:Name="ScoreLabel"
-					   Content="{Binding Game.CurrentScore, FallbackValue=000000}"
-					   Padding="0"
-					   HorizontalContentAlignment="Right"
-					   Grid.Column="1"
-					   HorizontalAlignment="Right"
-					   VerticalAlignment="Bottom"
-					   Height="25"
-					   Width="65"
-					   FontSize="20">
-					<Label.RenderTransform>
-						<ScaleTransform ScaleX="2"
-										CenterX="65" />
-					</Label.RenderTransform>
-				</Label>
-				<Label Content="Score: "
-					   Padding="0"
-					   HorizontalAlignment="Left"
-					   VerticalAlignment="Bottom"
-					   Height="25"
-					   FontSize="20" />
-			</Grid>
-
-			<Grid x:Name="LinesGrid"
-				  Height="40"
-				  Margin="0,15,0,0">
-				<Grid.ColumnDefinitions>
-					<ColumnDefinition Width="70" />
-					<ColumnDefinition Width="*" />
-				</Grid.ColumnDefinitions>
-
-				<Image x:Name="LinesImage"
-					   Grid.Column="1"
-					   HorizontalAlignment="Right"
-					   VerticalAlignment="Top"
-					   Height="20"
-					   Source="{Binding LinesImage}" />
-
-				<Label x:Name="LinesLabel"
-					   Content="{Binding Game.CurrentLines, FallbackValue=000}"
-					   Padding="0"
-					   HorizontalContentAlignment="Right"
-					   Grid.Column="1"
-					   HorizontalAlignment="Right"
-					   VerticalAlignment="Bottom"
-					   Height="25"
-					   Width="65"
-					   FontSize="20">
-					<Label.RenderTransform>
-						<ScaleTransform ScaleX="2"
-										CenterX="65" />
-					</Label.RenderTransform>
-				</Label>
-
-				<Label Content="Lines: "
-					   Padding="0"
-					   HorizontalAlignment="Left"
-					   VerticalAlignment="Bottom"
-					   Height="25"
-					   FontSize="20" />
-			</Grid>
 
 			<Grid x:Name="LevelGrid"
 				  Height="40"
@@ -305,13 +269,26 @@
 
 			<TextBlock x:Name="StatesTextBlock"
 					   FontSize="20"
-					   Margin="0,15,0,0"
+					   Margin="0,0,0,0"
 					   Foreground="Blue">
 				<TextBlock.Text>
 					<MultiBinding StringFormat="{}States: {0}">
 						<Binding Path="Game.States.Count"
 								 TargetNullValue="0000"
 								 FallbackValue="0000" />
+					</MultiBinding>
+				</TextBlock.Text>
+
+			</TextBlock>
+
+			<TextBlock x:Name="GameOnextBlock"
+					   FontSize="20"
+					   Margin="0,0,0,0"
+					   Foreground="Blue">
+				<TextBlock.Text>
+					<MultiBinding StringFormat="{}Game On: {0}">
+						<Binding Path="GameOn"
+								 FallbackValue="???" />
 					</MultiBinding>
 				</TextBlock.Text>
 

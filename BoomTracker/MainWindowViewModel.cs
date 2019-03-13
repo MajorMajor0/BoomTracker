@@ -20,6 +20,20 @@ namespace BoomTracker
 	{
 		public Game Game { get; } = new Game();
 
+		private bool gameOn;
+		public bool GameOn
+		{
+			get => gameOn;
+			private set
+			{
+				gameOn = value;
+				OnPropertyChanged(nameof(GameOn));
+				OnPropertyChanged(nameof(GameOff));
+			}
+		}
+
+		public bool GameOff => !GameOn;
+
 		private double[] timeAverager = new double[60];
 		int iav = 0;
 
@@ -146,30 +160,41 @@ namespace BoomTracker
 				{
 					BitmapImage bi;
 
-				using (var bitmap = (Bitmap)eventArgs.Frame.Clone())
-				{
-					block = true;
-					await Game.StoreState(bitmap);
-					block = false;
+					using (var bitmap = (Bitmap)eventArgs.Frame.Clone())
+					{
+						block = true;
 
-					bi = bitmap.ToBitmapImage();
+						if (Game.CheckIfGameIsOn(bitmap))
+						{
+							GameOn = true;
+							await Game.StoreState(bitmap);
+						}
+
+						else
+						{
+							GameOn = false;
+						}
+
+						//DrawFields(bitmap);
+						//bi = bitmap.ToBitmapImage();
+						block = false;
+					}
+
+					// Avoid cross thread operations and prevent leaks
+					//bi.Freeze();
+					//MainImage = bi;
 				}
 
-				// Avoid cross thread operations and prevent leaks
-				bi.Freeze();
-				MainImage = bi;
-			}
-
 				catch (Exception ex)
-			{
-				MessageBox.Show($"Error on _videoSource_NewFrame:\n{ex.Message}",
-				"Error",
-				MessageBoxButton.OK,
-				MessageBoxImage.Error);
-				Stop();
-			}
+				{
+					MessageBox.Show($"Error on _videoSource_NewFrame:\n{ex.Message}",
+					"Error",
+					MessageBoxButton.OK,
+					MessageBoxImage.Error);
+					Stop();
+				}
 
-			if (iav < timeAverager.Length)
+				if (iav < timeAverager.Length)
 				{
 					timeAverager[iav++] = watch.ElapsedMilliseconds;
 				}
@@ -181,25 +206,24 @@ namespace BoomTracker
 			}
 		}
 
-		//private Pen orangePen = new Pen(Color.Orange, 1);
-		//private Pen bluePen = new Pen(Color.Blue, 1);
-		//private void DrawFields(Bitmap bitmap)
-		//{
-		//	using (Graphics g = Graphics.FromImage(bitmap))
-		//	{
-		//		foreach (var xy in Tetris.PlayingField.BlockPixels)
-		//		{
-		//			bitmap.SetPixel(xy[0], xy[1], Color.Red);
-		//		}
+		private Pen orangePen = new Pen(Color.Orange, 1);
+		private Pen bluePen = new Pen(Color.Blue, 1);
+		private void DrawFields(Bitmap bitmap)
+		{
+			using (Graphics g = Graphics.FromImage(bitmap))
+			{
+				//foreach (var xy in Tetris.PlayingField.BlockPixels)
+				//{
+				//	bitmap.SetPixel(xy[0], xy[1], Color.Red);
+				//}
 
-		//		foreach (var rect in Tetris.PlayingField.BlockFields)
-		//		{
-		//			g.DrawRectangle(orangePen, rect);
-		//		}
-		//		g.DrawRectangle(bluePen, RectX, RectY, RectWidth, RectHeight);
-		//		g.DrawRectangle(orangePen, Tetris.LineField.LinesRectangle);
-		//	}	
-		//}
+				//foreach (var rect in Tetris.PlayingField.BlockFields)
+				//{
+				//	g.DrawRectangle(orangePen, rect);
+				//}
+				g.DrawRectangle(bluePen, RectX, RectY, RectWidth, RectHeight);
+			}
+		}
 
 		public event PropertyChangedEventHandler PropertyChanged;
 

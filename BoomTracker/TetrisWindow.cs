@@ -13,6 +13,10 @@ namespace BoomTracker
 {
 	public static class Tetris
 	{
+
+	/// <summary>This entire rectangle should be black during a game and non-black when not during a game</summary>
+		public static Rectangle IsGameRectangle { get; } = new Rectangle(545, 36, 5, 3);
+
 		public static PixelFormat PixelFormat => PixelFormat.Format24bppRgb;
 
 		private static byte BytesPerPixel;
@@ -152,8 +156,6 @@ namespace BoomTracker
 			};
 
 			public static Tesseract.Rect ScoreRect { get; }
-
-			//public static Rectangle[] ScoreRectangles { get; set; }
 
 			public static Rectangle ScoreRectangle { get; } = new Rectangle
 			{
