@@ -28,7 +28,6 @@ namespace BoomTracker
 
 		public int StartLevel { get; set; }
 
-
 		public int FinalLevel { get; set; }
 
 		public int FinalLines { get; set; }
@@ -68,21 +67,32 @@ namespace BoomTracker
 			}
 		}
 
+
+		//private int currentScoreBuffer;
+		public int CurrentScoreConfidence;
 		private int currentScore;
 		public int CurrentScore
 		{
 			get => currentScore;
 			set
 			{
-				if (currentScore != value)
+				if (value != currentScore)
 				{
+					//if (value == currentScoreBuffer)
+					//{
 					currentScore = value;
 					OnPropertyChanged(nameof(CurrentScore));
+					//}
+					//else
+					//{
+					//	currentScoreBuffer = value;
+					//}
+
 				}
 			}
 		}
 
-		public List<State> States { get; set; } = new List<State>();
+		public Stack<State> States { get; set; } = new Stack<State>();
 
 		public class State
 		{
@@ -165,32 +175,47 @@ namespace BoomTracker
 		{
 			State state = new State();
 
-			using (Bitmap scoreBitmap = bitmap.Clone(Tetris.ScoreField.ScoreRectangle, Tetris.PixelFormat))
+			//using (Bitmap scoreBitmap = bitmap.Clone(Tetris.ScoreField.ScoreRectangle, Tetris.PixelFormat))
 			using (Bitmap linesBitmap = bitmap.Clone(Tetris.LineField.LinesRectangle, Tetris.PixelFormat))
 			using (Bitmap levelBitmap = bitmap.Clone(Tetris.LevelField.LevelRectangle, Tetris.PixelFormat))
 			{
-				Task<int>[] tasks = new Task<int>[3];
+				Task<int[]>[] tasks = new Task<int[]>[3];
 
-				tasks[0] = Task.Run(() => ocr.ReadNumber(scoreBitmap, 0));
+				//tasks[0] = Task.Run(() => ocr.ReadNumber(scoreBitmap, 0));
 				tasks[1] = Task.Run(() => ocr.ReadNumber(linesBitmap, 1));
 				tasks[2] = Task.Run(() => ocr.ReadNumber(levelBitmap, 2));
 
-				CurrentLevel = await tasks[2];
+				var cl = await tasks[2];
+				CurrentLevel = cl[0];
+
 				CurrentGrid = state.GetGrid(bitmap, CurrentLevel);
-				CurrentScore = await tasks[0];
-				CurrentLines = await tasks[1];
+
+				//int[] cs = await tasks[0];
+				//CurrentScore = cs[0];
+				//CurrentScoreConfidence = cs[1];
+
+
+				BitmapData bmData = bitmap.LockBits(Tetris.ScoreField.ScoreRectangle, ImageLockMode.ReadOnly, Tetris.PixelFormat);
+				if( OCR.GetScore(bmData, out int score))
+				{
+					CurrentScore = score;
+				}
+				bitmap.UnlockBits(bmData);
+
+				int[] cl1 = await tasks[1];
+				CurrentLines = cl1[0];
 
 				state.Score = currentScore;
 				state.Lines = currentLines;
-				state.Level = CurrentLevel;
+				state.Level = currentLevel;
 			}
 
-			States.Add(state);
+			States.Push(state);
 			OnPropertyChanged(nameof(States));
 			return state;
 		}
 
-		/// <summary>Check whether the designated rectangle contains any non-black pixels. THe rectangle is selected to be all black during a game and all non-black during menu screens
+		/// <summary>Check whether the designated rectangle contains any non-black pixels. The rectangle is selected to be all black during a game and all non-black during menu screens
 		/// </summary>
 		/// <param name="bitmap"></param>
 		/// <returns></returns>
@@ -222,7 +247,7 @@ namespace BoomTracker
 
 		public event PropertyChangedEventHandler PropertyChanged;
 
-		protected void OnPropertyChanged(string prop)
+		public void OnPropertyChanged(string prop)
 		{
 			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));
 		}

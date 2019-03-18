@@ -17,7 +17,7 @@
 	<Grid x:Name="WindowGrid">
 		<Grid.RowDefinitions>
 			<RowDefinition Height="*" />
-			<RowDefinition Height="130" />
+			<RowDefinition Height="140" />
 		</Grid.RowDefinitions>
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition Width="*" />
@@ -27,235 +27,150 @@
 
 		<Viewbox x:Name="TetrisViewBox"
 				 Margin="10">
+			<Viewbox.Resources>
+				<Style x:Key="TetrisTextBlockStyle"
+					   TargetType="TextBlock">
+					<Setter Property="FontFamily"
+							Value="Press Start" />
+					<Setter Property="FontSize"
+							Value="7" />
+					<Setter Property="Foreground"
+							Value="White" />
+				</Style>
+			</Viewbox.Resources>
 			<Grid x:Name="TetrisGrid"
 				  HorizontalAlignment="Center"
 				  VerticalAlignment="Center">
-				<Grid.RowDefinitions>
-					<RowDefinition Height="15" />
-					<RowDefinition Height="160" />
-				</Grid.RowDefinitions>
 
 				<Grid.ColumnDefinitions>
 					<ColumnDefinition Width="80" />
+					<ColumnDefinition Width="60" />
 				</Grid.ColumnDefinitions>
+				<Grid>
+					<Grid.RowDefinitions>
+						<RowDefinition Height="15" />
+						<RowDefinition Height="160" />
+					</Grid.RowDefinitions>
 
+					<Border x:Name="LinesBorder"
+							CornerRadius="1"
+							BorderThickness="1"
+							Background="Black"
+							BorderBrush="#FF9EFAED">
 
-				<Border CornerRadius="1"
-						BorderThickness="1"
-						Background="Black"
-						BorderBrush="#FF9EFAED">
+						<TextBlock x:Name="LinesTextBlock"
+								   Style="{StaticResource TetrisTextBlockStyle }"
+								   HorizontalAlignment="Right"
+								   VerticalAlignment="Center"
+								   Margin="0,0,5,0">
+							<TextBlock.Text>
+								<MultiBinding StringFormat="{}LINES-{0:000}">
+									<Binding Path="Game.CurrentLines"
+											 TargetNullValue="000"
+											 FallbackValue="000" />
+								</MultiBinding>
+							</TextBlock.Text>
+						</TextBlock>
 
-					<TextBlock x:Name="LinesTextBlock"
-							   Foreground="White"
-							   FontSize="7"
-							   HorizontalAlignment="Right"
-							   VerticalAlignment="Center"
-							   Margin="0,0,5,0"
-							   FontFamily="Press Start">
-						<TextBlock.Text>
-							<MultiBinding StringFormat="{}LINES-{0:000}">
-								<Binding Path="Game.CurrentLines"
-										 TargetNullValue="000"
-										 FallbackValue="000" />
-							</MultiBinding>
-						</TextBlock.Text>
-					</TextBlock>
+					</Border>
 
-				</Border>
+					<Border x:Name="PlayingFieldBorder"
+							Grid.Row="1"
+							CornerRadius="1"
+							BorderThickness="1"
+							Background="Black"
+							BorderBrush="#FF9EFAED">
+						<Grid x:Name="PlayingField">
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition Width="1*" />
+								<ColumnDefinition Width="1*" />
+								<ColumnDefinition Width="1*" />
+								<ColumnDefinition Width="1*" />
+								<ColumnDefinition Width="1*" />
+								<ColumnDefinition Width="1*" />
+								<ColumnDefinition Width="1*" />
+								<ColumnDefinition Width="1*" />
+								<ColumnDefinition Width="1*" />
+								<ColumnDefinition Width="1*" />
+							</Grid.ColumnDefinitions>
+							<Grid.RowDefinitions>
+								<RowDefinition Height="1*" />
+								<RowDefinition Height="1*" />
+								<RowDefinition Height="1*" />
+								<RowDefinition Height="1*" />
+								<RowDefinition Height="1*" />
+								<RowDefinition Height="1*" />
+								<RowDefinition Height="1*" />
+								<RowDefinition Height="1*" />
+								<RowDefinition Height="1*" />
+								<RowDefinition Height="1*" />
+								<RowDefinition Height="1*" />
+								<RowDefinition Height="1*" />
+								<RowDefinition Height="1*" />
+								<RowDefinition Height="1*" />
+								<RowDefinition Height="1*" />
+								<RowDefinition Height="1*" />
+								<RowDefinition Height="1*" />
+								<RowDefinition Height="1*" />
+								<RowDefinition Height="1*" />
+								<RowDefinition Height="1*" />
+							</Grid.RowDefinitions>
+						</Grid>
+					</Border>
+				</Grid>
 
-
-				<Border x:Name="PlayingFieldBorder"
-						Grid.Row="1"
+				<Border x:Name="ScoreBorder"
+						VerticalAlignment="Top"
+						Height="60"
+						Grid.Column="1"
 						CornerRadius="1"
 						BorderThickness="1"
 						Background="Black"
-						BorderBrush="#FF9EFAED">
-					<Grid 
-						  x:Name="PlayingField">
-						<Grid.ColumnDefinitions>
-							<ColumnDefinition Width="1*" />
-							<ColumnDefinition Width="1*" />
-							<ColumnDefinition Width="1*" />
-							<ColumnDefinition Width="1*" />
-							<ColumnDefinition Width="1*" />
-							<ColumnDefinition Width="1*" />
-							<ColumnDefinition Width="1*" />
-							<ColumnDefinition Width="1*" />
-							<ColumnDefinition Width="1*" />
-							<ColumnDefinition Width="1*" />
-						</Grid.ColumnDefinitions>
-						<Grid.RowDefinitions>
-							<RowDefinition Height="1*" />
-							<RowDefinition Height="1*" />
-							<RowDefinition Height="1*" />
-							<RowDefinition Height="1*" />
-							<RowDefinition Height="1*" />
-							<RowDefinition Height="1*" />
-							<RowDefinition Height="1*" />
-							<RowDefinition Height="1*" />
-							<RowDefinition Height="1*" />
-							<RowDefinition Height="1*" />
-							<RowDefinition Height="1*" />
-							<RowDefinition Height="1*" />
-							<RowDefinition Height="1*" />
-							<RowDefinition Height="1*" />
-							<RowDefinition Height="1*" />
-							<RowDefinition Height="1*" />
-							<RowDefinition Height="1*" />
-							<RowDefinition Height="1*" />
-							<RowDefinition Height="1*" />
-							<RowDefinition Height="1*" />
-						</Grid.RowDefinitions>
-					</Grid>
+						BorderBrush="#FF9EFAED"
+						Padding="5,10,5,5">
+					<StackPanel>
+						<TextBlock Style="{StaticResource TetrisTextBlockStyle}"
+								   Text="TOP"
+								   VerticalAlignment="Top"
+								   HorizontalAlignment="Left" />
+
+						<TextBlock x:Name="TopScoreTextBlock"
+								   Style="{StaticResource TetrisTextBlockStyle}"
+								   Text="000000"
+								   VerticalAlignment="Top"
+								   HorizontalAlignment="Left" />
+
+						<TextBlock Margin="0,7,0,0"
+								   Style="{StaticResource TetrisTextBlockStyle}"
+								   HorizontalAlignment="Left"
+								   Text="SCORE" />
+
+						<TextBlock x:Name="ScoreTextBlock"
+								   Style="{StaticResource TetrisTextBlockStyle}"
+								   Text="{Binding Game.CurrentScore, StringFormat=000000, FallbackValue=000000}"
+								   VerticalAlignment="Top"
+								   HorizontalAlignment="Left" />
+
+					</StackPanel>
+
+
+
+
 				</Border>
+
+
 
 			</Grid>
 		</Viewbox>
 		<!--<Image x:Name="MainImage"
 			   Source="{Binding MainImage}" />-->
 
-		<StackPanel Orientation="Horizontal"
-					Grid.Row="1"
-					Margin="5,5,5,10">
-			<StackPanel.Resources>
-				<Style x:Key="ControlButtonStyle"
-					   TargetType="Button"
-					   BasedOn="{StaticResource CButtonStyle}">
-					<Setter Property="Width"
-							Value="70" />
-					<Setter Property="Height"
-							Value="20" />
-					<Setter Property="Margin"
-							Value="5" />
-					<Setter Property="VerticalAlignment"
-							Value="Bottom" />
-				</Style>
-
-			</StackPanel.Resources>
-
-			<StackPanel x:Name="BoxesStackPanel"
-						Width="200"
-						VerticalAlignment="Bottom">
-				<TextBlock Text="Select video source" />
-				<ComboBox x:Name="ImageSourceComboBox"
-						  DisplayMemberPath="Name"
-						  ItemsSource="{Binding VideoDevices}"
-						  SelectedItem="{Binding CurrentDevice}" />
-				<StackPanel Orientation="Horizontal"
-							Margin="0,15,0,0">
-					<TextBox Width="30"
-							 Margin="2"
-							 Text="{Binding ElementName=Main_Window, Path=DataContext.RectX, UpdateSourceTrigger=PropertyChanged}" />
-					<TextBox Width="30"
-							 Margin="2"
-							 Text="{Binding ElementName=Main_Window, Path=DataContext.RectY, UpdateSourceTrigger=PropertyChanged}" />
-					<TextBox Width="30"
-							 Margin="2"
-							 Text="{Binding ElementName=Main_Window, Path=DataContext.RectWidth, UpdateSourceTrigger=PropertyChanged}" />
-					<TextBox Width="30"
-							 Margin="2"
-							 Text="{Binding ElementName=Main_Window, Path=DataContext.RectHeight, UpdateSourceTrigger=PropertyChanged}" />
-
-				</StackPanel>
-				<StackPanel Orientation="Horizontal">
-					<TextBlock Width="30"
-							   Margin="2"
-							   Text="X"
-							   TextAlignment="Center" />
-					<TextBlock Width="30"
-							   Margin="2"
-							   Text="Y"
-							   TextAlignment="Center" />
-					<TextBlock Width="30"
-							   Margin="2"
-							   TextAlignment="Center"
-							   Text="W" />
-					<TextBlock Width="30"
-							   Margin="2"
-							   TextAlignment="Center"
-							   Text="H" />
-				</StackPanel>
-
-				<StackPanel Orientation="Horizontal">
-					<TextBox Width="30"
-							 Margin="2"
-							 Text="{Binding ElementName=Main_Window, Path=DataContext.Rect2X, UpdateSourceTrigger=PropertyChanged}" />
-					<TextBox Width="30"
-							 Margin="2"
-							 Text="{Binding ElementName=Main_Window, Path=DataContext.Rect2Y, UpdateSourceTrigger=PropertyChanged}" />
-					<TextBox Width="30"
-							 Margin="2"
-							 Text="{Binding ElementName=Main_Window, Path=DataContext.Rect2Width, UpdateSourceTrigger=PropertyChanged}" />
-					<TextBox Width="30"
-							 Margin="2"
-							 Text="{Binding ElementName=Main_Window, Path=DataContext.Rect2Height, UpdateSourceTrigger=PropertyChanged}" />
-				</StackPanel>
-			</StackPanel>
-
-			<StackPanel x:Name="ButtonsStackpanel"
-						Orientation="Vertical"
-						Margin="5">
-				<Button Style="{StaticResource ControlButtonStyle}"
-						Command="{Binding StartCommand}" />
-
-				<Button Style="{StaticResource ControlButtonStyle}"
-						Command="{Binding StopCommand}" />
-
-			</StackPanel>
-
-		</StackPanel>
-
 		<StackPanel x:Name="StatsStackPanel"
 					Grid.Column="1"
-					Margin="10,30,5,5"
+					Margin="10"
 					Grid.ColumnSpan="2">
-
-
-
-
-
-			<Grid x:Name="LevelGrid"
-				  Height="40"
-				  Margin="0,15,0,0">
-				<Grid.ColumnDefinitions>
-					<ColumnDefinition Width="70" />
-					<ColumnDefinition Width="*" />
-				</Grid.ColumnDefinitions>
-
-				<Image x:Name="LevelImage"
-					   Grid.Column="1"
-					   HorizontalAlignment="Right"
-					   VerticalAlignment="Top"
-					   Height="20"
-					   Source="{Binding LevelImage}" />
-
-				<Label x:Name="LevelLabel"
-					   Content="{Binding Game.CurrentLevel, FallbackValue=000}"
-					   Padding="0"
-					   HorizontalContentAlignment="Right"
-					   Grid.Column="1"
-					   HorizontalAlignment="Right"
-					   VerticalAlignment="Bottom"
-					   Height="25"
-					   Width="65"
-					   FontSize="20">
-					<Label.RenderTransform>
-						<ScaleTransform ScaleX="2"
-										CenterX="65" />
-					</Label.RenderTransform>
-				</Label>
-
-				<Label Content="Level: "
-					   Padding="0"
-					   HorizontalAlignment="Left"
-					   VerticalAlignment="Bottom"
-					   Height="25"
-					   FontSize="20" />
-			</Grid>
-
 			<TextBlock x:Name="TimerTextBlock"
 					   FontSize="20"
-					   Margin="0,15,0,0"
 					   Foreground="Blue">
 				<TextBlock.Text>
 					<MultiBinding StringFormat="{}Time: {0}">
@@ -267,32 +182,115 @@
 
 			</TextBlock>
 
-			<TextBlock x:Name="StatesTextBlock"
-					   FontSize="20"
-					   Margin="0,0,0,0"
-					   Foreground="Blue">
-				<TextBlock.Text>
-					<MultiBinding StringFormat="{}States: {0}">
-						<Binding Path="Game.States.Count"
-								 TargetNullValue="0000"
-								 FallbackValue="0000" />
-					</MultiBinding>
-				</TextBlock.Text>
+			<ListBox x:Name="DigitsListBox"
+					 Margin="0,5,0,0"
+					 Background="Black"
+					 ScrollViewer.CanContentScroll="False"
+					 ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+					 ScrollViewer.VerticalScrollBarVisibility="Disabled">
+				<ListBox.ItemsPanel>
+					<ItemsPanelTemplate>
+						<WrapPanel />
+					</ItemsPanelTemplate>
+				</ListBox.ItemsPanel>
+				<ListBox.ItemTemplate>
+					<DataTemplate>
+						<Image Height="17"
+							   Source="{Binding}" />
+					</DataTemplate>
+				</ListBox.ItemTemplate>
+			</ListBox>
 
-			</TextBlock>
+			<StackPanel x:Name="ControlStackPanel"
+						Orientation="Horizontal"
+						Grid.Row="1"
+						Margin="0,5,0,0">
+				<StackPanel.Resources>
+					<Style x:Key="ControlButtonStyle"
+						   TargetType="Button"
+						   BasedOn="{StaticResource CButtonStyle}">
+						<Setter Property="Width"
+								Value="70" />
+						<Setter Property="Height"
+								Value="20" />
+						<Setter Property="Margin"
+								Value="5" />
+					</Style>
 
-			<TextBlock x:Name="GameOnextBlock"
-					   FontSize="20"
-					   Margin="0,0,0,0"
-					   Foreground="Blue">
-				<TextBlock.Text>
-					<MultiBinding StringFormat="{}Game On: {0}">
-						<Binding Path="GameOn"
-								 FallbackValue="???" />
-					</MultiBinding>
-				</TextBlock.Text>
+				</StackPanel.Resources>
 
-			</TextBlock>
+				<StackPanel x:Name="BoxesStackPanel"
+							VerticalAlignment="Bottom">
+					<TextBlock Text="Select video source" />
+					<ComboBox x:Name="ImageSourceComboBox"
+							  DisplayMemberPath="Name"
+							  ItemsSource="{Binding VideoDevices}"
+							  SelectedItem="{Binding CurrentDevice}" />
+					<StackPanel Orientation="Horizontal"
+								Margin="0,15,0,0">
+						<TextBox Width="25"
+								 Margin="2"
+								 Text="{Binding ElementName=Main_Window, Path=DataContext.RectX, UpdateSourceTrigger=PropertyChanged}" />
+						<TextBox Width="25"
+								 Margin="2"
+								 Text="{Binding ElementName=Main_Window, Path=DataContext.RectY, UpdateSourceTrigger=PropertyChanged}" />
+						<TextBox Width="25"
+								 Margin="2"
+								 Text="{Binding ElementName=Main_Window, Path=DataContext.RectWidth, UpdateSourceTrigger=PropertyChanged}" />
+						<TextBox Width="25"
+								 Margin="2"
+								 Text="{Binding ElementName=Main_Window, Path=DataContext.RectHeight, UpdateSourceTrigger=PropertyChanged}" />
+
+					</StackPanel>
+					<StackPanel Orientation="Horizontal">
+						<TextBlock Width="25"
+								   Margin="2"
+								   Text="X"
+								   TextAlignment="Center" />
+						<TextBlock Width="25"
+								   Margin="2"
+								   Text="Y"
+								   TextAlignment="Center" />
+						<TextBlock Width="25"
+								   Margin="2"
+								   TextAlignment="Center"
+								   Text="W" />
+						<TextBlock Width="25"
+								   Margin="2"
+								   TextAlignment="Center"
+								   Text="H" />
+					</StackPanel>
+
+					<StackPanel Orientation="Horizontal">
+						<TextBox Width="25"
+								 Margin="2"
+								 Text="{Binding ElementName=Main_Window, Path=DataContext.Rect2X, UpdateSourceTrigger=PropertyChanged}" />
+						<TextBox Width="25"
+								 Margin="2"
+								 Text="{Binding ElementName=Main_Window, Path=DataContext.Rect2Y, UpdateSourceTrigger=PropertyChanged}" />
+						<TextBox Width="25"
+								 Margin="2"
+								 Text="{Binding ElementName=Main_Window, Path=DataContext.Rect2Width, UpdateSourceTrigger=PropertyChanged}" />
+						<TextBox Width="25"
+								 Margin="2"
+								 Text="{Binding ElementName=Main_Window, Path=DataContext.Rect2Height, UpdateSourceTrigger=PropertyChanged}" />
+					</StackPanel>
+				</StackPanel>
+
+				<StackPanel x:Name="ButtonsStackpanel"
+							Margin="5">
+					<Button Style="{StaticResource ControlButtonStyle}"
+							Command="{Binding StartCommand}" />
+
+					<Button Style="{StaticResource ControlButtonStyle}"
+							Command="{Binding StopCommand}" />
+
+					<Button Style="{StaticResource ControlButtonStyle}"
+							Command="{Binding ScreenshotCommand}" />
+
+				</StackPanel>
+
+			</StackPanel>
 		</StackPanel>
 
 

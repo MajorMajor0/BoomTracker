@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -9,7 +8,6 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Media.Imaging;
 
-using AForge.Imaging.Filters;
 using AForge.Video;
 using AForge.Video.DirectShow;
 
@@ -18,7 +16,9 @@ namespace BoomTracker
 {
 	public partial class MainWindowViewModel : INotifyPropertyChanged
 	{
-		public Game Game { get; } = new Game();
+		public Game Game { get; set; }
+
+		private bool takeScreen;
 
 		private bool gameOn;
 		public bool GameOn
@@ -125,7 +125,17 @@ namespace BoomTracker
 		public MainWindowViewModel()
 		{
 			InitializeCommands();
+			Game = new Game();
+			Game.PropertyChanged += GamePropertyChanged;
 			GetVideoDevices();
+		}
+
+		private void GamePropertyChanged(object sender, PropertyChangedEventArgs a)
+		{
+			if (a.PropertyName == nameof(Game.CurrentScore))
+			{
+				//takeScreen = true;
+			}
 		}
 
 		private void GetVideoDevices()
@@ -156,43 +166,54 @@ namespace BoomTracker
 			if (!block && evenFrame)
 			{
 				watch.Restart();
-				try
+				//try
+				//{
+				//BitmapImage bi;
+
+				using (var bitmap = (Bitmap)eventArgs.Frame.Clone())
 				{
-					BitmapImage bi;
+					block = true;
 
-					using (var bitmap = (Bitmap)eventArgs.Frame.Clone())
+					if (Game.CheckIfGameIsOn(bitmap))
 					{
-						block = true;
-
-						if (Game.CheckIfGameIsOn(bitmap))
-						{
-							GameOn = true;
-							await Game.StoreState(bitmap);
-						}
-
-						else
-						{
-							GameOn = false;
-						}
-
-						//DrawFields(bitmap);
-						//bi = bitmap.ToBitmapImage();
-						block = false;
+						GameOn = true;
+						await Game.StoreState(bitmap);
+						
 					}
 
-					// Avoid cross thread operations and prevent leaks
-					//bi.Freeze();
-					//MainImage = bi;
+					else
+					{
+						GameOn = false;
+					}
+
+					if (takeScreen)
+					{
+						//using (Bitmap scoreBitmap = bitmap.Clone(Tetris.ScoreField.ScoreRectangle, Tetris.PixelFormat))
+						//{
+						//	scoreBitmap.Save($"C:\\Source\\BoomTracker\\BoomTracker\\Resources\\Scores1\\{Game.CurrentScore}({Game.CurrentScoreConfidence}).bmp", ImageFormat.Bmp);
+						//}
+
+						takeScreen = false;
+					}
+
+					//DrawFields(bitmap);
+					//bi = bitmap.ToBitmapImage();
+					block = false;
 				}
 
-				catch (Exception ex)
-				{
-					MessageBox.Show($"Error on _videoSource_NewFrame:\n{ex.Message}",
-					"Error",
-					MessageBoxButton.OK,
-					MessageBoxImage.Error);
-					Stop();
-				}
+				// Avoid cross thread operations and prevent leaks
+				//bi.Freeze();
+				//MainImage = bi;
+				//}
+
+				//catch (Exception ex)
+				//{
+				//	MessageBox.Show($"Error on _videoSource_NewFrame:\n{ex.Message}",
+				//	"Error",
+				//	MessageBoxButton.OK,
+				//	MessageBoxImage.Error);
+				//	Stop();
+				//}
 
 				if (iav < timeAverager.Length)
 				{

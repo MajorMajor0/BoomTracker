@@ -57,13 +57,12 @@ namespace BoomTracker
 
 		private bool ScreenShotCanExecute()
 		{
-			return true;
+			return GameOn && !takeScreen;
 		}
 
 		private void Screenshot()
 		{
-			string fileName = $"Screen {DateTime.Now.ToString()}";
-
+			takeScreen = true;
 		}
 	}
 }

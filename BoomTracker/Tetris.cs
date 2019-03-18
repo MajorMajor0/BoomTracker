@@ -14,12 +14,12 @@ namespace BoomTracker
 	public static class Tetris
 	{
 
-	/// <summary>This entire rectangle should be black during a game and non-black when not during a game</summary>
+		/// <summary>This entire rectangle should be black during a game and non-black when not during a game</summary>
 		public static Rectangle IsGameRectangle { get; } = new Rectangle(545, 36, 5, 3);
 
 		public static PixelFormat PixelFormat => PixelFormat.Format24bppRgb;
 
-		private static byte BytesPerPixel;
+		public static byte BytesPerPixel;
 
 		// Bitmap size produced by USB converter
 		public static double ImageWidth = 720.0;
@@ -155,31 +155,26 @@ namespace BoomTracker
 				Height = 131
 			};
 
-			public static Tesseract.Rect ScoreRect { get; }
+
 
 			public static Rectangle ScoreRectangle { get; } = new Rectangle
 			{
-				X = 535,
+				X = 537,
 				Y = 115,
-				Height = 18,
-				Width = 664 - 535
+				Height = 17,
+				Width = 127
 			};
 
-			static ScoreField()
+			public static Rectangle[] DigitRectangles = new Rectangle[]
 			{
-				ScoreRect = new Tesseract.Rect(ScoreRectangle.X, ScoreRectangle.Y, ScoreRectangle.Width, ScoreRectangle.Height);
+				new Rectangle( 105, 115, 21, 17 ),
+				new Rectangle(  84, 115, 21, 17 ),
+				new Rectangle(  63, 115, 21, 17 ),
+				new Rectangle(  42, 115, 21, 17 ),
+				new Rectangle(  21, 115, 21, 17 ),
+				new Rectangle(   0, 115, 21, 17 )
+			};
 
-
-				//ScoreRectangles = new Rectangle[]
-				//{
-				//	new Rectangle { X = 642,  Y = y, Height = h, Width = w },
-				//	new Rectangle { X = 621,  Y = y, Height = h, Width = w },
-				//	new Rectangle { X = 599,  Y = y, Height = h, Width = w },
-				//	new Rectangle { X = 578,  Y = y, Height = h, Width = w },
-				//	new Rectangle { X = 557,  Y = y, Height = h, Width = w },
-				//	new Rectangle { X = 535,  Y = y, Height = h, Width = 664 - 535 }
-				//};
-			}
 		}
 
 		public static class LineField

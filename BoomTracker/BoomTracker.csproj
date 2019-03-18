@@ -78,7 +78,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Converters.cs" />
-    <Compile Include="Dictionary1.cs" />
+    <Compile Include="DebugStuff.cs" />
     <Compile Include="OCR.cs" />
     <Compile Include="Command.cs" />
     <Compile Include="FileLocation.cs" />
@@ -89,7 +89,7 @@
     <Compile Include="MainWindowViewModel.Commands.cs" />
     <Compile Include="MainWindowViewModel.cs" />
     <Compile Include="Palette.cs" />
-    <Compile Include="TetrisWindow.cs" />
+    <Compile Include="Tetris.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
