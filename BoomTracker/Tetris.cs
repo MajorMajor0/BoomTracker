@@ -13,6 +13,37 @@ namespace BoomTracker
 {
 	public static class Tetris
 	{
+		public static class DigitPixels
+		{
+			public static List<int[]> X = new List<int[]>
+		{
+			new int[] {2,2,3,3,3,3,4,4,4,4,4,4,5,5,6,7,8,9,11,12,13,14,15,15,15,15,16,16,16,16,16,16,17,17,17,17,17,17,18,18,18},
+			new int[] {8,9,9,9,10,10,10,10,10,10,10,10,10,10,10,10,11,11,11,11,11,11,11,11,11,11,11,11,11,12,12,12,12,12,12,12,12,12,12,12,12,12,13,13,14,14,15,15},
+			new int[] {2,3,3,3,4,4,4,4,5,5,5,5,5,5,6,6,6,6,6,6,7,7,7,7,7,7,8,8,8,8,8,9,9,9,9,9,9,10,10,10,10,10,11,11,11,11,11,12,12,12,12,12,13,13,13,13,13,14,14,14,14,14,14,15,15,15,15,15,15,16,16,16,16,17,17,17,18},
+			new int[] {4,5,5,6,6,7,8,9,9,9,10,10,10,11,11,11,11,11,11,12,12,12,12,12,12,12,12,13,13,13,13,13,13,13,13,13,14,14,14,14,14,14,14,15,15,15,15,15,15,15,15,15,15,16,16,16,16,16,16,17,17,17,17,17,18,18},
+			new int[] {3,3,4,4,4,5,5,5,6,7,9,10,11,11,11,12,12,12,12,12,13,13,13,13,13,13,13,13,13,13,13,13,13,14,14,14,14,14,14,14,14,14,14,14,14,14,15,15,15,15,15,15,15,15,15,15,16,16,16,16,16},
+			new int[] {3,3,3,4,4,4,4,4,4,5,5,5,5,5,5,5,6,6,6,7,8,9,9,10,10,11,11,12,12,12,13,13,13,14,14,14,15,15,15,15,16,16,16,16,16,16,17,17,17,17,17,17,18,18,18},
+			new int[] {2,3,3,3,3,3,3,4,4,4,4,4,4,4,4,5,5,5,5,5,5,5,5,5,6,6,6,7,7,8,9,9,10,10,11,11,12,12,13,13,13,14,14,14,15,15,15,15,15,15,16,16,16,16,16,17,17,17,17,18,18},
+			new int[] {3,3,4,4,5,5,6,7,8,8,8,8,8,9,9,9,9,9,9,10,10,10,10,10,10,10,11,11,11,12,12,12,13,13,13,14,14,14,14,15,15,15,15,16,16,16,16,17,17,18},
+			new int[] {2,3,3,4,4,4,4,4,4,5,5,5,5,5,5,5,5,5,5,5,6,6,6,6,7,9,9,10,10,11,11,11,12,12,12,12,13,13,13,13,13,13,14,14,14,14,14,15,15,15,15,15,15,15,15,15,15,15,16,16,16,16,16,16,16,16,16,16,17,17,17,17,17,17,17,18,18,18,18,18},
+			new int[] {2,3,3,4,4,4,5,5,5,5,5,5,6,7,8,8,9,9,10,10,11,11,11,11,12,12,12,13,13,13,13,13,14,14,14,14,15,15,15,15,15,15,15,16,16,16,16,16,16,16,16,16,17,17,17,17,17,17,17,17,18,18,18,18,18,18}
+
+		};
+
+			public static List<int[]> Y = new List<int[]>
+		{
+			new int[] {7,8,7,8,9,10,6,7,8,9,10,11,7,11,12,13,14,14,2,3,3,4,5,9,10,11,6,7,8,9,10,11,6,7,8,9,10,11,8,9,10},
+			new int[] {15,4,14,15,3,4,5,6,7,8,9,10,11,12,14,15,3,4,5,6,7,8,9,10,11,12,13,14,15,3,4,5,6,7,8,9,10,11,12,13,14,15,14,15,14,15,14,15},
+			new int[] {14,4,13,14,4,12,13,14,3,11,12,13,14,15,10,11,12,13,14,15,10,11,12,13,14,15,9,10,11,14,15,2,9,10,11,14,15,2,8,9,10,15,2,8,9,10,15,2,8,9,10,15,2,7,8,9,15,2,6,7,8,9,15,2,3,6,7,8,15,4,5,6,7,4,5,6,6},
+			new int[] {13,13,14,2,14,2,2,2,8,15,2,8,15,2,3,6,7,8,15,2,3,4,6,7,8,9,15,2,3,4,5,6,7,8,9,14,2,3,4,5,8,9,14,2,3,4,8,9,10,11,12,13,14,2,3,10,11,12,13,2,10,11,12,13,11,12},
+			new int[] {8,10,8,9,10,8,9,10,10,6,11,11,3,4,11,3,4,5,10,11,2,3,4,5,6,7,8,9,10,11,12,13,14,2,3,4,5,6,7,8,9,10,11,12,13,14,4,6,7,8,9,10,11,12,13,14,8,9,10,11,14},
+			new int[] {3,5,6,2,3,4,5,6,13,2,3,4,5,6,13,14,2,6,14,2,2,2,15,2,15,2,15,2,7,15,2,7,14,2,7,14,7,8,13,14,8,9,10,11,12,13,8,9,10,11,12,13,9,10,11},
+			new int[] {10,6,8,9,10,11,12,6,7,8,9,10,11,12,13,4,6,7,8,9,10,12,13,14,8,9,14,8,14,8,2,15,2,15,2,15,2,15,2,14,15,2,9,14,9,10,11,12,13,14,9,10,11,12,13,10,11,12,13,11,12},
+			new int[] {2,4,2,4,2,3,2,2,2,11,12,13,14,2,10,11,12,13,14,2,9,10,11,12,13,14,2,8,9,2,8,9,2,7,8,2,3,6,7,2,3,4,6,2,3,4,5,3,4,4},
+			new int[] {11,5,11,5,6,7,10,11,13,3,5,6,7,8,9,10,11,12,13,14,3,8,9,14,9,2,15,2,15,2,8,15,2,8,9,15,2,3,8,9,14,15,2,3,8,9,14,2,3,6,7,8,9,10,11,12,13,14,3,4,5,6,7,9,10,11,12,13,4,5,6,10,11,12,13,5,6,10,11,12},
+			new int[] {5,5,6,5,6,7,3,4,5,6,7,8,8,2,2,15,2,15,2,15,2,9,14,15,2,9,14,2,3,9,13,14,2,3,9,13,2,3,4,8,9,10,12,3,4,5,6,7,8,9,10,11,4,5,6,7,8,9,10,11,5,6,7,8,9,10}
+		};
+		}
 
 		/// <summary>This entire rectangle should be black during a game and non-black when not during a game</summary>
 		public static Rectangle IsGameRectangle { get; } = new Rectangle(545, 36, 5, 3);
@@ -21,13 +52,19 @@ namespace BoomTracker
 
 		public static byte BytesPerPixel;
 
-		// Bitmap size produced by USB converter
+		/// <summary>Bitmap size produced by USB converter</summary>
 		public static double ImageWidth = 720.0;
 		public static double ImageHeight = 480.0;
 
-		// Output NES resolution (generated resolution = 256 x 240)
+		/// <summary>Output NES resolution (generated resolution = 256 x 240)</summary>
 		public static double NESHeight = 224.0;
 		public static double NESWidth = 256.0;
+
+		/// <summary>Height of a digit in the score field, lines field and level field</summary>
+		public static int DigitWidth = 21;
+
+		/// <summary>Width of a digit in the score field, lines field and level field</summary>
+		public static int DigitHeight = 17;
 
 		public static class PlayingField
 		{
@@ -145,87 +182,270 @@ namespace BoomTracker
 			};
 		}
 
-		public static class ScoreField
+		public static class Score
 		{
 			public static Rectangle Rectangle { get; } = new Rectangle
-			{
-				X = 529,
-				Y = 25,
-				Width = 144,
-				Height = 131
-			};
-
-
-
-			public static Rectangle ScoreRectangle { get; } = new Rectangle
 			{
 				X = 537,
 				Y = 115,
-				Height = 17,
-				Width = 127
+				Width = 127,
+				Height = 17
 			};
 
-			public static Rectangle[] DigitRectangles = new Rectangle[]
+			/// <summary>X offset from Scorefield.Rectangle of digit</summary>
+			public static int[] DigitOffsets = new int[] { 105, 84, 63, 42, 21, 0 };
+
+			/// <summary>Given a digit 0-9 and a place 0-5, these are the addresses that should be lit if the place is showing that address when reading the score rectangle</summary>
+			public static int[,][] Addresses = new int[10, 6][];
+
+			static Score()
 			{
-				new Rectangle( 105, 115, 21, 17 ),
-				new Rectangle(  84, 115, 21, 17 ),
-				new Rectangle(  63, 115, 21, 17 ),
-				new Rectangle(  42, 115, 21, 17 ),
-				new Rectangle(  21, 115, 21, 17 ),
-				new Rectangle(   0, 115, 21, 17 )
-			};
+				SetAddresses();
+			}
 
-		}
-
-		public static class LineField
-		{
-			public static Rectangle Rectangle { get; } = new Rectangle
+			private static void SetAddresses()
 			{
-				X = 274,
-				Y = 25,
-				Width = 229,
-				Height = 29
-			};
+				int imageWidth = (int)ImageWidth;
 
-			public static Rectangle LinesRectangle { get; } = new Rectangle
+				for (int digit = 0; digit < 10; digit++)
+				{
+					for (int place = 0; place < 6; place++)
+					{
+						List<int> addresses = new List<int>();
+
+						int x0 = DigitOffsets[place];
+
+						for (int i = 0; i < DigitPixels.X[digit].Length; i++)
+						{
+							int x = DigitPixels.X[digit][i] + x0;
+							int y = DigitPixels.Y[digit][i];
+
+							int address = BytesPerPixel * (x + imageWidth * y);
+
+							addresses.Add(address);
+						}
+						Addresses[digit, place] = addresses.ToArray();
+					}
+				}
+			}
+
+			public unsafe static bool Read(Bitmap bitmap, out int score)
 			{
-				X = 428,
-				Y = 28,
-				Height = 21,
-				Width = 68
-			};
+				BitmapData bmData = bitmap.LockBits(Rectangle, ImageLockMode.ReadOnly, PixelFormat);
+				byte* scan0 = (byte*)bmData.Scan0.ToPointer();
 
-			public static Tesseract.Rect LinesRect { get; }
+				score = 0;
 
-			static LineField()
-			{
-				LinesRect = new Tesseract.Rect(LinesRectangle.X, LinesRectangle.Y, LinesRectangle.Width, LinesRectangle.Height);
+				for (int place = 0; place < 6; place++)
+				{
+					for (int numberGuess = 0; numberGuess < 11; numberGuess++)
+					{
+						if (numberGuess == 10)
+						{
+							bitmap.UnlockBits(bmData);
+							return false;
+						}
+
+						bool goodGuess = true;
+
+						foreach (var address in Addresses[numberGuess, place])
+						{
+							if (scan0[address] < 80) // Blue
+							{
+								//scan0[address + 1]; // Green
+								//scan0[address + 2]; // Red
+								goodGuess = false;
+								break;
+							}
+						}
+
+						if (goodGuess)
+						{
+							score += numberGuess * (int)Math.Pow(10, place);
+							break;
+						}
+					}
+				}
+				bitmap.UnlockBits(bmData);
+				return true;
 			}
 		}
 
-		public static class LevelField
+		public static class Lines
 		{
 			public static Rectangle Rectangle { get; } = new Rectangle
 			{
-				X = 529,
-				Y = 314,
-				Width = 122,
-				Height = 46
+				X = 431,
+				Y = 30,
+				Width = 44,
+				Height = 17
 			};
 
-			public static Rectangle LevelRectangle { get; } = new Rectangle
+			/// <summary>X offset from Lines.Rectangle of digit</summary>
+			public static int[] DigitOffsets = new int[] { 42, 21, 0 };
+
+			/// <summary>Given a digit 0-9 and a place 0-2, these are the addresses that should be lit if the place is showing that address when reading the score rectangle</summary>
+			public static int[,][] Addresses = new int[10, 3][];
+
+			static Lines()
 			{
-				X = 575,
-				Y = 335,
-				Width = 48,
-				Height = 20
+				SetAddresses();
+			}
+
+			private static void SetAddresses()
+			{
+				int imageWidth = (int)ImageWidth;
+
+				for (int digit = 0; digit < 10; digit++)
+				{
+					for (int place = 0; place < 3; place++)
+					{
+						List<int> addresses = new List<int>();
+
+						int x0 = DigitOffsets[place];
+
+						for (int i = 0; i < DigitPixels.X[digit].Length; i++)
+						{
+							int x = DigitPixels.X[digit][i] + x0;
+							int y = DigitPixels.Y[digit][i];
+
+							int address = BytesPerPixel * (x + imageWidth * y);
+
+							addresses.Add(address);
+						}
+						Addresses[digit, place] = addresses.ToArray();
+					}
+				}
+			}
+
+			public unsafe static bool Read(Bitmap bitmap, out int score)
+			{
+				BitmapData bmData = bitmap.LockBits(Rectangle, ImageLockMode.ReadOnly, PixelFormat);
+				byte* scan0 = (byte*)bmData.Scan0.ToPointer();
+
+				score = 0;
+
+				for (int place = 0; place < 3; place++)
+				{
+					for (int numberGuess = 0; numberGuess < 11; numberGuess++)
+					{
+						if (numberGuess == 10)
+						{
+							bitmap.UnlockBits(bmData);
+							return false;
+						}
+
+						bool goodGuess = true;
+
+						foreach (var address in Addresses[numberGuess, place])
+						{
+							if (scan0[address] < 80) // Blue
+							{
+								//scan0[address + 1]; // Green
+								//scan0[address + 2]; // Red
+								goodGuess = false;
+								break;
+							}
+						}
+
+						if (goodGuess)
+						{
+							score += numberGuess * (int)Math.Pow(10, place);
+							break;
+						}
+					}
+				}
+				bitmap.UnlockBits(bmData);
+				return true;
+			}
+		}
+
+		public static class Level
+		{
+			public static Rectangle Rectangle { get; } = new Rectangle
+			{
+				X = 579,
+				Y = 336,
+				Width = 43,
+				Height = 17
 			};
 
-			public static Tesseract.Rect LevelRect { get; }
+			/// <summary>X offset from Level.Rectangle of digit</summary>
+			public static int[] DigitOffsets = new int[] { 21, 0 };
 
-			static LevelField()
+			/// <summary>Given a digit 0-9 and a place 0-1, these are the addresses that should be lit if the place is showing that address when reading the score rectangle</summary>
+			public static int[,][] Addresses = new int[10, 2][];
+
+			static Level()
 			{
-				LevelRect = new Tesseract.Rect(LevelRectangle.X, LevelRectangle.Y, LevelRectangle.Width, LevelRectangle.Height);
+				SetAddresses();
+			}
+
+			private static void SetAddresses()
+			{
+				int imageWidth = (int)ImageWidth;
+
+				for (int digit = 0; digit < 10; digit++)
+				{
+					for (int place = 0; place < 2; place++)
+					{
+						List<int> addresses = new List<int>();
+
+						int x0 = DigitOffsets[place];
+
+						for (int i = 0; i < DigitPixels.X[digit].Length; i++)
+						{
+							int x = DigitPixels.X[digit][i] + x0;
+							int y = DigitPixels.Y[digit][i];
+
+							int address = BytesPerPixel * (x + imageWidth * y);
+
+							addresses.Add(address);
+						}
+						Addresses[digit, place] = addresses.ToArray();
+					}
+				}
+			}
+
+			public unsafe static bool Read(Bitmap bitmap, out int score)
+			{
+				BitmapData bmData = bitmap.LockBits(Rectangle, ImageLockMode.ReadOnly, PixelFormat);
+				byte* scan0 = (byte*)bmData.Scan0.ToPointer();
+
+				score = 0;
+
+				for (int place = 0; place < 2; place++)
+				{
+					for (int numberGuess = 0; numberGuess < 11; numberGuess++)
+					{
+						if (numberGuess == 10)
+						{
+							bitmap.UnlockBits(bmData);
+							return false;
+						}
+
+						bool goodGuess = true;
+
+						foreach (var address in Addresses[numberGuess, place])
+						{
+							if (scan0[address] < 80) // Blue
+							{
+								//scan0[address + 1]; // Green
+								//scan0[address + 2]; // Red
+								goodGuess = false;
+								break;
+							}
+						}
+
+						if (goodGuess)
+						{
+							score += numberGuess * (int)Math.Pow(10, place);
+							break;
+						}
+					}
+				}
+				bitmap.UnlockBits(bmData);
+				return true;
 			}
 		}
 

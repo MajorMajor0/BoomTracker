@@ -17,7 +17,6 @@
 	<Grid x:Name="WindowGrid">
 		<Grid.RowDefinitions>
 			<RowDefinition Height="*" />
-			<RowDefinition Height="140" />
 		</Grid.RowDefinitions>
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition Width="*" />
@@ -38,6 +37,7 @@
 							Value="White" />
 				</Style>
 			</Viewbox.Resources>
+			
 			<Grid x:Name="TetrisGrid"
 				  HorizontalAlignment="Center"
 				  VerticalAlignment="Center">
@@ -119,10 +119,11 @@
 					</Border>
 				</Grid>
 
+				<StackPanel Grid.Column="1"
+				Margin="2,0,0,0">
+
 				<Border x:Name="ScoreBorder"
-						VerticalAlignment="Top"
 						Height="60"
-						Grid.Column="1"
 						CornerRadius="1"
 						BorderThickness="1"
 						Background="Black"
@@ -158,6 +159,70 @@
 
 				</Border>
 
+				<Border x:Name="NextBorder"
+						HorizontalAlignment="Left"
+						Margin="0,5,0,0"
+						Padding="1"
+						Height="40"
+						Width="35"
+						CornerRadius="1"
+						BorderThickness="1"
+						Background="Black"
+						BorderBrush="#FF9EFAED">
+					<StackPanel>
+						<TextBlock Style="{StaticResource TetrisTextBlockStyle}"
+								   Text="NEXT"
+								   VerticalAlignment="Top"
+								   HorizontalAlignment="Center" />
+
+						<TextBlock x:Name="NextTextBlock"
+						Margin="0,5,0,0"
+								   FontFamily="Tetris"
+								   Foreground="Blue"
+								   Background="White"
+								   FontSize="6"
+								   Text="AAAA"
+								   VerticalAlignment="Top"
+								   HorizontalAlignment="Center" />
+
+					</StackPanel>
+
+				</Border>
+
+					<Border x:Name="LevelBorder"
+							VerticalAlignment="Top"
+							HorizontalAlignment="Left"
+							Height="20"
+							Width="40"
+							Margin="0,5,0,0"
+							Grid.Column="1"
+							CornerRadius="1"
+							BorderThickness="1"
+							Background="Black"
+							BorderBrush="#FF9EFAED"
+							Padding="2">
+						<StackPanel>
+							<TextBlock Style="{StaticResource TetrisTextBlockStyle}"
+									   Text="LEVEL"
+									   VerticalAlignment="Top"
+									   HorizontalAlignment="Center" />
+
+							<TextBlock x:Name="LevelTextBlock"
+									   Style="{StaticResource TetrisTextBlockStyle}"
+									   Text="{Binding Game.CurrentLevel, StringFormat=D2}"
+									   VerticalAlignment="Top"
+									   HorizontalAlignment="Center" />
+
+
+
+						</StackPanel>
+
+
+
+
+					</Border>
+				</StackPanel>
+			
 
 
 			</Grid>

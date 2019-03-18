@@ -50,9 +50,9 @@ namespace BoomTracker
 				.Select(x => string.Join("", x.Reverse()))
 				.ToList();
 
-			Rectangle[] placeRectangles = Tetris.ScoreField.DigitRectangles;
-			int rectWidth = placeRectangles[0].Width;
-			int rectHeight = placeRectangles[0].Height;
+			int[] placeXOffsets = Tetris.Score.DigitOffsets;
+			int rectWidth = Tetris.DigitWidth;
+			int rectHeight = Tetris.DigitHeight;
 
 			// Create a grid and image for every digit 0 - 9
 			List<Bitmap> digitBitmaps = new List<Bitmap>();
@@ -79,16 +79,16 @@ namespace BoomTracker
 					string scoreString = scoreStrings[fileNumber];
 
 					// i = digit in score, e.g., ones, tens, etc...10^j
-					for (int i = 0; i < placeRectangles.Length; i++)
+					for (int i = 0; i < placeXOffsets.Length; i++)
 					{
 						int number = (int)char.GetNumericValue(scoreString[i]);
-						Rectangle rect = placeRectangles[i];
+						int x0 = placeXOffsets[i];
 
 						for (int x = 0; x < rectWidth; x++)
 						{
 							for (int y = 0; y < rectHeight; y++)
 							{
-								Color color = bitmap.GetPixel(x + rect.X, y);
+								Color color = bitmap.GetPixel(x + x0, y);
 								bool isLit = color.B > 128;
 
 								if (isLit && digitGrids[number][x, y])

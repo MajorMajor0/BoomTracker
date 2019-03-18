@@ -20,67 +20,67 @@ namespace BoomTracker
 			MWVM = new MainWindowViewModel();
 			DataContext = MWVM;
 
-			//CreatePlayingFieldGrid();
+			CreatePlayingFieldGrid();
 
 #if DEBUG
 			MainWindowDebugStuff();
 #endif
 		}
 
-		//private void CreatePlayingFieldGrid()
-		//{
-		//	var charToColorConverter = new Converters.CharToColorConverter();
-		//	var backGroundColorConverter = new Converters.BackGroundColorConverter();
+		private void CreatePlayingFieldGrid()
+		{
+			var charToColorConverter = new Converters.CharToColorConverter();
+			var backGroundColorConverter = new Converters.BackGroundColorConverter();
 
-		//	for (int i = 0; i < 10; i++)
-		//	{
-		//		for (int j = 0; j < 20; j++)
-		//		{
-		//			Label label = new Label
-		//			{
-		//				HorizontalAlignment = HorizontalAlignment.Stretch,
-		//				VerticalAlignment = VerticalAlignment.Stretch,
-		//				FontFamily = new FontFamily("Tetris"),
-		//				FontSize = 7,
-		//				Margin = new Thickness(.5),
-		//				Padding = new Thickness(0)
-		//			};
+			for (int i = 0; i < 10; i++)
+			{
+				for (int j = 0; j < 20; j++)
+				{
+					Label label = new Label
+					{
+						HorizontalAlignment = HorizontalAlignment.Stretch,
+						VerticalAlignment = VerticalAlignment.Stretch,
+						FontFamily = new FontFamily("Tetris"),
+						FontSize = 7,
+						Margin = new Thickness(.5),
+						Padding = new Thickness(0),
+						SnapsToDevicePixels = true
+					};
 
-		//			var contentBinding = new Binding($"Game.CurrentGrid[{i}][{j}]")
-		//			{
-		//				Source = DataContext,
-		//				Mode = BindingMode.OneWay
-		//			};
+					var contentBinding = new Binding($"Game.CurrentGrid[{i}][{j}]")
+					{
+						Source = DataContext,
+						Mode = BindingMode.OneWay
+					};
 
-		//			label.SetBinding(ContentProperty, contentBinding);
+					label.SetBinding(ContentProperty, contentBinding);
 
-		//			var backgroundBinding = new Binding($"Game.CurrentGrid[{i}][{j}]")
-		//			{
-		//				Source = DataContext,
-		//				Converter = backGroundColorConverter,
-		//				Mode = BindingMode.OneWay
-		//			};
+					var backgroundBinding = new Binding($"Game.CurrentGrid[{i}][{j}]")
+					{
+						Source = DataContext,
+						Converter = backGroundColorConverter,
+						Mode = BindingMode.OneWay
+					};
 
-		//			label.SetBinding(BackgroundProperty, backgroundBinding);
+					label.SetBinding(BackgroundProperty, backgroundBinding);
 
-		//			var foregroundBinding = new MultiBinding
-		//			{
-		//				Mode = BindingMode.OneWay,
-		//				Converter = charToColorConverter
-		//			};
+					var foregroundBinding = new MultiBinding
+					{
+						Mode = BindingMode.OneWay,
+						Converter = charToColorConverter
+					};
 
-		//			foregroundBinding.Bindings.Add(new Binding($"Game.CurrentLevel"));
-		//			foregroundBinding.Bindings.Add(new Binding($"Game.CurrentGrid[{i}][{j}]"));
-		//			label.SetBinding(ForegroundProperty, foregroundBinding);
+					foregroundBinding.Bindings.Add(new Binding($"Game.CurrentLevel"));
+					foregroundBinding.Bindings.Add(new Binding($"Game.CurrentGrid[{i}][{j}]"));
+					label.SetBinding(ForegroundProperty, foregroundBinding);
 
-		//			Grid.SetColumn(label, i);
-		//			Grid.SetRow(label, j);
+					Grid.SetColumn(label, i);
+					Grid.SetRow(label, j);
 
-		//			PlayingField.Children.Add(label);
-		//		}
-		//	}
-		//}
-
+					PlayingField.Children.Add(label);
+				}
+			}
+		}
 
 		private void MainWindow_Closing(object sender, CancelEventArgs e)
 		{
