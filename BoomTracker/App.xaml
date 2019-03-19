@@ -5,6 +5,7 @@
 			 StartupUri="MainWindow.xaml">
 	<Application.Resources>
 		<ResourceDictionary>
+			<BooleanToVisibilityConverter x:Key="booleanToVisibilityConverter" />
 			<Style x:Key="CButtonStyle"
 				   TargetType="Button">
 				<Setter Property="Content"

@@ -1,0 +1,139 @@
+﻿<Window x:Class="BoomTracker.CalibrationWindow"
+		xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+		xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+		xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+		xmlns:local="clr-namespace:BoomTracker"
+		mc:Ignorable="d"
+		Title="Calibration"
+		Height="450"
+		Width="800">
+	<Window.DataContext>
+		<local:CalibrationWindowViewModel />
+	</Window.DataContext>
+	<Grid>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="1*" />
+			<ColumnDefinition Width="225" />
+		</Grid.ColumnDefinitions>
+		<Image x:Name="MainImage"
+			   Source="{Binding MainImage}" />
+		<StackPanel x:Name="StatsStackPanel"
+					Grid.Row="1"
+					Grid.Column="1"
+					Margin="10"
+					Grid.ColumnSpan="2">
+
+			<ListBox x:Name="DigitsListBox"
+					 Margin="0,5,0,0"
+					 Background="Black"
+					 ScrollViewer.CanContentScroll="False"
+					 ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+					 ScrollViewer.VerticalScrollBarVisibility="Disabled">
+				<ListBox.ItemsPanel>
+					<ItemsPanelTemplate>
+						<WrapPanel />
+					</ItemsPanelTemplate>
+				</ListBox.ItemsPanel>
+				<ListBox.ItemTemplate>
+					<DataTemplate>
+						<Image Height="17"
+							   Source="{Binding}" />
+					</DataTemplate>
+				</ListBox.ItemTemplate>
+			</ListBox>
+
+			<StackPanel x:Name="ControlStackPanel"
+						Orientation="Horizontal"
+						Grid.Row="1"
+						Margin="0,5,0,0">
+				<StackPanel.Resources>
+					<Style x:Key="ControlButtonStyle"
+						   TargetType="Button"
+						   BasedOn="{StaticResource CButtonStyle}">
+						<Setter Property="Width"
+								Value="70" />
+						<Setter Property="Height"
+								Value="20" />
+						<Setter Property="Margin"
+								Value="5" />
+					</Style>
+
+				</StackPanel.Resources>
+
+				<StackPanel x:Name="BoxesStackPanel"
+							VerticalAlignment="Bottom">
+					<TextBlock Text="Select video source" />
+					<ComboBox x:Name="ImageSourceComboBox"
+							  DisplayMemberPath="Name"
+							  ItemsSource="{Binding VideoDevices}"
+							  SelectedItem="{Binding CurrentDevice}" />
+					<StackPanel Orientation="Horizontal"
+								Margin="0,15,0,0">
+						<TextBox Width="25"
+								 Margin="2"
+								 Text="{Binding ElementName=Main_Window, Path=DataContext.RectX, UpdateSourceTrigger=PropertyChanged}" />
+						<TextBox Width="25"
+								 Margin="2"
+								 Text="{Binding ElementName=Main_Window, Path=DataContext.RectY, UpdateSourceTrigger=PropertyChanged}" />
+						<TextBox Width="25"
+								 Margin="2"
+								 Text="{Binding ElementName=Main_Window, Path=DataContext.RectWidth, UpdateSourceTrigger=PropertyChanged}" />
+						<TextBox Width="25"
+								 Margin="2"
+								 Text="{Binding ElementName=Main_Window, Path=DataContext.RectHeight, UpdateSourceTrigger=PropertyChanged}" />
+
+					</StackPanel>
+					<StackPanel Orientation="Horizontal">
+						<TextBlock Width="25"
+								   Margin="2"
+								   Text="X"
+								   TextAlignment="Center" />
+						<TextBlock Width="25"
+								   Margin="2"
+								   Text="Y"
+								   TextAlignment="Center" />
+						<TextBlock Width="25"
+								   Margin="2"
+								   TextAlignment="Center"
+								   Text="W" />
+						<TextBlock Width="25"
+								   Margin="2"
+								   TextAlignment="Center"
+								   Text="H" />
+					</StackPanel>
+
+					<StackPanel Orientation="Horizontal">
+						<TextBox Width="25"
+								 Margin="2"
+								 Text="{Binding ElementName=Main_Window, Path=DataContext.Rect2X, UpdateSourceTrigger=PropertyChanged}" />
+						<TextBox Width="25"
+								 Margin="2"
+								 Text="{Binding ElementName=Main_Window, Path=DataContext.Rect2Y, UpdateSourceTrigger=PropertyChanged}" />
+						<TextBox Width="25"
+								 Margin="2"
+								 Text="{Binding ElementName=Main_Window, Path=DataContext.Rect2Width, UpdateSourceTrigger=PropertyChanged}" />
+						<TextBox Width="25"
+								 Margin="2"
+								 Text="{Binding ElementName=Main_Window, Path=DataContext.Rect2Height, UpdateSourceTrigger=PropertyChanged}" />
+					</StackPanel>
+				</StackPanel>
+
+				<StackPanel x:Name="ButtonsStackpanel"
+							Margin="5">
+					<Button Style="{StaticResource ControlButtonStyle}"
+							Command="{Binding StartCommand}" />
+
+					<Button Style="{StaticResource ControlButtonStyle}"
+							Command="{Binding StopCommand}" />
+
+					<Button Style="{StaticResource ControlButtonStyle}"
+							Command="{Binding ScreenshotCommand}" />
+
+				</StackPanel>
+
+			</StackPanel>
+		</StackPanel>
+
+	</Grid>
+</Window>

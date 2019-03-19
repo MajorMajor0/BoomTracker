@@ -9,7 +9,7 @@ namespace BoomTracker
 	public static class FileLocation
 	{
 
-		public static string Screens => @"C:\Source\BoomTracker\BoomTracker\Resources";
+		public static string Screens => @"C:\Source\BoomTracker\BoomTracker\Resources\Screens";
 
 		public static string TesseractData => @"C:\Source\BoomTracker\BoomTracker\Tessdata";
 

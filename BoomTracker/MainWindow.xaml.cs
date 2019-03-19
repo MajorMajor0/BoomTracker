@@ -17,8 +17,7 @@ namespace BoomTracker
 		public MainWindow()
 		{
 			InitializeComponent();
-			MWVM = new MainWindowViewModel();
-			DataContext = MWVM;
+			MWVM = (MainWindowViewModel)DataContext;
 
 			CreatePlayingFieldGrid();
 
@@ -91,6 +90,10 @@ namespace BoomTracker
 		{
 		}
 
+		void Exit_Click(object sender, RoutedEventArgs e)
+		{
+			this.Close();
+		}
 
 #if DEBUG
 		void MainWindowDebugStuff()
@@ -125,7 +128,7 @@ namespace BoomTracker
 			async void BonusButton_Click(object sender, RoutedEventArgs e)
 			{
 				await DebugStuff.MainWindowBonusAsync();
-				DigitsListBox.ItemsSource = DebugStuff.CalibrateOcr();
+				//DigitsListBox.ItemsSource = DebugStuff.CalibrateOcr();
 			}
 
 			void PauseButton_Click(object sender, RoutedEventArgs e)
@@ -133,10 +136,7 @@ namespace BoomTracker
 			}
 
 		}
-
 #endif
-
-
 		public event PropertyChangedEventHandler PropertyChanged;
 
 		protected void OnPropertyChanged(string propertyName)

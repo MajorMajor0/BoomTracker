@@ -16,16 +16,47 @@
 	</Window.DataContext>
 	<Grid x:Name="WindowGrid">
 		<Grid.RowDefinitions>
+			<RowDefinition Height="20" />
 			<RowDefinition Height="*" />
 		</Grid.RowDefinitions>
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition Width="*" />
-			<ColumnDefinition Width="70" />
-			<ColumnDefinition Width="150" />
+			<ColumnDefinition Width="130" />
 		</Grid.ColumnDefinitions>
 
+		<DockPanel x:Name="MenuDocPanel"
+				   Grid.ColumnSpan="3"
+				   Background="Transparent">
+			<Menu IsMainMenu="True"
+				  DockPanel.Dock="Top"
+				  Background="Transparent">
+				<MenuItem x:Name="FileMenuItem"
+						  Header="File">
+					<MenuItem Header="Exit"
+							  Click="Exit_Click" />
+				</MenuItem>
+
+				<MenuItem Header="Tools">
+
+					<MenuItem Style="{StaticResource CMenuItemStyle}"
+							  Command="{Binding CalibrationCommand}" />
+
+
+				</MenuItem>
+				<MenuItem Header="Help">
+
+					<MenuItem Style="{StaticResource CMenuItemStyle}"
+							  Command="{Binding HelpCommand}" />
+
+					<MenuItem Style="{StaticResource CMenuItemStyle}"
+							  Command="{Binding AboutCommand}" />
+				</MenuItem>
+			</Menu>
+		</DockPanel>
+
 		<Viewbox x:Name="TetrisViewBox"
-				 Margin="10">
+				 Margin="10"
+				 Grid.Row="1">
 			<Viewbox.Resources>
 				<Style x:Key="TetrisTextBlockStyle"
 					   TargetType="TextBlock">
@@ -37,7 +68,7 @@
 							Value="White" />
 				</Style>
 			</Viewbox.Resources>
-			
+
 			<Grid x:Name="TetrisGrid"
 				  HorizontalAlignment="Center"
 				  VerticalAlignment="Center">
@@ -120,74 +151,74 @@
 				</Grid>
 
 				<StackPanel Grid.Column="1"
-				Margin="2,0,0,0">
+							Margin="2,0,0,0">
 
-				<Border x:Name="ScoreBorder"
-						Height="60"
-						CornerRadius="1"
-						BorderThickness="1"
-						Background="Black"
-						BorderBrush="#FF9EFAED"
-						Padding="5,10,5,5">
-					<StackPanel>
-						<TextBlock Style="{StaticResource TetrisTextBlockStyle}"
-								   Text="TOP"
-								   VerticalAlignment="Top"
-								   HorizontalAlignment="Left" />
+					<Border x:Name="ScoreBorder"
+							Height="60"
+							CornerRadius="1"
+							BorderThickness="1"
+							Background="Black"
+							BorderBrush="#FF9EFAED"
+							Padding="5,10,5,5">
+						<StackPanel>
+							<TextBlock Style="{StaticResource TetrisTextBlockStyle}"
+									   Text="TOP"
+									   VerticalAlignment="Top"
+									   HorizontalAlignment="Left" />
 
-						<TextBlock x:Name="TopScoreTextBlock"
-								   Style="{StaticResource TetrisTextBlockStyle}"
-								   Text="000000"
-								   VerticalAlignment="Top"
-								   HorizontalAlignment="Left" />
+							<TextBlock x:Name="TopScoreTextBlock"
+									   Style="{StaticResource TetrisTextBlockStyle}"
+									   Text="000000"
+									   VerticalAlignment="Top"
+									   HorizontalAlignment="Left" />
 
-						<TextBlock Margin="0,7,0,0"
-								   Style="{StaticResource TetrisTextBlockStyle}"
-								   HorizontalAlignment="Left"
-								   Text="SCORE" />
+							<TextBlock Margin="0,7,0,0"
+									   Style="{StaticResource TetrisTextBlockStyle}"
+									   HorizontalAlignment="Left"
+									   Text="SCORE" />
 
-						<TextBlock x:Name="ScoreTextBlock"
-								   Style="{StaticResource TetrisTextBlockStyle}"
-								   Text="{Binding Game.CurrentScore, StringFormat=000000, FallbackValue=000000}"
-								   VerticalAlignment="Top"
-								   HorizontalAlignment="Left" />
+							<TextBlock x:Name="ScoreTextBlock"
+									   Style="{StaticResource TetrisTextBlockStyle}"
+									   Text="{Binding Game.CurrentScore, StringFormat=000000, FallbackValue=000000}"
+									   VerticalAlignment="Top"
+									   HorizontalAlignment="Left" />
 
-					</StackPanel>
-
-
+						</StackPanel>
 
 
-				</Border>
 
-				<Border x:Name="NextBorder"
-						HorizontalAlignment="Left"
-						Margin="0,5,0,0"
-						Padding="1"
-						Height="40"
-						Width="35"
-						CornerRadius="1"
-						BorderThickness="1"
-						Background="Black"
-						BorderBrush="#FF9EFAED">
-					<StackPanel>
-						<TextBlock Style="{StaticResource TetrisTextBlockStyle}"
-								   Text="NEXT"
-								   VerticalAlignment="Top"
-								   HorizontalAlignment="Center" />
 
-						<TextBlock x:Name="NextTextBlock"
-						Margin="0,5,0,0"
-								   FontFamily="Tetris"
-								   Foreground="Blue"
-								   Background="White"
-								   FontSize="6"
-								   Text="AAAA"
-								   VerticalAlignment="Top"
-								   HorizontalAlignment="Center" />
+					</Border>
 
-					</StackPanel>
+					<Border x:Name="NextBorder"
+							HorizontalAlignment="Left"
+							Margin="0,5,0,0"
+							Padding="1"
+							Height="40"
+							Width="35"
+							CornerRadius="1"
+							BorderThickness="1"
+							Background="Black"
+							BorderBrush="#FF9EFAED">
+						<StackPanel>
+							<TextBlock Style="{StaticResource TetrisTextBlockStyle}"
+									   Text="NEXT"
+									   VerticalAlignment="Top"
+									   HorizontalAlignment="Center" />
 
-				</Border>
+							<TextBlock x:Name="NextTextBlock"
+									   Margin="0,5,0,0"
+									   FontFamily="Tetris"
+									   Foreground="Blue"
+									   Background="White"
+									   FontSize="6"
+									   Text="AAAA"
+									   VerticalAlignment="Top"
+									   HorizontalAlignment="Center" />
+
+						</StackPanel>
+
+					</Border>
 
 					<Border x:Name="LevelBorder"
 							VerticalAlignment="Top"
@@ -222,21 +253,22 @@
 
 					</Border>
 				</StackPanel>
-			
+
 
 
 			</Grid>
 		</Viewbox>
-		<!--<Image x:Name="MainImage"
-			   Source="{Binding MainImage}" />-->
 
-		<StackPanel x:Name="StatsStackPanel"
+		<StackPanel x:Name="ControlStackPanel"
+					Grid.Row="1"
 					Grid.Column="1"
 					Margin="10"
 					Grid.ColumnSpan="2">
+
 			<TextBlock x:Name="TimerTextBlock"
-					   FontSize="20"
-					   Foreground="Blue">
+					   FontSize="17"
+					   Foreground="Blue"
+					   HorizontalAlignment="Center">
 				<TextBlock.Text>
 					<MultiBinding StringFormat="{}Time: {0}">
 						<Binding Path="Timer"
@@ -247,26 +279,16 @@
 
 			</TextBlock>
 
-			<ListBox x:Name="DigitsListBox"
-					 Margin="0,5,0,0"
-					 Background="Black"
-					 ScrollViewer.CanContentScroll="False"
-					 ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-					 ScrollViewer.VerticalScrollBarVisibility="Disabled">
-				<ListBox.ItemsPanel>
-					<ItemsPanelTemplate>
-						<WrapPanel />
-					</ItemsPanelTemplate>
-				</ListBox.ItemsPanel>
-				<ListBox.ItemTemplate>
-					<DataTemplate>
-						<Image Height="17"
-							   Source="{Binding}" />
-					</DataTemplate>
-				</ListBox.ItemTemplate>
-			</ListBox>
+			<StackPanel x:Name="VideoSourceStackPanel"
+						VerticalAlignment="Bottom">
+				<TextBlock Text="Select video source" />
+				<ComboBox x:Name="ImageSourceComboBox"
+						  DisplayMemberPath="Name"
+						  ItemsSource="{Binding VideoDevices}"
+						  SelectedItem="{Binding CurrentDevice}" />
+			</StackPanel>
 
-			<StackPanel x:Name="ControlStackPanel"
+			<StackPanel x:Name="ControlSubStackPanel"
 						Orientation="Horizontal"
 						Grid.Row="1"
 						Margin="0,5,0,0">
@@ -284,68 +306,10 @@
 
 				</StackPanel.Resources>
 
-				<StackPanel x:Name="BoxesStackPanel"
-							VerticalAlignment="Bottom">
-					<TextBlock Text="Select video source" />
-					<ComboBox x:Name="ImageSourceComboBox"
-							  DisplayMemberPath="Name"
-							  ItemsSource="{Binding VideoDevices}"
-							  SelectedItem="{Binding CurrentDevice}" />
-					<StackPanel Orientation="Horizontal"
-								Margin="0,15,0,0">
-						<TextBox Width="25"
-								 Margin="2"
-								 Text="{Binding ElementName=Main_Window, Path=DataContext.RectX, UpdateSourceTrigger=PropertyChanged}" />
-						<TextBox Width="25"
-								 Margin="2"
-								 Text="{Binding ElementName=Main_Window, Path=DataContext.RectY, UpdateSourceTrigger=PropertyChanged}" />
-						<TextBox Width="25"
-								 Margin="2"
-								 Text="{Binding ElementName=Main_Window, Path=DataContext.RectWidth, UpdateSourceTrigger=PropertyChanged}" />
-						<TextBox Width="25"
-								 Margin="2"
-								 Text="{Binding ElementName=Main_Window, Path=DataContext.RectHeight, UpdateSourceTrigger=PropertyChanged}" />
-
-					</StackPanel>
-					<StackPanel Orientation="Horizontal">
-						<TextBlock Width="25"
-								   Margin="2"
-								   Text="X"
-								   TextAlignment="Center" />
-						<TextBlock Width="25"
-								   Margin="2"
-								   Text="Y"
-								   TextAlignment="Center" />
-						<TextBlock Width="25"
-								   Margin="2"
-								   TextAlignment="Center"
-								   Text="W" />
-						<TextBlock Width="25"
-								   Margin="2"
-								   TextAlignment="Center"
-								   Text="H" />
-					</StackPanel>
-
-					<StackPanel Orientation="Horizontal">
-						<TextBox Width="25"
-								 Margin="2"
-								 Text="{Binding ElementName=Main_Window, Path=DataContext.Rect2X, UpdateSourceTrigger=PropertyChanged}" />
-						<TextBox Width="25"
-								 Margin="2"
-								 Text="{Binding ElementName=Main_Window, Path=DataContext.Rect2Y, UpdateSourceTrigger=PropertyChanged}" />
-						<TextBox Width="25"
-								 Margin="2"
-								 Text="{Binding ElementName=Main_Window, Path=DataContext.Rect2Width, UpdateSourceTrigger=PropertyChanged}" />
-						<TextBox Width="25"
-								 Margin="2"
-								 Text="{Binding ElementName=Main_Window, Path=DataContext.Rect2Height, UpdateSourceTrigger=PropertyChanged}" />
-					</StackPanel>
-				</StackPanel>
-
 				<StackPanel x:Name="ButtonsStackpanel"
 							Margin="5">
 					<Button Style="{StaticResource ControlButtonStyle}"
-							Command="{Binding StartCommand}" />
+							Command="{Binding StartCommand}"/>
 
 					<Button Style="{StaticResource ControlButtonStyle}"
 							Command="{Binding StopCommand}" />
@@ -357,7 +321,6 @@
 
 			</StackPanel>
 		</StackPanel>
-
 
 	</Grid>
 </Window>

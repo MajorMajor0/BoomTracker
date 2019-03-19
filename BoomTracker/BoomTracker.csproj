@@ -77,6 +77,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="CalibrationWindowViewModel.Commands.cs" />
+    <Compile Include="CalibrationWindowViewModel.cs" />
+    <Compile Include="CalibrationWindow.xaml.cs">
+      <DependentUpon>CalibrationWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Converters.cs" />
     <Compile Include="DebugStuff.cs" />
     <Compile Include="OCR.cs" />
@@ -90,6 +95,10 @@
     <Compile Include="MainWindowViewModel.cs" />
     <Compile Include="Palette.cs" />
     <Compile Include="Tetris.cs" />
+    <Page Include="CalibrationWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

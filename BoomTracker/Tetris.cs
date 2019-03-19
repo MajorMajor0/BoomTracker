@@ -53,12 +53,15 @@ namespace BoomTracker
 		public static byte BytesPerPixel;
 
 		/// <summary>Bitmap size produced by USB converter</summary>
-		public static double ImageWidth = 720.0;
-		public static double ImageHeight = 480.0;
+		public static int ImageWidth = (int)imageWidth;
+		public static int ImageHeight = (int)imageHeight;
+
+		private static double imageWidth => 720.0;
+		private static double imageHeight => 480.0;
 
 		/// <summary>Output NES resolution (generated resolution = 256 x 240)</summary>
-		public static double NESHeight = 224.0;
-		public static double NESWidth = 256.0;
+		private static double NESHeight => 224.0;
+		private static double NESWidth => 256.0;
 
 		/// <summary>Height of a digit in the score field, lines field and level field</summary>
 		public static int DigitWidth = 21;

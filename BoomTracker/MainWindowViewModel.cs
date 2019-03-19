@@ -28,11 +28,8 @@ namespace BoomTracker
 			{
 				gameOn = value;
 				OnPropertyChanged(nameof(GameOn));
-				OnPropertyChanged(nameof(GameOff));
 			}
 		}
-
-		public bool GameOff => !GameOn;
 
 		private double[] timeAverager = new double[60];
 		int iav = 0;
@@ -52,60 +49,6 @@ namespace BoomTracker
 		}
 
 		private Stopwatch watch = Stopwatch.StartNew();
-		private BitmapImage mainImage;
-
-		public BitmapImage MainImage
-		{
-			get => mainImage;
-			set
-			{
-				mainImage = value;
-				OnPropertyChanged(nameof(MainImage));
-			}
-		}
-
-		private BitmapImage levelImage;
-		public BitmapImage LevelImage
-		{
-			get => levelImage;
-			set
-			{
-				levelImage = value;
-				OnPropertyChanged(nameof(LevelImage));
-			}
-		}
-
-		private BitmapImage linesImage;
-		public BitmapImage LinesImage
-		{
-			get => linesImage;
-			set
-			{
-				linesImage = value;
-				OnPropertyChanged(nameof(LinesImage));
-			}
-		}
-
-		private BitmapImage scoreImage;
-		public BitmapImage ScoreImage
-		{
-			get => scoreImage;
-			set
-			{
-				scoreImage = value;
-				OnPropertyChanged(nameof(ScoreImage));
-			}
-		}
-
-		public int RectX { get; set; } = Tetris.PlayingField.Rectangle.Left;
-		public int RectY { get; set; } = Tetris.PlayingField.Rectangle.Top;
-		public int RectWidth { get; set; } = Tetris.PlayingField.Rectangle.Width;
-		public int RectHeight { get; set; } = Tetris.PlayingField.Rectangle.Height;
-
-		public int Rect2X { get; set; } = Tetris.NextField.Rectangle.Left;
-		public int Rect2Y { get; set; } = Tetris.NextField.Rectangle.Top;
-		public int Rect2Width { get; set; } = Tetris.NextField.Rectangle.Width;
-		public int Rect2Height { get; set; } = Tetris.NextField.Rectangle.Height;
 
 		public ObservableCollection<FilterInfo> VideoDevices { get; set; }
 
@@ -158,12 +101,9 @@ namespace BoomTracker
 		}
 
 		private static bool block;
-		private static bool evenFrame;
 		private async void OnNewFrame(object sender, NewFrameEventArgs eventArgs)
 		{
-			evenFrame = true;
-
-			if (!block && evenFrame)
+			if (!block)
 			{
 				watch.Restart();
 				//try
@@ -178,7 +118,7 @@ namespace BoomTracker
 					{
 						GameOn = true;
 						await Game.StoreState(bitmap);
-						
+
 					}
 
 					else
@@ -224,25 +164,6 @@ namespace BoomTracker
 					iav = 0;
 					Timer = Math.Round(timeAverager.Average(), 1).ToString();
 				}
-			}
-		}
-
-		private Pen orangePen = new Pen(Color.Orange, 1);
-		private Pen bluePen = new Pen(Color.Blue, 1);
-		private void DrawFields(Bitmap bitmap)
-		{
-			using (Graphics g = Graphics.FromImage(bitmap))
-			{
-				//foreach (var xy in Tetris.PlayingField.BlockPixels)
-				//{
-				//	bitmap.SetPixel(xy[0], xy[1], Color.Red);
-				//}
-
-				//foreach (var rect in Tetris.PlayingField.BlockFields)
-				//{
-				//	g.DrawRectangle(orangePen, rect);
-				//}
-				g.DrawRectangle(bluePen, RectX, RectY, RectWidth, RectHeight);
 			}
 		}
 
