@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media.Imaging;
 
@@ -19,6 +20,12 @@ namespace BoomTracker
 		public Game Game { get; set; }
 
 		private bool takeScreen;
+
+		//private bool takeScore;
+
+		//private bool takeLines;
+
+		//private bool takeLevel;
 
 		private bool gameOn;
 		public bool GameOn
@@ -69,17 +76,27 @@ namespace BoomTracker
 		{
 			InitializeCommands();
 			Game = new Game();
-			Game.PropertyChanged += GamePropertyChanged;
+			//Game.PropertyChanged += GamePropertyChanged;
 			GetVideoDevices();
 		}
 
-		private void GamePropertyChanged(object sender, PropertyChangedEventArgs a)
-		{
-			if (a.PropertyName == nameof(Game.CurrentScore))
-			{
-				//takeScreen = true;
-			}
-		}
+		//private void GamePropertyChanged(object sender, PropertyChangedEventArgs a)
+		//{
+		//	if (a.PropertyName == nameof(Game.CurrentScore))
+		//	{
+		//		takeScore = true;
+		//	}
+
+		//	if (a.PropertyName == nameof(Game.CurrentLevel))
+		//	{
+		//		takeLevel = true;
+		//	}
+
+		//	if (a.PropertyName == nameof(Game.CurrentLines))
+		//	{
+		//		takeLines = true;
+		//	}
+		//}
 
 		private void GetVideoDevices()
 		{
@@ -101,14 +118,11 @@ namespace BoomTracker
 		}
 
 		private static bool block;
-		private async void OnNewFrame(object sender, NewFrameEventArgs eventArgs)
+		private void OnNewFrame(object sender, NewFrameEventArgs eventArgs)
 		{
 			if (!block)
 			{
 				watch.Restart();
-				//try
-				//{
-				//BitmapImage bi;
 
 				using (var bitmap = (Bitmap)eventArgs.Frame.Clone())
 				{
@@ -117,8 +131,26 @@ namespace BoomTracker
 					if (Game.CheckIfGameIsOn(bitmap))
 					{
 						GameOn = true;
-						await Game.StoreState(bitmap);
+						Game.StoreState(bitmap);
+//#if DEBUG
+//						if (takeScore)
+//						{
+//							DebugStuff.StashScoreBox(bitmap, Game.CurrentScore);
+//							takeScore = false;
+//						}
 
+//						if (takeLines)
+//						{
+//							DebugStuff.StashLinesBox(bitmap, Game.CurrentLines);
+//							takeLines = false;
+//						}
+
+//						if (takeLevel)
+//						{
+//							DebugStuff.StashLevelBox(bitmap, Game.CurrentLevel);
+//							takeLevel = false;
+//						}
+//#endif
 					}
 
 					else
@@ -128,37 +160,18 @@ namespace BoomTracker
 
 					if (takeScreen)
 					{
-						//using (Bitmap scoreBitmap = bitmap.Clone(Tetris.ScoreField.ScoreRectangle, Tetris.PixelFormat))
-						//{
-						//	scoreBitmap.Save($"C:\\Source\\BoomTracker\\BoomTracker\\Resources\\Scores1\\{Game.CurrentScore}({Game.CurrentScoreConfidence}).bmp", ImageFormat.Bmp);
-						//}
-
+						//StoreScreen(bitmap);
 						takeScreen = false;
 					}
 
-					//DrawFields(bitmap);
-					//bi = bitmap.ToBitmapImage();
 					block = false;
 				}
-
-				// Avoid cross thread operations and prevent leaks
-				//bi.Freeze();
-				//MainImage = bi;
-				//}
-
-				//catch (Exception ex)
-				//{
-				//	MessageBox.Show($"Error on _videoSource_NewFrame:\n{ex.Message}",
-				//	"Error",
-				//	MessageBoxButton.OK,
-				//	MessageBoxImage.Error);
-				//	Stop();
-				//}
 
 				if (iav < timeAverager.Length)
 				{
 					timeAverager[iav++] = watch.ElapsedMilliseconds;
 				}
+
 				else
 				{
 					iav = 0;
@@ -166,6 +179,18 @@ namespace BoomTracker
 				}
 			}
 		}
+
+		private void StoreScreen(Bitmap bitmap)
+		{
+			Task.Run(() =>
+			{
+				using (Bitmap scoreBitmap = bitmap.Clone(Tetris.Image, Tetris.PixelFormat))
+				{
+					scoreBitmap.Save($"{FileLocation.Screens}\\{DateTime.Now.ToShortDateString()}({DateTime.Now.ToShortTimeString()}).bmp", ImageFormat.Bmp);
+				}
+			});
+		}
+
 
 		public event PropertyChangedEventHandler PropertyChanged;
 

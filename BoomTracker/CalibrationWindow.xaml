@@ -30,6 +30,7 @@
 					 ScrollViewer.CanContentScroll="False"
 					 ScrollViewer.HorizontalScrollBarVisibility="Disabled"
 					 ScrollViewer.VerticalScrollBarVisibility="Disabled">
+
 				<ListBox.ItemsPanel>
 					<ItemsPanelTemplate>
 						<WrapPanel />
@@ -48,6 +49,7 @@
 						Grid.Row="1"
 						Margin="0,5,0,0">
 				<StackPanel.Resources>
+
 					<Style x:Key="ControlButtonStyle"
 						   TargetType="Button"
 						   BasedOn="{StaticResource CButtonStyle}">
@@ -132,6 +134,17 @@
 
 				</StackPanel>
 
+
+
+			</StackPanel>
+
+			<StackPanel x:Name="CalibrationNumberStackPanel"
+						Margin="0,15,0,0"
+						Orientation="Horizontal">
+				<TextBox Width="15"
+						 HorizontalAlignment="Left"
+						 Text="{Binding CalibrationNumber,Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" />
+				<TextBlock Text="  Calibration number" />
 			</StackPanel>
 		</StackPanel>
 

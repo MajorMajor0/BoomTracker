@@ -13,7 +13,7 @@ namespace BoomTracker
 {
 	public class Game : INotifyPropertyChanged
 	{
-		private OCR ocr = new OCR();
+		private readonly OCR ocr = new OCR();
 
 		private char?[][] currentGrid = new char?[10][];
 		public char?[][] CurrentGrid
@@ -116,7 +116,7 @@ namespace BoomTracker
 			{
 				Stopwatch watch = Stopwatch.StartNew();
 				BitmapData bmData = bitmap.LockBits(
-				new Rectangle(0, 0, (int)Tetris.ImageWidth, (int)Tetris.ImageHeight),
+				new Rectangle(0, 0, Tetris.Image.Width, Tetris.Image.Height),
 				ImageLockMode.ReadWrite,
 				Tetris.PixelFormat);
 
@@ -171,7 +171,7 @@ namespace BoomTracker
 			}
 		}
 
-		public async Task<State> StoreState(Bitmap bitmap)
+		public State StoreState(Bitmap bitmap)
 		{
 			State state = new State();
 

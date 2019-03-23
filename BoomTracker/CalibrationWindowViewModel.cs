@@ -16,6 +16,17 @@ namespace BoomTracker
 {
 	public partial class CalibrationWindowViewModel : INotifyPropertyChanged
 	{
+		private int calibrationNumber;
+		public int CalibrationNumber
+		{
+			get => calibrationNumber;
+			set
+			{
+				calibrationNumber = value;
+				OnPropertyChanged(nameof(CalibrationNumber));
+			}
+		}
+
 		private bool takeScreen;
 
 		private BitmapImage mainImage;
@@ -49,10 +60,10 @@ namespace BoomTracker
 		public int RectWidth { get; set; } = Tetris.PlayingField.Rectangle.Width;
 		public int RectHeight { get; set; } = Tetris.PlayingField.Rectangle.Height;
 
-		public int Rect2X { get; set; } = Tetris.NextField.Rectangle.Left;
-		public int Rect2Y { get; set; } = Tetris.NextField.Rectangle.Top;
-		public int Rect2Width { get; set; } = Tetris.NextField.Rectangle.Width;
-		public int Rect2Height { get; set; } = Tetris.NextField.Rectangle.Height;
+		public int Rect2X { get; set; } = Tetris.Next.Rectangle.Left;
+		public int Rect2Y { get; set; } = Tetris.Next.Rectangle.Top;
+		public int Rect2Width { get; set; } = Tetris.Next.Rectangle.Width;
+		public int Rect2Height { get; set; } = Tetris.Next.Rectangle.Height;
 
 		public CalibrationWindowViewModel()
 		{
@@ -60,47 +71,46 @@ namespace BoomTracker
 			GetVideoDevices();
 		}
 
-		private static bool block;
 		private void OnNewFrame(object sender, NewFrameEventArgs eventArgs)
 		{
-			if (!block)
+			try
 			{
-				try
+				BitmapImage bi;
+
+				using (var bitmap = (Bitmap)eventArgs.Frame.Clone())
 				{
-					BitmapImage bi;
+					DrawFields(bitmap);
 
-					using (var bitmap = (Bitmap)eventArgs.Frame.Clone())
+					WriteScoreCalibration(bitmap);
+					WriteLevelCalibration(bitmap);
+					WriteLineCalibration(bitmap);
+
+					if (takeScreen)
 					{
-						block = true;
-
-						if (takeScreen)
+						using (Bitmap scoreBitmap = bitmap.Clone(new Rectangle(0, 0, Tetris.Image.Width, Tetris.Image.Height), Tetris.PixelFormat))
 						{
-							using (Bitmap scoreBitmap = bitmap.Clone(new Rectangle(0, 0, Tetris.ImageWidth, Tetris.ImageWidth), Tetris.PixelFormat))
-							{
-								scoreBitmap.Save($"{FileLocation.Screens}{DateTime.Now.ToString()}.bmp", ImageFormat.Bmp);
-							}
-
-							takeScreen = false;
+							string fileName = $"{FileLocation.Screens}{DateTime.Now.ToString()}.bmp";
+							scoreBitmap.Save($"{FileLocation.Screens}\\{DateTime.Now.ToString("yyyy-MM-dd HHmmss")}.bmp", ImageFormat.Bmp);
 						}
 
-						DrawFields(bitmap);
-						bi = bitmap.ToBitmapImage();
-						block = false;
+						takeScreen = false;
 					}
 
-					//Avoid cross thread operations and prevent leaks
-					bi.Freeze();
-					MainImage = bi;
+					bi = bitmap.ToBitmapImage();
 				}
 
-				catch (Exception ex)
-				{
-					MessageBox.Show($"Error on _videoSource_NewFrame:\n{ex.Message}",
-					"Error",
-					MessageBoxButton.OK,
-					MessageBoxImage.Error);
-					Stop();
-				}
+				//Avoid cross thread operations and prevent leaks
+				bi.Freeze();
+				MainImage = bi;
+			}
+
+			catch (Exception ex)
+			{
+				MessageBox.Show($"Error on _videoSource_NewFrame:\n{ex.Message}",
+				"Error",
+				MessageBoxButton.OK,
+				MessageBoxImage.Error);
+				Stop();
 			}
 		}
 
@@ -121,6 +131,57 @@ namespace BoomTracker
 			{
 				MessageBox.Show("No video sources found", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
 			}
+		}
+
+		private unsafe void WriteScoreCalibration(Bitmap bitmap)
+		{
+			BitmapData bmData = bitmap.LockBits(Tetris.Score.Rectangle, ImageLockMode.ReadOnly, Tetris.PixelFormat);
+			byte* scan0 = (byte*)bmData.Scan0.ToPointer();
+
+			for (int place = 0; place < 6; place++)
+			{
+				foreach (var address in Tetris.Score.Addresses[CalibrationNumber, place])
+				{
+					scan0[address] = 255;// Blue
+					scan0[address + 1] = 0; // Green
+					scan0[address + 2] = 0; // Red
+				}
+			}
+			bitmap.UnlockBits(bmData);
+		}
+
+		private unsafe void WriteLevelCalibration(Bitmap bitmap)
+		{
+			BitmapData bmData = bitmap.LockBits(Tetris.Level.Rectangle, ImageLockMode.ReadOnly, Tetris.PixelFormat);
+			byte* scan0 = (byte*)bmData.Scan0.ToPointer();
+
+			for (int place = 0; place < 2; place++)
+			{
+				foreach (var address in Tetris.Level.Addresses[CalibrationNumber, place])
+				{
+					scan0[address] = 255;// Blue
+					scan0[address + 1] = 0; // Green
+					scan0[address + 2] = 0; // Red
+				}
+			}
+			bitmap.UnlockBits(bmData);
+		}
+
+		private unsafe void WriteLineCalibration(Bitmap bitmap)
+		{
+			BitmapData bmData = bitmap.LockBits(Tetris.Lines.Rectangle, ImageLockMode.ReadOnly, Tetris.PixelFormat);
+			byte* scan0 = (byte*)bmData.Scan0.ToPointer();
+
+			for (int place = 0; place < 3; place++)
+			{
+				foreach (var address in Tetris.Lines.Addresses[CalibrationNumber, place])
+				{
+					scan0[address] = 255;// Blue
+					scan0[address + 1] = 0; // Green
+					scan0[address + 2] = 0; // Red
+				}
+			}
+			bitmap.UnlockBits(bmData);
 		}
 
 		private Pen orangePen = new Pen(Color.Orange, 1);

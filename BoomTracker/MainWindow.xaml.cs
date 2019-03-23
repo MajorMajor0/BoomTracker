@@ -125,10 +125,9 @@ namespace BoomTracker
 			ButtonsStackpanel.Children.Add(bonusButton);
 			ButtonsStackpanel.Children.Add(pauseButton);
 
-			async void BonusButton_Click(object sender, RoutedEventArgs e)
+			void BonusButton_Click(object sender, RoutedEventArgs e)
 			{
-				await DebugStuff.MainWindowBonusAsync();
-				//DigitsListBox.ItemsSource = DebugStuff.CalibrateOcr();
+				DebugStuff.MainWindowBonusAsync();
 			}
 
 			void PauseButton_Click(object sender, RoutedEventArgs e)
