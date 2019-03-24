@@ -15,6 +15,7 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Windows.Data;
 using System.Windows.Media;
 
@@ -67,7 +68,7 @@ namespace BoomTracker
 				int level = (int)values[0];
 				char character = (char)values[1];
 
-				if(character=='B')
+				if (character == 'B')
 				{
 
 				}
@@ -89,17 +90,17 @@ namespace BoomTracker
 			{
 				BrushDictionary = new List<Dictionary<char, SolidColorBrush>>();
 
-				var B = Palette.Mode.B;
-				var C = Palette.Mode.C;
-
 				// Create a dictionary for each level
 				for (int level = 0; level < Palette.NLevels; level++)
 				{
+					var B = Palette.Mode.B[level].Select(x => (byte)x).ToArray();
+					var C = Palette.Mode.C[level].Select(x => (byte)x).ToArray();
+
 					var dict = new Dictionary<char, SolidColorBrush>
 					{
-						{ 'A', new SolidColorBrush(Color.FromRgb((byte)C[level, 0], (byte)C[level, 1], (byte)C[level, 2])) },
-						{ 'B', new SolidColorBrush(Color.FromRgb((byte)B[level, 0], (byte)B[level, 1], (byte)B[level, 2])) },
-						{ 'C', new SolidColorBrush(Color.FromRgb((byte)C[level, 0], (byte)C[level, 1], (byte)C[level, 2])) }
+						{ 'A', new SolidColorBrush(Color.FromRgb(C[0], C[1], C[2])) },
+						{ 'B', new SolidColorBrush(Color.FromRgb(B[0], B[1], B[2])) },
+						{ 'C', new SolidColorBrush(Color.FromRgb(C[0], C[1], C[2])) }
 					};
 
 					BrushDictionary.Add(dict);

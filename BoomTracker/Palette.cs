@@ -24,216 +24,216 @@ namespace BoomTracker
 
 		public static class MidPoint
 		{
-			public static int[,] B { get; } = new int[,]
+			public static int[][] B { get; } = new int[][]
 			{
-				{  35, 165, 255 }, // Level  0
-				{  98, 208,   0 }, // Level  1
-				{ 246,  63, 255 }, // Level  2
-				{  30, 239,   0 }, // Level  3
-				{   1, 231,  81 }, // Level  4
-				{ 113, 117, 255 }, // Level  5
-				{  79,  81,  78 }, // Level  6
-				{  94,   0,   1 }, // Level  7
-				{ 183,  15,   0 }, // Level  8
-				{ 236, 131,   0 }, // Level  9
-				{ 100, 100, 100 },
-				{ 100, 100, 100 },
-				{ 100, 100, 100 },
-				{ 100, 100, 100 },
-				{ 100, 100, 100 },
-				{ 100, 100, 100 },
-				{ 100, 100, 100 },
-				{ 100, 100, 100 },
-				{ 100, 100, 100 },
-				{ 100, 100, 100 },
-				{ 100, 100, 100 },
-				{ 100, 100, 100 },
-				{ 100, 100, 100 },
-				{ 100, 100, 100 },
-				{ 100, 100, 100 },
-				{ 100, 100, 100 },
-				{ 100, 100, 100 },
-				{ 100, 100, 100 },
-				{ 100, 100, 100 },
-				{ 100, 100, 100 },
+				new []{  35, 165, 255 }, // Level  0
+				new []{  98, 208,   0 }, // Level  1
+				new []{ 246,  63, 255 }, // Level  2
+				new []{  30, 239,   0 }, // Level  3
+				new []{   1, 231,  81 }, // Level  4
+				new []{ 113, 117, 255 }, // Level  5
+				new []{  79,  81,  78 }, // Level  6
+				new []{  94,   0,   1 }, // Level  7
+				new []{ 183,  15,   0 }, // Level  8
+				new []{ 236, 131,   0 }, // Level  9
+				new []{ 100, 100, 100 },
+				new []{ 100, 100, 100 },
+				new []{ 100, 100, 100 },
+				new []{ 100, 100, 100 },
+				new []{ 100, 100, 100 },
+				new []{ 100, 100, 100 },
+				new []{ 100, 100, 100 },
+				new []{ 100, 100, 100 },
+				new []{ 100, 100, 100 },
+				new []{ 100, 100, 100 },
+				new []{ 100, 100, 100 },
+				new []{ 100, 100, 100 },
+				new []{ 100, 100, 100 },
+				new []{ 100, 100, 100 },
+				new []{ 100, 100, 100 },
+				new []{ 100, 100, 100 },
+				new []{ 100, 100, 100 },
+				new []{ 100, 100, 100 },
+				new []{ 100, 100, 100 },
+				new []{ 100, 100, 100 },
 
 			};
 
-			public static int[,] C { get; } = new int[,]
+			public static int[][] C { get; } = new int[][]
 			{
-				{  46,  10, 255 }, // Level  0
-				{   0, 146,   0 }, // Level  1
-				{ 162,   0, 219 }, // Level  2
-				{  41,  10, 238 }, // Level  3
-				{ 189,   0,  69 }, // Level  4
-				{   2, 230,  84 }, // Level  5
-				{ 179,  11,   0 }, // Level  6
-				{ 100,   0, 237 }, // Level  7
-				{  47,  12, 241 }, // Level  8
-				{ 163,  13,   0 }, // Level  9
-				{ 200, 200, 200 },
-				{ 200, 200, 200 },
-				{ 200, 200, 200 },
-				{ 200, 200, 200 },
-				{ 200, 200, 200 },
-				{ 200, 200, 200 },
-				{ 200, 200, 200 },
-				{ 200, 200, 200 },
-				{ 200, 200, 200 },
-				{ 200, 200, 200 },
-				{ 200, 200, 200 },
-				{ 200, 200, 200 },
-				{ 200, 200, 200 },
-				{ 200, 200, 200 },
-				{ 200, 200, 200 },
-				{ 200, 200, 200 },
-				{ 200, 200, 200 },
-				{ 200, 200, 200 },
-				{ 200, 200, 200 },
-				{ 200, 200, 200 },
+				new []{  46,  10, 255 }, // Level  0
+				new []{   0, 146,   0 }, // Level  1
+				new []{ 162,   0, 219 }, // Level  2
+				new []{  41,  10, 238 }, // Level  3
+				new []{ 189,   0,  69 }, // Level  4
+				new []{   2, 230,  84 }, // Level  5
+				new []{ 179,  11,   0 }, // Level  6
+				new []{ 100,   0, 237 }, // Level  7
+				new []{  47,  12, 241 }, // Level  8
+				new []{ 163,  13,   0 }, // Level  9
+				new []{ 200, 200, 200 },
+				new []{ 200, 200, 200 },
+				new []{ 200, 200, 200 },
+				new []{ 200, 200, 200 },
+				new []{ 200, 200, 200 },
+				new []{ 200, 200, 200 },
+				new []{ 200, 200, 200 },
+				new []{ 200, 200, 200 },
+				new []{ 200, 200, 200 },
+				new []{ 200, 200, 200 },
+				new []{ 200, 200, 200 },
+				new []{ 200, 200, 200 },
+				new []{ 200, 200, 200 },
+				new []{ 200, 200, 200 },
+				new []{ 200, 200, 200 },
+				new []{ 200, 200, 200 },
+				new []{ 200, 200, 200 },
+				new []{ 200, 200, 200 },
+				new []{ 200, 200, 200 },
+				new []{ 200, 200, 200 },
 			};
 		}
 
 		public static class Average
 		{
-			public static int[,] B { get; } = new int[,]
+			public static int[][] B { get; } = new int[][]
 			{
-				{  34, 167, 255 }, // Level  0
-				{  95, 213,   0 }, // Level  1
-				{ 246,  63, 255 }, // Level  2
-				{  29, 239,   0 }, // Level  3
-				{   0, 231,  80 }, // Level  4
-				{ 113, 117, 255 }, // Level  5
-				{  78,  81,  78 }, // Level  6
-				{ 102,   0,   0 }, // Level  7
-				{ 179,  12,   0 }, // Level  8
-				{ 244, 130,   0 }, // Level  9
-				{ 100, 100, 100 },
-				{ 100, 100, 100 },
-				{ 100, 100, 100 },
-				{ 100, 100, 100 },
-				{ 100, 100, 100 },
-				{ 100, 100, 100 },
-				{ 100, 100, 100 },
-				{ 100, 100, 100 },
-				{ 100, 100, 100 },
-				{ 100, 100, 100 },
-				{ 100, 100, 100 },
-				{ 100, 100, 100 },
-				{ 100, 100, 100 },
-				{ 100, 100, 100 },
-				{ 100, 100, 100 },
-				{ 100, 100, 100 },
-				{ 100, 100, 100 },
-				{ 100, 100, 100 },
-				{ 100, 100, 100 },
-				{ 100, 100, 100 },
+				new []{  34, 167, 255 }, // Level  0
+				new []{  95, 213,   0 }, // Level  1
+				new []{ 246,  63, 255 }, // Level  2
+				new []{  29, 239,   0 }, // Level  3
+				new []{   0, 231,  80 }, // Level  4
+				new []{ 113, 117, 255 }, // Level  5
+				new []{  78,  81,  78 }, // Level  6
+				new []{ 102,   0,   0 }, // Level  7
+				new []{ 179,  12,   0 }, // Level  8
+				new []{ 244, 130,   0 }, // Level  9
+				new []{ 100, 100, 100 },
+				new []{ 100, 100, 100 },
+				new []{ 100, 100, 100 },
+				new []{ 100, 100, 100 },
+				new []{ 100, 100, 100 },
+				new []{ 100, 100, 100 },
+				new []{ 100, 100, 100 },
+				new []{ 100, 100, 100 },
+				new []{ 100, 100, 100 },
+				new []{ 100, 100, 100 },
+				new []{ 100, 100, 100 },
+				new []{ 100, 100, 100 },
+				new []{ 100, 100, 100 },
+				new []{ 100, 100, 100 },
+				new []{ 100, 100, 100 },
+				new []{ 100, 100, 100 },
+				new []{ 100, 100, 100 },
+				new []{ 100, 100, 100 },
+				new []{ 100, 100, 100 },
+				new []{ 100, 100, 100 },
 
 			};
 
-			public static int[,] C { get; } = new int[,]
+			public static int[][] C { get; } = new int[][]
 			{
-				{  46,  10, 255 }, // Level  0
-				{   0, 145,   0 }, // Level  1
-				{ 173,   0, 235 }, // Level  2
-				{ 45,   10, 255 }, // Level  3
-				{ 190,   0,  68 }, // Level  4
-				{   0, 230,  81 }, // Level  5
-				{ 179,  11,   0 }, // Level  6
-				{ 110,   0, 255 }, // Level  7
-				{  45, 110, 255 }, // Level  8
-				{ 179,  11,   0 }, // Level  9
-				{ 100, 100, 100 },
-				{ 100, 100, 100 },
-				{ 100, 100, 100 },
-				{ 100, 100, 100 },
-				{ 100, 100, 100 },
-				{ 100, 100, 100 },
-				{ 100, 100, 100 },
-				{ 100, 100, 100 },
-				{ 100, 100, 100 },
-				{ 100, 100, 100 },
-				{ 100, 100, 100 },
-				{ 100, 100, 100 },
-				{ 100, 100, 100 },
-				{ 100, 100, 100 },
-				{ 100, 100, 100 },
-				{ 100, 100, 100 },
-				{ 100, 100, 100 },
-				{ 100, 100, 100 },
-				{ 100, 100, 100 },
-				{ 100, 100, 100 },
+				new[]{  46,  10, 255 }, // Level  0
+				new[]{   0, 145,   0 }, // Level  1
+				new[]{ 173,   0, 235 }, // Level  2
+				new[]{ 45,   10, 255 }, // Level  3
+				new[]{ 190,   0,  68 }, // Level  4
+				new[]{   0, 230,  81 }, // Level  5
+				new[]{ 179,  11,   0 }, // Level  6
+				new[]{ 110,   0, 255 }, // Level  7
+				new[]{  45, 110, 255 }, // Level  8
+				new[]{ 179,  11,   0 }, // Level  9
+				new[]{ 100, 100, 100 },
+				new[]{ 100, 100, 100 },
+				new[]{ 100, 100, 100 },
+				new[]{ 100, 100, 100 },
+				new[]{ 100, 100, 100 },
+				new[]{ 100, 100, 100 },
+				new[]{ 100, 100, 100 },
+				new[]{ 100, 100, 100 },
+				new[]{ 100, 100, 100 },
+				new[]{ 100, 100, 100 },
+				new[]{ 100, 100, 100 },
+				new[]{ 100, 100, 100 },
+				new[]{ 100, 100, 100 },
+				new[]{ 100, 100, 100 },
+				new[]{ 100, 100, 100 },
+				new[]{ 100, 100, 100 },
+				new[]{ 100, 100, 100 },
+				new[]{ 100, 100, 100 },
+				new[]{ 100, 100, 100 },
+				new[]{ 100, 100, 100 },
 			};
 		}
 
 		public static class Mode
 		{
-			public static int[,] B { get; } = new int[,]
+			public static int[][] B { get; } = new int[][]
 			{
-				{  34, 167, 255 }, // Level  0
-				{  96, 213,   0 }, // Level  1
-				{ 247,  63, 255 }, // Level  2
-				{  29, 239,   0 }, // Level  3
-				{   0, 231,  80 }, // Level  4
-				{ 113, 117, 255 }, // Level  5
-				{  79,  81,  78 }, // Level  6
-				{ 102,   0,   0 }, // Level  7
-				{ 180,  12,   0 }, // Level  8
-				{ 245, 130,   0 }, // Level  9
-				{ 100, 100, 100 },
-				{ 100, 100, 100 },
-				{ 100, 100, 100 },
-				{ 100, 100, 100 },
-				{ 100, 100, 100 },
-				{ 100, 100, 100 },
-				{ 100, 100, 100 },
-				{ 100, 100, 100 },
-				{ 100, 100, 100 },
-				{ 100, 100, 100 },
-				{ 100, 100, 100 },
-				{ 100, 100, 100 },
-				{ 100, 100, 100 },
-				{ 100, 100, 100 },
-				{ 100, 100, 100 },
-				{ 100, 100, 100 },
-				{ 100, 100, 100 },
-				{ 100, 100, 100 },
-				{ 100, 100, 100 },
-				{ 100, 100, 100 },
+				new[]{  34, 167, 255 }, // Level  0
+				new[]{  96, 213,   0 }, // Level  1
+				new[]{ 247,  63, 255 }, // Level  2
+				new[]{  29, 239,   0 }, // Level  3
+				new[]{   0, 231,  80 }, // Level  4
+				new[]{ 113, 117, 255 }, // Level  5
+				new[]{  79,  81,  78 }, // Level  6
+				new[]{ 102,   0,   0 }, // Level  7
+				new[]{ 180,  12,   0 }, // Level  8
+				new[]{ 245, 130,   0 }, // Level  9
+				new[]{ 100, 100, 100 },
+				new[]{ 100, 100, 100 },
+				new[]{ 100, 100, 100 },
+				new[]{ 100, 100, 100 },
+				new[]{ 100, 100, 100 },
+				new[]{ 100, 100, 100 },
+				new[]{ 100, 100, 100 },
+				new[]{ 100, 100, 100 },
+				new[]{ 100, 100, 100 },
+				new[]{ 100, 100, 100 },
+				new[]{ 100, 100, 100 },
+				new[]{ 100, 100, 100 },
+				new[]{ 100, 100, 100 },
+				new[]{ 100, 100, 100 },
+				new[]{ 100, 100, 100 },
+				new[]{ 100, 100, 100 },
+				new[]{ 100, 100, 100 },
+				new[]{ 100, 100, 100 },
+				new[]{ 100, 100, 100 },
+				new[]{ 100, 100, 100 },
 			};
 
-			public static int[,] C { get; } = new int[,]
+			public static int[][] C { get; } = new int[][]
 			{
-				{  46,  10, 255 }, // Level  0
-				{   0, 145,   0 }, // Level  1
-				{ 173,   0, 235 }, // Level  2
-				{  45,  10, 255 }, // Level  3
-				{ 190,   0,  68 }, // Level  4
-				{   0, 230,  81 }, // Level  5
-				{ 179,  11,   0 }, // Level  6
-				{ 111,   0, 255 }, // Level  7
-				{  45,  10, 255 }, // Level  8
-				{ 179,  12,   0 }, // Level  9
-				{ 100, 100, 100 },
-				{ 100, 100, 100 },
-				{ 100, 100, 100 },
-				{ 100, 100, 100 },
-				{ 100, 100, 100 },
-				{ 100, 100, 100 },
-				{ 100, 100, 100 },
-				{ 100, 100, 100 },
-				{ 100, 100, 100 },
-				{ 100, 100, 100 },
-				{ 100, 100, 100 },
-				{ 100, 100, 100 },
-				{ 100, 100, 100 },
-				{ 100, 100, 100 },
-				{ 100, 100, 100 },
-				{ 100, 100, 100 },
-				{ 100, 100, 100 },
-				{ 100, 100, 100 },
-				{ 100, 100, 100 },
-				{ 100, 100, 100 },
+				new[]{  46,  10, 255 }, // Level  0
+				new[]{   0, 145,   0 }, // Level  1
+				new[]{ 173,   0, 235 }, // Level  2
+				new[]{  45,  10, 255 }, // Level  3
+				new[]{ 190,   0,  68 }, // Level  4
+				new[]{   0, 230,  81 }, // Level  5
+				new[]{ 179,  11,   0 }, // Level  6
+				new[]{ 111,   0, 255 }, // Level  7
+				new[]{  45,  10, 255 }, // Level  8
+				new[]{ 179,  12,   0 }, // Level  9
+				new[]{ 100, 100, 100 },
+				new[]{ 100, 100, 100 },
+				new[]{ 100, 100, 100 },
+				new[]{ 100, 100, 100 },
+				new[]{ 100, 100, 100 },
+				new[]{ 100, 100, 100 },
+				new[]{ 100, 100, 100 },
+				new[]{ 100, 100, 100 },
+				new[]{ 100, 100, 100 },
+				new[]{ 100, 100, 100 },
+				new[]{ 100, 100, 100 },
+				new[]{ 100, 100, 100 },
+				new[]{ 100, 100, 100 },
+				new[]{ 100, 100, 100 },
+				new[]{ 100, 100, 100 },
+				new[]{ 100, 100, 100 },
+				new[]{ 100, 100, 100 },
+				new[]{ 100, 100, 100 },
+				new[]{ 100, 100, 100 },
+				new[]{ 100, 100, 100 },
 			};
 		}
 
@@ -253,19 +253,16 @@ namespace BoomTracker
 
 			for (int i = 0; i < 10; i++)
 			{
-				for (int j = 0; j < 3; j++)
+				for (int k = 1; k < 3; k++)
 				{
-					for (int k = 1; k < 3; k++)
-					{
-						MidPoint.B[i + k * 10, j] = MidPoint.B[i, j];
-						MidPoint.C[i + k * 10, j] = MidPoint.C[i, j];
+					MidPoint.B[i + k * 10] = MidPoint.B[i];
+					MidPoint.C[i + k * 10] = MidPoint.C[i];
 
-						Average.B[i + k * 10, j] = Average.B[i, j];
-						Average.C[i + k * 10, j] = Average.C[i, j];
+					Average.B[i + k * 10] = Average.B[i];
+					Average.C[i + k * 10] = Average.C[i];
 
-						Mode.B[i + k * 10, j] = Mode.B[i, j];
-						Mode.C[i + k * 10, j] = Mode.C[i, j];
-					}
+					Mode.B[i + k * 10] = Mode.B[i];
+					Mode.C[i + k * 10] = Mode.C[i];
 				}
 			}
 			CreateScanDictionaries();
@@ -283,15 +280,15 @@ namespace BoomTracker
 
 				// Add dictionary entries corresponding to 'B'
 				// Loop over +/-width for r, stored as 0 place in MidPoint.C
-				var bPoints = MidPoint.B;
+				var bPoints = MidPoint.B[level];
 
-				for (int r = bPoints[level, 0] - ScanWidth; r < bPoints[level, 0] + ScanWidth; r++)
+				for (int r = bPoints[0] - ScanWidth; r < bPoints[0] + ScanWidth; r++)
 				{
 					// Loop over +/-width for g, stored as 1 place in MidPoint.B
-					for (int g = bPoints[level, 1] - ScanWidth; g < bPoints[level, 1] + ScanWidth; g++)
+					for (int g = bPoints[1] - ScanWidth; g < bPoints[1] + ScanWidth; g++)
 					{
 						// Loop over +/-width for b, stored as 2 place in MidPoint.B
-						for (int b = bPoints[level, 2] - ScanWidth; b < bPoints[level, 2] + ScanWidth; b++)
+						for (int b = bPoints[2] - ScanWidth; b < bPoints[2] + ScanWidth; b++)
 						{
 							//Toss negative values
 							int R = Math.Max(r, 0);
@@ -317,15 +314,15 @@ namespace BoomTracker
 
 				// Add dictionary entries corresponding to 'C'
 				// Loop over +/-width for r, stored as 0 place in MidPoint.C
-				var cPoints = MidPoint.C;
+				var cPoints = MidPoint.C[level];
 
-				for (int r = cPoints[level, 0] - ScanWidth; r < cPoints[level, 0] + ScanWidth; r++)
+				for (int r = cPoints[0] - ScanWidth; r < cPoints[0] + ScanWidth; r++)
 				{
 					// Loop over +/-width for g, stored as 1 place in MidPoint.C
-					for (int g = cPoints[level, 1] - ScanWidth; g < cPoints[level, 1] + ScanWidth; g++)
+					for (int g = cPoints[1] - ScanWidth; g < cPoints[1] + ScanWidth; g++)
 					{
 						// Loop over +/-width for b, stored as 2 place in MidPoint.C
-						for (int b = cPoints[level, 2] - ScanWidth; b < cPoints[level, 2] + ScanWidth; b++)
+						for (int b = cPoints[2] - ScanWidth; b < cPoints[2] + ScanWidth; b++)
 						{
 							//Toss negative values
 							int R = Math.Max(r, 0);
