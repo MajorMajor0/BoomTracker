@@ -70,24 +70,17 @@ namespace BoomTracker
 
 		//private int currentScoreBuffer;
 		public int CurrentScoreConfidence;
+
 		private int currentScore;
 		public int CurrentScore
 		{
 			get => currentScore;
 			set
 			{
-				if (value != currentScore)
+				if (value > currentScore)
 				{
-					//if (value == currentScoreBuffer)
-					//{
 					currentScore = value;
 					OnPropertyChanged(nameof(CurrentScore));
-					//}
-					//else
-					//{
-					//	currentScoreBuffer = value;
-					//}
-
 				}
 			}
 		}
@@ -121,39 +114,35 @@ namespace BoomTracker
 				Tetris.PixelFormat);
 
 				byte* scan0 = (byte*)bmData.Scan0.ToPointer();
-				int nLevels = Palette.ScanTarget.B.GetLength(0);
 
 				int Nk = Tetris.PlayingField.FieldWidth * Tetris.PlayingField.FieldHeight;
 				for (int i = 0; i < Tetris.PlayingField.NColumns; i++)
 				{
 					for (int j = 0; j < Tetris.PlayingField.Nrows; j++)
 					{
-						int[] colors = { 0, 0, 0 };
+						var color = (0, 0, 0);
 						for (int k = 0; k < Nk; k++)
 						{
 							int address = Tetris.PlayingField.BlockAddresses[i, j][k];
-							colors[0] += scan0[address]; // Blue
-							colors[1] += scan0[address + 1]; // Green
-							colors[2] += scan0[address + 2]; // Red
+							color.Item3 += scan0[address]; // Blue
+							color.Item2 += scan0[address + 1]; // Green
+							color.Item1 += scan0[address + 2]; // Red
 
 							//scan0[address] = 255; // Blue
 							//scan0[address + 1]=0; // Green
 							//scan0[address + 2]=0; // Red
 						}
 
-						int colorCheck = (colors[1] + colors[2]) / Nk;
+						color.Item1 /= Nk;
+						color.Item2 /= Nk;
+						color.Item3 /= Nk;
 
-						if (level >= nLevels)
+						if (!Palette.ScanDictionary[level].TryGetValue(color, out Grid[i][j]))
 						{
 							Grid[i][j] = null;
 						}
 
-						else if (!Palette.ScanDictionary[level].TryGetValue(colorCheck, out Grid[i][j]))
-						{
-							Grid[i][j] = null;
-						}
-
-						//Debug.WriteLine($"{colors[2] / Nk}\t{colors[1] / Nk}\t{colors[0] / Nk}");
+						//Debug.WriteLine($"{color.Item1}\t{color.Item2}\t{color.Item3}");
 					}
 				}
 
@@ -175,7 +164,7 @@ namespace BoomTracker
 		{
 			State state = new State();
 
-			Task<int[]>[] tasks = new Task<int[]>[3];
+			//Task<int[]>[] tasks = new Task<int[]>[3];
 
 			if (Tetris.Score.Read(bitmap, out int score))
 			{
