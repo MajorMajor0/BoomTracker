@@ -1,13 +1,22 @@
-﻿using System;
+﻿/*This file is part of BoomTracker.
+ * 
+ * BoomTracker is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published 
+ * version 3 of the License, or (at your option) any later version.
+ * 
+ * BoomTracker is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.See the GNU 
+ * General Public License for more details. 
+ * 
+ * You should have received a copy of the GNU General Public License
+ *  along with BoomTracker.  If not, see<http://www.gnu.org/licenses/>.*/
+
+using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 using System.Drawing.Imaging;
-using System.Windows.Media.Imaging;
 
 namespace BoomTracker
 {
@@ -48,7 +57,7 @@ namespace BoomTracker
 		}
 
 		/// <summary>OCR will guess numbers in this order to avoid accidentally masking a number with fewer pixels </summary>
-		private static int[] guessOrder = new int[] { 8, 0, 9, 6, 5, 3, 2, 4, 7, 1, 10 };
+		private static readonly int[] guessOrder = new int[] { 8, 0, 9, 6, 5, 3, 2, 4, 7, 1, 10 };
 
 		/// <summary>This entire rectangle should be black during a game (or paused) and non-black when not during a game</summary>
 		public static Rectangle IsGameRectangle { get; } = new Rectangle(545, 36, 5, 3);
@@ -135,8 +144,8 @@ namespace BoomTracker
 					for (int j = 0; j < Nrows; j++)
 					{
 						// Top left corner of current block
-						double x0 = (double)Rectangle.Left + BlockMargin + (double)i * (BlockWidth + BlockMargin);
-						double y0 = (double)Rectangle.Top + BlockMargin + (double)j * (BlockHeight + BlockMargin);
+						double x0 = Rectangle.Left + BlockMargin + i * (BlockWidth + BlockMargin);
+						double y0 = Rectangle.Top + BlockMargin + j * (BlockHeight + BlockMargin);
 
 						BlockCenters[i, j, 0] = (int)(x0 + BlockWidth / 2);
 						BlockCenters[i, j, 1] = (int)(y0 + BlockHeight / 2);
@@ -212,7 +221,7 @@ namespace BoomTracker
 
 			private static void SetAddresses()
 			{
-				int imageWidth = (int)Image.Width;
+				int imageWidth = Image.Width;
 
 				for (int digit = 0; digit < 10; digit++)
 				{
@@ -236,7 +245,7 @@ namespace BoomTracker
 				}
 			}
 
-			public unsafe static bool Read(Bitmap bitmap, out int score)
+			public static unsafe bool Read(Bitmap bitmap, out int score)
 			{
 				BitmapData bmData = bitmap.LockBits(Rectangle, ImageLockMode.ReadOnly, PixelFormat);
 				byte* scan0 = (byte*)bmData.Scan0.ToPointer();
@@ -300,7 +309,7 @@ namespace BoomTracker
 
 			private static void SetAddresses()
 			{
-				int imageWidth = (int)Image.Width;
+				int imageWidth = Image.Width;
 
 				for (int digit = 0; digit < 10; digit++)
 				{
@@ -324,7 +333,7 @@ namespace BoomTracker
 				}
 			}
 
-			public unsafe static bool Read(Bitmap bitmap, out int score)
+			public static unsafe bool Read(Bitmap bitmap, out int score)
 			{
 				BitmapData bmData = bitmap.LockBits(Rectangle, ImageLockMode.ReadOnly, PixelFormat);
 				byte* scan0 = (byte*)bmData.Scan0.ToPointer();
@@ -413,7 +422,7 @@ namespace BoomTracker
 				}
 			}
 
-			public unsafe static bool Read(Bitmap bitmap, out int score)
+			public static unsafe bool Read(Bitmap bitmap, out int score)
 			{
 				BitmapData bmData = bitmap.LockBits(Rectangle, ImageLockMode.ReadOnly, PixelFormat);
 				byte* scan0 = (byte*)bmData.Scan0.ToPointer();
