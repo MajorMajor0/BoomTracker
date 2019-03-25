@@ -243,19 +243,28 @@
 									   Text="{Binding Game.CurrentLevel, StringFormat=D2}"
 									   VerticalAlignment="Top"
 									   HorizontalAlignment="Center" />
-
-
-
 						</StackPanel>
-
-
-
 
 					</Border>
 				</StackPanel>
 
+				<Border BorderBrush="{Binding GameOnBrush}"
+						BorderThickness="1"
+						Grid.Column="1"
+						VerticalAlignment="Bottom"
+						HorizontalAlignment="Left"
+						Height="10"
+						Width="30"
+						CornerRadius="3"
+						Margin="2,0,0,0"
+						Background="Black">
+					<TextBlock Text="{Binding GameOnString, FallbackValue=GameOff}"
+							   Foreground="{Binding GameOnBrush}"
+							   FontSize="5"
+							   HorizontalAlignment="Center"
+							   VerticalAlignment="Stretch" />
 
-
+				</Border>
 			</Grid>
 		</Viewbox>
 
@@ -264,6 +273,20 @@
 					Grid.Column="1"
 					Margin="10"
 					Grid.ColumnSpan="2">
+
+			<StackPanel.Resources>
+				<Style x:Key="ControlButtonStyle"
+					   TargetType="Button"
+					   BasedOn="{StaticResource CButtonStyle}">
+					<Setter Property="Width"
+							Value="70" />
+					<Setter Property="Height"
+							Value="20" />
+					<Setter Property="Margin"
+							Value="5" />
+				</Style>
+
+			</StackPanel.Resources>
 
 			<TextBlock x:Name="TimerTextBlock"
 					   FontSize="17"
@@ -292,24 +315,12 @@
 						Orientation="Horizontal"
 						Grid.Row="1"
 						Margin="0,5,0,0">
-				<StackPanel.Resources>
-					<Style x:Key="ControlButtonStyle"
-						   TargetType="Button"
-						   BasedOn="{StaticResource CButtonStyle}">
-						<Setter Property="Width"
-								Value="70" />
-						<Setter Property="Height"
-								Value="20" />
-						<Setter Property="Margin"
-								Value="5" />
-					</Style>
 
-				</StackPanel.Resources>
 
 				<StackPanel x:Name="ButtonsStackpanel"
 							Margin="5">
 					<Button Style="{StaticResource ControlButtonStyle}"
-							Command="{Binding StartCommand}"/>
+							Command="{Binding StartCommand}" />
 
 					<Button Style="{StaticResource ControlButtonStyle}"
 							Command="{Binding StopCommand}" />
@@ -318,9 +329,21 @@
 							Command="{Binding ScreenshotCommand}" />
 
 				</StackPanel>
-
 			</StackPanel>
+
+			<StackPanel x:Name="PlayerStackPanel">
+				<TextBlock Text="Active Player" />
+				<ComboBox x:Name="PlayerComboBox"
+						  DisplayMemberPath="Name"
+						  ItemsSource="{Binding Players}"
+						  SelectedItem="{Binding CurrentPlayer, Mode=TwoWay}" />
+			</StackPanel>
+
+			<Button Style="{StaticResource ControlButtonStyle}"
+					Command="{Binding NewPlayerCommand}" />
+
 		</StackPanel>
 
 	</Grid>
+
 </Window>

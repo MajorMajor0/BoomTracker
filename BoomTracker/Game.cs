@@ -4,16 +4,15 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Tesseract;
 
 namespace BoomTracker
 {
+	[Serializable]
 	public class Game : INotifyPropertyChanged
 	{
-		private readonly OCR ocr = new OCR();
+		public string Player { get; set; }
+
+		//private readonly OCR ocr = new OCR();
 
 		private char?[][] currentGrid = new char?[10][];
 		public char?[][] CurrentGrid

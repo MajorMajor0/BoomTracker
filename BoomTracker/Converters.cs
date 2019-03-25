@@ -21,12 +21,12 @@ using System.Windows.Media;
 
 namespace BoomTracker
 {
-	class Converters
+	internal class Converters
 	{
 		public class BackGroundColorConverter : IValueConverter
 		{
-			private static SolidColorBrush white => new SolidColorBrush(Colors.White);
-			private static SolidColorBrush black => new SolidColorBrush(Colors.Black);
+			private static readonly SolidColorBrush white = new SolidColorBrush(Colors.White);
+			private static readonly SolidColorBrush black = new SolidColorBrush(Colors.Black);
 
 			public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
 			{

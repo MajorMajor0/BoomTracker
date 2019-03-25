@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AForge.Video;
+﻿using AForge.Video;
 using AForge.Video.DirectShow;
 
 namespace BoomTracker
@@ -16,9 +10,10 @@ namespace BoomTracker
 			StartCommand = new Command(Start, StartCanExecute, "Start", "Start the selected camera.");
 			StopCommand = new Command(Stop, StopCanExecute, "Stop", "Stop the selected camera.");
 			ScreenshotCommand = new Command(Screenshot, ScreenShotCanExecute, "Screen Shot", "Save screen shot to file.");
-			CalibrationCommand = new Command(Calibration,CalibrationCanExecute, "Calibration Window", "Open the calibration window.");
+			CalibrationCommand = new Command(Calibration, CalibrationCanExecute, "Calibration Window", "Open the calibration window.");
 			HelpCommand = new Command(Help, HelpCanExecute, "Help Window", "Open the help window.");
 			AboutCommand = new Command(About, AboutCanExecute, "About Window", "Open the about window.");
+			NewPlayerCommand = new Command(NewPlayer, NewPlayerCanExecute, "Add Player", "Add a new player");
 		}
 
 		public Command StartCommand { get; private set; }
@@ -104,6 +99,24 @@ namespace BoomTracker
 
 		private void About()
 		{
+		}
+
+		public Command NewPlayerCommand { get; private set; }
+
+		private bool NewPlayerCanExecute()
+		{
+			return true;
+		}
+
+		private void NewPlayer()
+		{
+			NewPlayerDialog npd = new NewPlayerDialog();
+
+			if (npd.ShowDialog() ?? false)
+			{
+				Data.Players.Add(new Player { Name = npd.PlayerName });
+				OnPropertyChanged(nameof(Players));
+			}
 		}
 	}
 }

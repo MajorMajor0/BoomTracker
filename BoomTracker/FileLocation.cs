@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.IO;
 
 namespace BoomTracker
 {
@@ -23,6 +18,16 @@ namespace BoomTracker
 
 		public static string TesseractConfig => $"{TesseractData}\\config.txt";
 
+		public static class Data
+		{
+			public static string Folder => $"{FileLocation.Folder}\\Data";
+
+			public static string Players => $"{Folder}\\Players.dat";
+
+			public static string Games => $"{Folder}\\Games.dat";
+		}
+
+
 		static FileLocation()
 		{
 			Directory.CreateDirectory(Screens);
@@ -30,6 +35,7 @@ namespace BoomTracker
 			Directory.CreateDirectory(Lines);
 			Directory.CreateDirectory(Levels);
 			Directory.CreateDirectory(TesseractData);
+			Directory.CreateDirectory(Data.Folder);
 		}
 	}
 }

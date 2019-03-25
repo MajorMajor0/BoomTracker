@@ -84,7 +84,11 @@
       <DependentUpon>CalibrationWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Converters.cs" />
+    <Compile Include="Data.cs" />
     <Compile Include="DebugStuff.cs" />
+    <Compile Include="NewPlayerDialog.xaml.cs">
+      <DependentUpon>NewPlayerDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="OCR.cs" />
     <Compile Include="Command.cs" />
     <Compile Include="FileLocation.cs" />
@@ -95,6 +99,7 @@
     <Compile Include="MainWindowViewModel.Commands.cs" />
     <Compile Include="MainWindowViewModel.cs" />
     <Compile Include="Palette.cs" />
+    <Compile Include="Player.cs" />
     <Compile Include="Tetris.cs" />
     <Page Include="CalibrationWindow.xaml">
       <SubType>Designer</SubType>
@@ -113,6 +118,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="NewPlayerDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">

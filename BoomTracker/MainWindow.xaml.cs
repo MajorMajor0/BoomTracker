@@ -31,9 +31,9 @@ namespace BoomTracker
 			var charToColorConverter = new Converters.CharToColorConverter();
 			var backGroundColorConverter = new Converters.BackGroundColorConverter();
 
-			for (int i = 0; i < 10; i++)
+			for(int i = 0; i < 10; i++)
 			{
-				for (int j = 0; j < 20; j++)
+				for(int j = 0; j < 20; j++)
 				{
 					Label label = new Label
 					{
@@ -84,19 +84,20 @@ namespace BoomTracker
 		private void MainWindow_Closing(object sender, CancelEventArgs e)
 		{
 			MWVM.Stop();
+			Data.Save();
 		}
 
 		private void ImageButton_Click(object sender, RoutedEventArgs e)
 		{
 		}
 
-		void Exit_Click(object sender, RoutedEventArgs e)
+		private void Exit_Click(object sender, RoutedEventArgs e)
 		{
-			this.Close();
+			Close();
 		}
 
 #if DEBUG
-		void MainWindowDebugStuff()
+		private void MainWindowDebugStuff()
 		{
 			PresentationTraceSources.DataBindingSource.Switch.Level = SourceLevels.Critical;
 
@@ -124,16 +125,15 @@ namespace BoomTracker
 			pauseButton.Click += PauseButton_Click;
 			ButtonsStackpanel.Children.Add(bonusButton);
 			ButtonsStackpanel.Children.Add(pauseButton);
+		}
 
-			void BonusButton_Click(object sender, RoutedEventArgs e)
-			{
-				DebugStuff.MainWindowBonusAsync();
-			}
+		void BonusButton_Click(object sender, RoutedEventArgs e)
+		{
+			DebugStuff.MainWindowBonusAsync();
+		}
 
-			void PauseButton_Click(object sender, RoutedEventArgs e)
-			{
-			}
-
+		void PauseButton_Click(object sender, RoutedEventArgs e)
+		{
 		}
 #endif
 		public event PropertyChangedEventHandler PropertyChanged;
@@ -141,7 +141,7 @@ namespace BoomTracker
 		protected void OnPropertyChanged(string propertyName)
 		{
 			PropertyChangedEventHandler handler = PropertyChanged;
-			if (handler != null)
+			if(handler != null)
 			{
 				var e = new PropertyChangedEventArgs(propertyName);
 				handler(this, e);
