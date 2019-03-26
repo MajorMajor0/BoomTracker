@@ -88,16 +88,16 @@ along with BoomTracker.  If not, see<http: //www.gnu.org/licenses/> .-->
 								Margin="0,15,0,0">
 						<TextBox Width="25"
 								 Margin="2"
-								 Text="{Binding ElementName=Main_Window, Path=DataContext.RectX, UpdateSourceTrigger=PropertyChanged}" />
+								 Text="{Binding RectX, UpdateSourceTrigger=PropertyChanged}" />
 						<TextBox Width="25"
 								 Margin="2"
-								 Text="{Binding ElementName=Main_Window, Path=DataContext.RectY, UpdateSourceTrigger=PropertyChanged}" />
+								 Text="{Binding RectY, UpdateSourceTrigger=PropertyChanged}" />
 						<TextBox Width="25"
 								 Margin="2"
-								 Text="{Binding ElementName=Main_Window, Path=DataContext.RectWidth, UpdateSourceTrigger=PropertyChanged}" />
+								 Text="{Binding RectWidth, UpdateSourceTrigger=PropertyChanged}" />
 						<TextBox Width="25"
 								 Margin="2"
-								 Text="{Binding ElementName=Main_Window, Path=DataContext.RectHeight, UpdateSourceTrigger=PropertyChanged}" />
+								 Text="{Binding RectHeight, UpdateSourceTrigger=PropertyChanged}" />
 
 					</StackPanel>
 					<StackPanel Orientation="Horizontal">

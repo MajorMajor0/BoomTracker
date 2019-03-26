@@ -59,8 +59,38 @@ namespace BoomTracker
 		/// <summary>OCR will guess numbers in this order to avoid accidentally masking a number with fewer pixels </summary>
 		private static readonly int[] guessOrder = new int[] { 8, 0, 9, 6, 5, 3, 2, 4, 7, 1, 10 };
 
-		/// <summary>This entire rectangle should be black during a game (or paused) and non-black when not during a game</summary>
-		public static Rectangle IsGameRectangle { get; } = new Rectangle(545, 36, 5, 3);
+
+		public static class GameIsOn
+		{
+			/// <summary>This entire rectangle should be black during a game (or paused) and non-black when not during a game</summary>
+			public static Rectangle Rectangle { get; } = new Rectangle(545, 36, 5, 3);
+
+			public static int[] Addresses { get; set; }
+
+			static GameIsOn()
+			{
+				SetAddresses();
+			}
+
+			private static void SetAddresses()
+			{
+				List<int> addresses = new List<int>();
+
+				int imageWidth = Image.Width;
+
+				for (int x = 0; x < Rectangle.Width; x++)
+				{
+					for (int y = 0; y < Rectangle.Height; y++)
+					{
+						int address = BytesPerPixel * (x + imageWidth * y);
+						addresses.Add(address);
+					}
+				}
+				Addresses = addresses.ToArray();
+			}
+		}
+
+
 
 		public static PixelFormat PixelFormat => PixelFormat.Format24bppRgb;
 
@@ -106,7 +136,7 @@ namespace BoomTracker
 			/// <summary>Height of one Tetris block in NES resolution</summary>
 			private static readonly double BlockHeightNes = 7.0;
 			/// <summary>Width of one Tetris block in NES resolution</summary>
-			private static readonly double BlockWidthNes = 7.0;
+			//private static readonly double BlockWidthNes = 7.0;
 
 			/// <summary>X Y Point at center of block[i,j]</summary>
 			public static int[,,] BlockCenters { get; set; }

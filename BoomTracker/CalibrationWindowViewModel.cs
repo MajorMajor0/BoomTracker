@@ -95,9 +95,10 @@ namespace BoomTracker
 				{
 					DrawFields(bitmap);
 
-					WriteScoreCalibration(bitmap);
-					WriteLevelCalibration(bitmap);
-					WriteLineCalibration(bitmap);
+					ScoreCalibration(bitmap);
+					LevelCalibration(bitmap);
+					LineCalibration(bitmap);
+					GameonCalibration(bitmap);
 
 					if (takeScreen)
 					{
@@ -147,9 +148,9 @@ namespace BoomTracker
 			}
 		}
 
-		private unsafe void WriteScoreCalibration(Bitmap bitmap)
+		private unsafe void ScoreCalibration(Bitmap bitmap)
 		{
-			BitmapData bmData = bitmap.LockBits(Tetris.Score.Rectangle, ImageLockMode.ReadOnly, Tetris.PixelFormat);
+			BitmapData bmData = bitmap.LockBits(Tetris.Score.Rectangle, ImageLockMode.WriteOnly, Tetris.PixelFormat);
 			byte* scan0 = (byte*)bmData.Scan0.ToPointer();
 
 			for (int place = 0; place < 6; place++)
@@ -164,9 +165,9 @@ namespace BoomTracker
 			bitmap.UnlockBits(bmData);
 		}
 
-		private unsafe void WriteLevelCalibration(Bitmap bitmap)
+		private unsafe void LevelCalibration(Bitmap bitmap)
 		{
-			BitmapData bmData = bitmap.LockBits(Tetris.Level.Rectangle, ImageLockMode.ReadOnly, Tetris.PixelFormat);
+			BitmapData bmData = bitmap.LockBits(Tetris.Level.Rectangle, ImageLockMode.WriteOnly, Tetris.PixelFormat);
 			byte* scan0 = (byte*)bmData.Scan0.ToPointer();
 
 			for (int place = 0; place < 2; place++)
@@ -181,9 +182,9 @@ namespace BoomTracker
 			bitmap.UnlockBits(bmData);
 		}
 
-		private unsafe void WriteLineCalibration(Bitmap bitmap)
+		private unsafe void LineCalibration(Bitmap bitmap)
 		{
-			BitmapData bmData = bitmap.LockBits(Tetris.Lines.Rectangle, ImageLockMode.ReadOnly, Tetris.PixelFormat);
+			BitmapData bmData = bitmap.LockBits(Tetris.Lines.Rectangle, ImageLockMode.WriteOnly, Tetris.PixelFormat);
 			byte* scan0 = (byte*)bmData.Scan0.ToPointer();
 
 			for (int place = 0; place < 3; place++)
@@ -195,6 +196,20 @@ namespace BoomTracker
 					scan0[address + 2] = 0; // Red
 				}
 			}
+			bitmap.UnlockBits(bmData);
+		}
+
+		private unsafe void GameonCalibration(Bitmap bitmap)
+		{
+			BitmapData bmData = bitmap.LockBits(Tetris.GameIsOn.Rectangle, ImageLockMode.WriteOnly, Tetris.PixelFormat);
+			byte* scan0 = (byte*)bmData.Scan0.ToPointer();
+
+				foreach (var address in Tetris.GameIsOn.Addresses)
+				{
+					scan0[address] = 255;// Blue
+					scan0[address + 1] = 200; // Green
+					scan0[address + 2] = 0; // Red
+				}
 			bitmap.UnlockBits(bmData);
 		}
 

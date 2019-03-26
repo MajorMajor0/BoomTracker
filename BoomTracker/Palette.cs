@@ -106,6 +106,41 @@ namespace BoomTracker
 				new []{ 200, 200, 200 },
 				new []{ 200, 200, 200 },
 			};
+
+			public static int[][] D { get; } = new int[][]
+			{
+				new []{ 218, 213, 249 }, // Level  0
+				new []{ 196, 236, 195 }, // Level  1
+				new []{ 233, 210, 239 }, // Level  2
+				new []{ 218, 215, 243 }, // Level  3
+				new []{ 234, 211, 220 }, // Level  4
+				new []{ 201, 251, 221 }, // Level  5
+				new []{ 233, 215, 205 }, // Level  6
+				new []{ 225, 211, 243 }, // Level  7
+				new []{ 218, 211, 255 }, // Level  8
+				new []{ 233, 215, 205 }, // Level  9
+				new []{ 100, 100, 100 },
+				new []{ 100, 100, 100 },
+				new []{ 100, 100, 100 },
+				new []{ 100, 100, 100 },
+				new []{ 100, 100, 100 },
+				new []{ 100, 100, 100 },
+				new []{ 100, 100, 100 },
+				new []{ 100, 100, 100 },
+				new []{ 100, 100, 100 },
+				new []{ 100, 100, 100 },
+				new []{ 100, 100, 100 },
+				new []{ 100, 100, 100 },
+				new []{ 100, 100, 100 },
+				new []{ 100, 100, 100 },
+				new []{ 100, 100, 100 },
+				new []{ 100, 100, 100 },
+				new []{ 100, 100, 100 },
+				new []{ 100, 100, 100 },
+				new []{ 100, 100, 100 },
+				new []{ 100, 100, 100 },
+			};
+
 		}
 
 		public static class Average
@@ -178,6 +213,40 @@ namespace BoomTracker
 				new[]{ 100, 100, 100 },
 				new[]{ 100, 100, 100 },
 			};
+
+			public static int[][] D { get; } = new int[][]
+			{
+				new []{ 218, 211, 253 }, // Level  0
+				new []{ 196, 236, 195 }, // Level  1
+				new []{ 232, 210, 239 }, // Level  2
+				new []{ 218, 214, 243 }, // Level  3
+				new []{ 234, 210, 220 }, // Level  4
+				new []{ 201, 251, 221 }, // Level  5
+				new []{ 233, 215, 204 }, // Level  6
+				new []{ 225, 211, 243 }, // Level  7
+				new []{ 218, 211, 255 }, // Level  8
+				new []{ 233, 215, 204 }, // Level  9
+				new []{ 100, 100, 100 },
+				new []{ 100, 100, 100 },
+				new []{ 100, 100, 100 },
+				new []{ 100, 100, 100 },
+				new []{ 100, 100, 100 },
+				new []{ 100, 100, 100 },
+				new []{ 100, 100, 100 },
+				new []{ 100, 100, 100 },
+				new []{ 100, 100, 100 },
+				new []{ 100, 100, 100 },
+				new []{ 100, 100, 100 },
+				new []{ 100, 100, 100 },
+				new []{ 100, 100, 100 },
+				new []{ 100, 100, 100 },
+				new []{ 100, 100, 100 },
+				new []{ 100, 100, 100 },
+				new []{ 100, 100, 100 },
+				new []{ 100, 100, 100 },
+				new []{ 100, 100, 100 },
+				new []{ 100, 100, 100 },
+			};
 		}
 
 		public static class Mode
@@ -249,6 +318,40 @@ namespace BoomTracker
 				new[]{ 100, 100, 100 },
 				new[]{ 100, 100, 100 },
 			};
+
+			public static int[][] D { get; } = new int[][]
+			{
+				new []{ 217, 210, 255 }, // Level  0
+				new []{ 196, 236, 195 }, // Level  1
+				new []{ 232, 210, 239 }, // Level  2
+				new []{ 218, 213, 243 }, // Level  3
+				new []{ 234, 212, 220 }, // Level  4
+				new []{ 200, 251, 222 }, // Level  5
+				new []{ 233, 214, 204 }, // Level  6
+				new []{ 225, 210, 243 }, // Level  7
+				new []{ 217, 210, 255 }, // Level  8
+				new []{ 233, 214, 204 }, // Level  9
+				new []{ 100, 100, 100 },
+				new []{ 100, 100, 100 },
+				new []{ 100, 100, 100 },
+				new []{ 100, 100, 100 },
+				new []{ 100, 100, 100 },
+				new []{ 100, 100, 100 },
+				new []{ 100, 100, 100 },
+				new []{ 100, 100, 100 },
+				new []{ 100, 100, 100 },
+				new []{ 100, 100, 100 },
+				new []{ 100, 100, 100 },
+				new []{ 100, 100, 100 },
+				new []{ 100, 100, 100 },
+				new []{ 100, 100, 100 },
+				new []{ 100, 100, 100 },
+				new []{ 100, 100, 100 },
+				new []{ 100, 100, 100 },
+				new []{ 100, 100, 100 },
+				new []{ 100, 100, 100 },
+				new []{ 100, 100, 100 },
+			};
 		}
 
 		/// <summary>
@@ -271,12 +374,15 @@ namespace BoomTracker
 				{
 					MidPoint.B[i + k * 10] = MidPoint.B[i];
 					MidPoint.C[i + k * 10] = MidPoint.C[i];
+					MidPoint.D[i + k * 10] = MidPoint.D[i];
 
 					Average.B[i + k * 10] = Average.B[i];
 					Average.C[i + k * 10] = Average.C[i];
+					Average.D[i + k * 10] = Average.D[i];
 
 					Mode.B[i + k * 10] = Mode.B[i];
 					Mode.C[i + k * 10] = Mode.C[i];
+					Mode.D[i + k * 10] = Mode.D[i];
 				}
 			}
 			CreateScanDictionaries();
@@ -296,15 +402,15 @@ namespace BoomTracker
 				// Loop over +/-width for r, stored as 0 place in MidPoint.C
 				var bPoints = MidPoint.B[level];
 
-				for (int r = bPoints[0] - ScanWidth; r < bPoints[0] + ScanWidth; r++)
+				for (int r = bPoints[0] - ScanWidth; r < bPoints[0] + ScanWidth && r < 256; r++)
 				{
 					// Loop over +/-width for g, stored as 1 place in MidPoint.B
-					for (int g = bPoints[1] - ScanWidth; g < bPoints[1] + ScanWidth; g++)
+					for (int g = bPoints[1] - ScanWidth; g < bPoints[1] + ScanWidth && g < 256; g++)
 					{
 						// Loop over +/-width for b, stored as 2 place in MidPoint.B
-						for (int b = bPoints[2] - ScanWidth; b < bPoints[2] + ScanWidth; b++)
+						for (int b = bPoints[2] - ScanWidth; b < bPoints[2] + ScanWidth && b < 256; b++)
 						{
-							//Toss negative values
+							//Toss underflow and  values
 							int R = Math.Max(r, 0);
 							int G = Math.Max(g, 0);
 							int B = Math.Max(b, 0);
@@ -330,13 +436,13 @@ namespace BoomTracker
 				// Loop over +/-width for r, stored as 0 place in MidPoint.C
 				var cPoints = MidPoint.C[level];
 
-				for (int r = cPoints[0] - ScanWidth; r < cPoints[0] + ScanWidth; r++)
+				for (int r = cPoints[0] - ScanWidth; r < cPoints[0] + ScanWidth && r < 256; r++)
 				{
 					// Loop over +/-width for g, stored as 1 place in MidPoint.C
-					for (int g = cPoints[1] - ScanWidth; g < cPoints[1] + ScanWidth; g++)
+					for (int g = cPoints[1] - ScanWidth; g < cPoints[1] + ScanWidth && g < 256; g++)
 					{
 						// Loop over +/-width for b, stored as 2 place in MidPoint.C
-						for (int b = cPoints[2] - ScanWidth; b < cPoints[2] + ScanWidth; b++)
+						for (int b = cPoints[2] - ScanWidth; b < cPoints[2] + ScanWidth && b < 256; b++)
 						{
 							//Toss negative values
 							int R = Math.Max(r, 0);
@@ -360,6 +466,42 @@ namespace BoomTracker
 					}
 				}
 
+
+				// Add dictionary entries corresponding to 'D'
+				// Loop over +/-width for r, stored as 0 place in MidPoint.C
+				var dPoints = MidPoint.D[level];
+
+				for (int r = dPoints[0] - ScanWidth; r < dPoints[0] + ScanWidth && r < 256; r++)
+				{
+					// Loop over +/-width for g, stored as 1 place in MidPoint.C
+					for (int g = dPoints[1] - ScanWidth; g < dPoints[1] + ScanWidth && g < 256; g++)
+					{
+						// Loop over +/-width for b, stored as 2 place in MidPoint.C
+						for (int b = dPoints[2] - ScanWidth; b < dPoints[2] + ScanWidth && b < 256; b++)
+						{
+							//Toss negative values
+							int R = Math.Max(r, 0);
+							int G = Math.Max(g, 0);
+							int B = Math.Max(b, 0);
+
+							// If i is already in the , it needs to have the value C. Else the width is too wide
+							if (ScanDictionary[level].TryGetValue((R, G, B), out char? checkChar))
+							{
+								if (checkChar != 'D')
+								{
+									throw new Exception("Collision adding values to dictionary. The colorScanWidth is too wide.");
+								}
+							}
+
+							else
+							{
+								ScanDictionary[level].Add((R, G, B), 'D');
+							}
+						}
+					}
+				}
+
+				// Add dictionary entries corresponding to 'A'
 				for (int r = 255 - ScanWidth; r <= 255; r++)
 				{
 					for (int g = 255 - ScanWidth; g <= 255; g++)

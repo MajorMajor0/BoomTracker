@@ -24,10 +24,6 @@ namespace BoomTracker
 	[Serializable]
 	public class Game : INotifyPropertyChanged
 	{
-		public string Player { get; set; }
-
-		//private readonly OCR ocr = new OCR();
-
 		private char?[][] currentGrid = new char?[10][];
 		public char?[][] CurrentGrid
 		{
@@ -155,7 +151,7 @@ namespace BoomTracker
 							Grid[i][j] = null;
 						}
 
-						//Debug.WriteLine($"{color.Item1}\t{color.Item2}\t{color.Item3}");
+						// Debug.WriteLine($"{color.Item1}\t{color.Item2}\t{color.Item3}");
 					}
 				}
 
@@ -209,11 +205,10 @@ namespace BoomTracker
 		/// </summary>
 		/// <param name="bitmap"></param>
 		/// <returns></returns>
-		public unsafe bool CheckIfGameIsOn(Bitmap bitmap)
+		public static unsafe bool GameScreenIsDisplayed(Bitmap bitmap)
 		{
-			Stopwatch watch = Stopwatch.StartNew();
 			BitmapData bmData = bitmap.LockBits(
-			Tetris.IsGameRectangle,
+			Tetris.GameIsOn.Rectangle,
 			ImageLockMode.ReadOnly,
 			Tetris.PixelFormat);
 
@@ -221,11 +216,10 @@ namespace BoomTracker
 
 			int Nk = bmData.Stride * bmData.Height;
 
-			// Starting with 2 for red (0 = blue, 1 = green), advance by teh number of bytes per pixel to check red pixel
-			for (int i = 2; i < Tetris.PlayingField.NColumns; i += Tetris.BppDictionary[Tetris.PixelFormat])
+			// Starting with 2 for red (0 = blue, 1 = green), advance by the number of bytes per pixel to check red pixel
+			foreach (var address in Tetris.GameIsOn.Addresses)
 			{
-				// Red
-				if (scan0[i] > Palette.BlackThreshold)
+				if (scan0[address + 2] > Palette.BlackThreshold)
 				{
 					return false;
 				}

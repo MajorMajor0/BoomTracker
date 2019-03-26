@@ -16,6 +16,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Windows;
 using System.Windows.Data;
 using System.Windows.Media;
 
@@ -60,7 +61,7 @@ namespace BoomTracker
 
 			public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
 			{
-				if (values[1] is null || values[0] is null)
+				if (values[1] is null || values[0] is null || values[0] == DependencyProperty.UnsetValue || values[1] == DependencyProperty.UnsetValue)
 				{
 					return blackBrush;
 				}
@@ -100,7 +101,8 @@ namespace BoomTracker
 					{
 						{ 'A', new SolidColorBrush(Color.FromRgb(C[0], C[1], C[2])) },
 						{ 'B', new SolidColorBrush(Color.FromRgb(B[0], B[1], B[2])) },
-						{ 'C', new SolidColorBrush(Color.FromRgb(C[0], C[1], C[2])) }
+						{ 'C', new SolidColorBrush(Color.FromRgb(C[0], C[1], C[2])) },
+						{ 'D', new SolidColorBrush(Color.FromRgb(C[0], C[1], C[2])) }
 					};
 
 					BrushDictionary.Add(dict);

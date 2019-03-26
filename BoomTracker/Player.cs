@@ -23,7 +23,9 @@ namespace BoomTracker
 	{
 		public string Name { get; set; }
 
-		public IEnumerable<Game> Games => Data.Games.Where(x => x.Player == Name);
+		//public IEnumerable<Game> Games => Data.Games.Where(x => x.Player == Name);
+
+		public List<Game> Games { get; set; } = new List<Game>();
 
 		public int PersonalBestScore => Games.Max(x => x.FinalScore);
 

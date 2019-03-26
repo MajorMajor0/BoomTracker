@@ -34,7 +34,19 @@ namespace BoomTracker
 
 		public ObservableCollection<Player> Players => Data.Players;
 
-		public Game Game { get; set; }
+		private Game game;
+		public Game Game
+		{
+			get => game;
+			set
+			{
+				if (value != game)
+				{
+					game = value;
+					OnPropertyChanged(nameof(Game));
+				}
+			}
+		}
 
 		private bool takeScreen;
 
@@ -50,10 +62,28 @@ namespace BoomTracker
 			get => gameOn;
 			private set
 			{
-				gameOn = value;
-				OnPropertyChanged(nameof(GameOn));
-				OnPropertyChanged(nameof(GameOnBrush));
-				OnPropertyChanged(nameof(GameOnString));
+				if (value != gameOn)
+				{
+					gameOn = value;
+					if (gameOn)
+					{
+						Game = new Game();
+					}
+
+					else
+					{
+						if (game.States.Count > 900)
+						{
+							CurrentPlayer.Games.Add(Game);
+
+						}
+						Game = null;
+					}
+
+					OnPropertyChanged(nameof(GameOn));
+					OnPropertyChanged(nameof(GameOnBrush));
+					OnPropertyChanged(nameof(GameOnString));
+				}
 			}
 		}
 
@@ -153,10 +183,12 @@ namespace BoomTracker
 				{
 					block = true;
 
-					if (Game.CheckIfGameIsOn(bitmap))
+					if (Game.GameScreenIsDisplayed(bitmap))
 					{
 						GameOn = true;
+
 						Game.StoreState(bitmap);
+
 						//#if DEBUG
 						//						if (takeScore)
 						//						{
@@ -180,6 +212,7 @@ namespace BoomTracker
 
 					else
 					{
+						Debug.WriteLine("false");
 						GameOn = false;
 					}
 

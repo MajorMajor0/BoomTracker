@@ -125,7 +125,8 @@ along with BoomTracker.  If not, see<http: //www.gnu.org/licenses/> .-->
 							BorderThickness="1"
 							Background="Black"
 							BorderBrush="#FF9EFAED">
-						<Grid x:Name="PlayingField">
+						<Grid x:Name="PlayingField"
+							  IsEnabled="{Binding GameOn}">
 							<Grid.ColumnDefinitions>
 								<ColumnDefinition Width="1*" />
 								<ColumnDefinition Width="1*" />

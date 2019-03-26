@@ -34,7 +34,7 @@ namespace BoomTracker
 
 		private bool StartCanExecute()
 		{
-			return true;
+			return CurrentPlayer != null;
 		}
 
 		private void Start()
