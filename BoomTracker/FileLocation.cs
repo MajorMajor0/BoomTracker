@@ -18,6 +18,7 @@ namespace BoomTracker
 {
 	public static class FileLocation
 	{
+		//Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "//SerializationOverview.xml";
 		public static string Folder => @"C:\Source\BoomTracker\BoomTracker";
 
 		public static string Screens => $"{Folder}\\Resources\\Screens";

@@ -30,7 +30,26 @@ namespace BoomTracker
 {
 	public partial class MainWindowViewModel : INotifyPropertyChanged
 	{
-		public Player CurrentPlayer { get; set; }
+		public string CurrentName => CurrentPlayer?.Name?.ToUpper();
+
+		public int PersonalBest => CalculatePB();
+
+
+		private Player currentPlayer;
+		public Player CurrentPlayer
+		{
+			get => currentPlayer;
+			set
+			{
+				if (currentPlayer != value)
+				{
+					currentPlayer = value;
+					OnPropertyChanged(nameof(CurrentPlayer));
+					OnPropertyChanged(nameof(CurrentName));
+					OnPropertyChanged(nameof(PersonalBest));
+				}
+			}
+		}
 
 		public ObservableCollection<Player> Players => Data.Players;
 
@@ -49,12 +68,14 @@ namespace BoomTracker
 		}
 
 		private bool takeScreen;
+#if DEBUG
+		private bool takeScore;
 
-		//private bool takeScore;
+		private bool takeLines;
 
-		//private bool takeLines;
-
-		//private bool takeLevel;
+		private bool takeLevel;
+#endif
+		private bool topOutHold;
 
 		private bool gameOn;
 		public bool GameOn
@@ -65,18 +86,23 @@ namespace BoomTracker
 				if (value != gameOn)
 				{
 					gameOn = value;
+
 					if (gameOn)
 					{
 						Game = new Game();
+						Game.TopOut += ToppedOut;
+						Game.PropertyChanged += ScoreChanged;
 					}
 
 					else
 					{
 						if (game.States.Count > 900)
 						{
+							Game.TopOut -= ToppedOut;
+							Game.PropertyChanged -= ScoreChanged;
 							CurrentPlayer.Games.Add(Game);
-
 						}
+
 						Game = null;
 					}
 
@@ -135,6 +161,30 @@ namespace BoomTracker
 			GetVideoDevices();
 		}
 
+		private void ToppedOut(object sender, EventArgs a)
+		{
+			topOutHold = true;
+			GameOn = false;
+		}
+
+		private void ScoreChanged(object sender, PropertyChangedEventArgs e)
+		{
+			if (e.PropertyName == "CurrentScore")
+			{
+				OnPropertyChanged(nameof(PersonalBest));
+			}
+		}
+
+		private int CalculatePB()
+		{
+			if (CurrentPlayer is null)
+			{
+				return 0;
+			}
+
+			return Math.Max(CurrentPlayer.PersonalBestScore, Game.CurrentScore);
+		}
+
 		//private void GamePropertyChanged(object sender, PropertyChangedEventArgs a)
 		//{
 		//	if (a.PropertyName == nameof(Game.CurrentScore))
@@ -182,43 +232,35 @@ namespace BoomTracker
 				using (var bitmap = (Bitmap)eventArgs.Frame.Clone())
 				{
 					block = true;
+					if (topOutHold)
+					{
+						if (Tetris.GameInProgress.Check(bitmap) && Tetris.NintendoOn.Check(bitmap))
+						{
+							block = false;
+							return;
+						}
 
-					if (Game.GameScreenIsDisplayed(bitmap))
+						else
+						{
+							topOutHold = false;
+						}
+					}
+
+
+					if (Tetris.GameInProgress.Check(bitmap) && Tetris.NintendoOn.Check(bitmap))
 					{
 						GameOn = true;
-
 						Game.StoreState(bitmap);
-
-						//#if DEBUG
-						//						if (takeScore)
-						//						{
-						//							DebugStuff.StashScoreBox(bitmap, Game.CurrentScore);
-						//							takeScore = false;
-						//						}
-
-						//						if (takeLines)
-						//						{
-						//							DebugStuff.StashLinesBox(bitmap, Game.CurrentLines);
-						//							takeLines = false;
-						//						}
-
-						//						if (takeLevel)
-						//						{
-						//							DebugStuff.StashLevelBox(bitmap, Game.CurrentLevel);
-						//							takeLevel = false;
-						//						}
-						//#endif
 					}
 
 					else
 					{
-						Debug.WriteLine("false");
 						GameOn = false;
 					}
 
 					if (takeScreen)
 					{
-						//StoreScreen(bitmap);
+						StoreScreen(bitmap);
 						takeScreen = false;
 					}
 
@@ -242,18 +284,44 @@ namespace BoomTracker
 		{
 			Task.Run(() =>
 			{
-				using (Bitmap scoreBitmap = bitmap.Clone(Tetris.Image, Tetris.PixelFormat))
+				try
 				{
-					scoreBitmap.Save($"{FileLocation.Screens}\\{DateTime.Now.ToShortDateString()}({DateTime.Now.ToShortTimeString()}).bmp", ImageFormat.Bmp);
+					using (Bitmap scoreBitmap = bitmap.Clone(Tetris.Image, Tetris.PixelFormat))
+					{
+						scoreBitmap.Save($"{FileLocation.Screens}\\{DateTime.Now.ToString("yyyy-MM-dd HHmmss")}.bmp", ImageFormat.Bmp);
+					}
 				}
+				catch { }
+
 			});
 		}
+#if DEBUG
+		private void StashBoxes(Bitmap bitmap)
+		{
+			if (takeScore)
+			{
+				DebugStuff.StashScoreBox(bitmap, Game.CurrentScore);
+				takeScore = false;
+			}
 
+			if (takeLines)
+			{
+				DebugStuff.StashLinesBox(bitmap, Game.CurrentLines);
+				takeLines = false;
+			}
 
+			if (takeLevel)
+			{
+				DebugStuff.StashLevelBox(bitmap, Game.CurrentLevel);
+				takeLevel = false;
+			}
+		}
+#endif
 		public event PropertyChangedEventHandler PropertyChanged;
 
 		protected void OnPropertyChanged(string prop)
 		{
+			Debug.WriteLine(prop);
 			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));
 		}
 	}

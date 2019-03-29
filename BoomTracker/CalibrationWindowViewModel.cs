@@ -104,7 +104,6 @@ namespace BoomTracker
 					{
 						using (Bitmap scoreBitmap = bitmap.Clone(new Rectangle(0, 0, Tetris.Image.Width, Tetris.Image.Height), Tetris.PixelFormat))
 						{
-							string fileName = $"{FileLocation.Screens}{DateTime.Now.ToString()}.bmp";
 							scoreBitmap.Save($"{FileLocation.Screens}\\{DateTime.Now.ToString("yyyy-MM-dd HHmmss")}.bmp", ImageFormat.Bmp);
 						}
 
@@ -201,10 +200,10 @@ namespace BoomTracker
 
 		private unsafe void GameonCalibration(Bitmap bitmap)
 		{
-			BitmapData bmData = bitmap.LockBits(Tetris.GameIsOn.Rectangle, ImageLockMode.WriteOnly, Tetris.PixelFormat);
+			BitmapData bmData = bitmap.LockBits(Tetris.GameInProgress.Rectangle, ImageLockMode.WriteOnly, Tetris.PixelFormat);
 			byte* scan0 = (byte*)bmData.Scan0.ToPointer();
 
-				foreach (var address in Tetris.GameIsOn.Addresses)
+				foreach (var address in Tetris.GameInProgress.Addresses)
 				{
 					scan0[address] = 255;// Blue
 					scan0[address + 1] = 200; // Green

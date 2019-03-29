@@ -18,12 +18,30 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.Linq;
 
 namespace BoomTracker
 {
 	[Serializable]
 	public class Game : INotifyPropertyChanged
 	{
+		[NonSerialized]
+		private bool isToppedOut;
+		public bool IsToppedOut
+		{
+			get => isToppedOut;
+			set
+			{
+				if (value != isToppedOut)
+				{
+					isToppedOut = value;
+					OnPropertyChanged(nameof(IsToppedOut));
+					OnTopOut(new EventArgs());
+				}
+			}
+		}
+
+		[NonSerialized]
 		private char?[][] currentGrid = new char?[10][];
 		public char?[][] CurrentGrid
 		{
@@ -35,15 +53,15 @@ namespace BoomTracker
 			}
 		}
 
-		public int StartLevel { get; set; }
+		public int StartLevel => States.Min(x => x.Level);
 
-		public int FinalLevel { get; set; }
+		public int FinalLevel => States.Max(x => x.Level);
 
-		public int FinalLines { get; set; }
+		public int FinalLines => States.Max(x => x.Lines);
 
-		public int FinalScore { get; set; }
+		public int FinalScore => States.Max(x => x.Score);
 
-
+		[NonSerialized]
 		private int currentLevel;
 		public int CurrentLevel
 		{
@@ -58,6 +76,7 @@ namespace BoomTracker
 			}
 		}
 
+		[NonSerialized]
 		private int currentLines;
 		public int CurrentLines
 		{
@@ -76,10 +95,7 @@ namespace BoomTracker
 			}
 		}
 
-
-		//private int currentScoreBuffer;
-		public int CurrentScoreConfidence;
-
+		[NonSerialized]
 		private int currentScore;
 		public int CurrentScore
 		{
@@ -94,10 +110,14 @@ namespace BoomTracker
 			}
 		}
 
-		public Stack<State> States { get; set; } = new Stack<State>();
 
+		public List<State> States { get; set; } = new List<State>();
+
+		[Serializable]
 		public class State
 		{
+			public DateTime TimeStamp { get; set; } = DateTime.Now;
+
 			public char?[][] Grid { get; set; } = new char?[10][];
 
 			public int Level { get; set; }
@@ -136,10 +156,6 @@ namespace BoomTracker
 							color.Item3 += scan0[address]; // Blue
 							color.Item2 += scan0[address + 1]; // Green
 							color.Item1 += scan0[address + 2]; // Red
-
-							//scan0[address] = 255; // Blue
-							//scan0[address + 1]=0; // Green
-							//scan0[address + 2]=0; // Red
 						}
 
 						color.Item1 /= Nk;
@@ -158,7 +174,6 @@ namespace BoomTracker
 				bitmap.UnlockBits(bmData);
 				return Grid;
 			}
-
 		}
 
 		public Game()
@@ -191,43 +206,31 @@ namespace BoomTracker
 			}
 
 			CurrentGrid = state.GetGrid(bitmap, CurrentLevel);
+			if (currentGrid[0][0] == 'D')
+			{
+				IsToppedOut = true;
+			}
 
-			state.Score = currentScore;
-			state.Lines = currentLines;
-			state.Level = currentLevel;
+			else
+			{
+				state.Score = currentScore;
+				state.Lines = currentLines;
+				state.Level = currentLevel;
 
-			States.Push(state);
-			OnPropertyChanged(nameof(States));
+				States.Add(state);
+				OnPropertyChanged(nameof(States));
+			}
+
 			return state;
 		}
 
-		/// <summary>Check whether the designated rectangle contains any non-black pixels. The rectangle is selected to be all black during a game and all non-black during menu screens
-		/// </summary>
-		/// <param name="bitmap"></param>
-		/// <returns></returns>
-		public static unsafe bool GameScreenIsDisplayed(Bitmap bitmap)
+		protected virtual void OnTopOut(EventArgs e)
 		{
-			BitmapData bmData = bitmap.LockBits(
-			Tetris.GameIsOn.Rectangle,
-			ImageLockMode.ReadOnly,
-			Tetris.PixelFormat);
-
-			byte* scan0 = (byte*)bmData.Scan0.ToPointer();
-
-			int Nk = bmData.Stride * bmData.Height;
-
-			// Starting with 2 for red (0 = blue, 1 = green), advance by the number of bytes per pixel to check red pixel
-			foreach (var address in Tetris.GameIsOn.Addresses)
-			{
-				if (scan0[address + 2] > Palette.BlackThreshold)
-				{
-					return false;
-				}
-			}
-
-			bitmap.UnlockBits(bmData);
-			return true;
+			TopOut?.Invoke(this, e);
 		}
+
+		public event EventHandler TopOut;
+
 
 		public event PropertyChangedEventHandler PropertyChanged;
 

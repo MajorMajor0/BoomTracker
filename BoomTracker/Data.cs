@@ -13,7 +13,6 @@
  *  along with BoomTracker.  If not, see<http://www.gnu.org/licenses/>.*/
 
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
@@ -24,19 +23,11 @@ namespace BoomTracker
 	[Serializable]
 	public static class Data
 	{
-		//public static List<Game> Games { get; set; }
-
 		public static ObservableCollection<Player> Players { get; set; }
 
 		static Data()
 		{
 			Load();
-
-			//if (Games is null)
-			//{
-			//	//Games = new Game[0].ToLookup(x => x.Player, x => x) as Lookup<string, Game>;
-			//	Games = new List<Game>();
-			//}
 
 			if (Players is null)
 			{
@@ -47,14 +38,14 @@ namespace BoomTracker
 		public static void Save()
 		{
 			var formatter = new BinaryFormatter();
+			string backupFile = $"{FileLocation.Data.Players}-{DateTime.Now.ToString("yyyy-MM-dd HHmmss")}";
+
 			try
 			{
-				//using (FileStream dataStream =
-				//	new FileStream(FileLocation.Data.Games, FileMode.OpenOrCreate, FileAccess.Write))
-				//{
-				//	formatter.Serialize(dataStream, Games);
-				//	dataStream.Close();
-				//}
+				if (File.Exists(FileLocation.Data.Players))
+				{
+					File.Copy(FileLocation.Data.Players, backupFile);
+				}
 
 				using (FileStream dataStream = new FileStream(FileLocation.Data.Players, FileMode.OpenOrCreate, FileAccess.Write))
 				{
@@ -65,29 +56,31 @@ namespace BoomTracker
 
 			catch (Exception ex)
 			{
+				//if (File.Exists(backupFile))
+				//{
+				//	File.Copy(backupFile, FileLocation.Data.Players);
+				//}
+
 				MessageBox.Show($"Unable to save to file\n\n{ex.Message}");
 			}
 		}
 
+		//public static void Save()
+		//{
+
+		//	XmlSerializer writer = new XmlSerializer(Players.GetType());
+
+		//	var path = FileLocation.Data.Players;
+		//	FileStream file = File.Create(path);
+
+		//	writer.Serialize(file, Players);
+		//	file.Close();
+
+		//}
+
 		public static void Load()
 		{
 			var formatter = new BinaryFormatter();
-			//if (File.Exists(FileLocation.Data.Games))
-			//{
-			//	try
-			//	{
-			//		using (FileStream dataStream = new FileStream(FileLocation.Data.Games, FileMode.Open, FileAccess.Read))
-			//		{
-			//			//Games = (Lookup<string, Game>)formatter.Deserialize(dataStream);
-			//			Games = (List<Game>)formatter.Deserialize(dataStream);
-			//			dataStream.Close();
-			//		}
-			//	}
-			//	catch (Exception ex)
-			//	{
-			//		Console.WriteLine($"Problem loading {FileLocation.Data.Games}\n\n{ex.Message}.");
-			//	}
-			//}
 
 			if (File.Exists(FileLocation.Data.Players))
 			{
@@ -96,7 +89,6 @@ namespace BoomTracker
 					using (FileStream dataStream = new FileStream(FileLocation.Data.Players, FileMode.Open, FileAccess.Read))
 					{
 						Players = (ObservableCollection<Player>)formatter.Deserialize(dataStream);
-
 						dataStream.Close();
 					}
 				}

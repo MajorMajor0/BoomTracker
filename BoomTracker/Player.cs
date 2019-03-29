@@ -13,7 +13,7 @@
  *  along with BoomTracker.  If not, see<http://www.gnu.org/licenses/>.*/
 
 using System;
-using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 
 namespace BoomTracker
@@ -25,12 +25,12 @@ namespace BoomTracker
 
 		//public IEnumerable<Game> Games => Data.Games.Where(x => x.Player == Name);
 
-		public List<Game> Games { get; set; } = new List<Game>();
+		public ObservableCollection<Game> Games { get; set; } = new ObservableCollection<Game>();
 
-		public int PersonalBestScore => Games.Max(x => x.FinalScore);
+		public int PersonalBestScore => Games.Any() ? Games.Max(x => x.FinalScore) : 0;
 
-		public int PersonalBestLines => Games.Max(x => x.FinalLines);
+		public int PersonalBestLines => Games.Any() ? Games.Max(x => x.FinalLines) : 0;
 
-		public int PersonalBestLevel => Games.Max(x => x.FinalLevel);
+		public int PersonalBestLevel => Games.Any() ? Games.Max(x => x.FinalLevel) : 0;
 	}
 }

@@ -101,6 +101,7 @@
     <Compile Include="Palette.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Tetris.cs" />
+    <Compile Include="Tetromino.cs" />
     <Page Include="CalibrationWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

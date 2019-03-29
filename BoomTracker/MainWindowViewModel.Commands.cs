@@ -69,7 +69,7 @@ namespace BoomTracker
 
 		private bool ScreenShotCanExecute()
 		{
-			return GameOn && !takeScreen;
+			return !takeScreen;
 		}
 
 		private void Screenshot()
@@ -128,7 +128,9 @@ namespace BoomTracker
 
 			if (npd.ShowDialog() ?? false)
 			{
-				Data.Players.Add(new Player { Name = npd.PlayerName });
+				Player player = new Player { Name = npd.PlayerName };
+				Data.Players.Add(player);
+				CurrentPlayer = player;
 				OnPropertyChanged(nameof(Players));
 			}
 		}
