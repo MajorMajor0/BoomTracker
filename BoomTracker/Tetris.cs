@@ -59,131 +59,11 @@ namespace BoomTracker
 		/// <summary>OCR will guess numbers in this order to avoid accidentally masking a number with fewer pixels </summary>
 		private static readonly int[] guessOrder = new int[] { 8, 0, 9, 6, 5, 3, 2, 4, 7, 1, 10 };
 
-		public static class GameInProgress
-		{
-			/// <summary>This entire rectangle should be black during a game (or paused) and non-black when not during a game</summary>
-			public static Rectangle Rectangle { get; } = new Rectangle(545, 36, 5, 3);
-
-			public static int[] Addresses { get; set; }
-
-			static GameInProgress()
-			{
-				SetAddresses();
-			}
-
-			private static void SetAddresses()
-			{
-				List<int> addresses = new List<int>();
-
-				int imageWidth = Image.Width;
-
-				for (int x = 0; x < Rectangle.Width; x++)
-				{
-					for (int y = 0; y < Rectangle.Height; y++)
-					{
-						int address = BytesPerPixel * (x + imageWidth * y);
-						addresses.Add(address);
-					}
-				}
-				Addresses = addresses.ToArray();
-			}
-
-			/// <summary>Check whether the designated rectangle contains any non-black pixels. The rectangle is selected to be all black during a game and all non-black during menu screens
-			/// </summary>
-			/// <param name="bitmap"></param>
-			/// <returns></returns>
-			public static unsafe bool Check(Bitmap bitmap)
-			{
-				bool returner = true;
-				BitmapData bmData = bitmap.LockBits(
-				Rectangle,
-				ImageLockMode.ReadOnly,
-				PixelFormat);
-
-				byte* scan0 = (byte*)bmData.Scan0.ToPointer();
-
-				int Nk = bmData.Stride * bmData.Height;
-
-				// Starting with 2 for red (0 = blue, 1 = green), advance by the number of bytes per pixel to check red pixel
-				foreach (var address in Addresses)
-				{
-					if (scan0[address + 2] > Palette.BlackThreshold)
-					{
-						returner = false;
-					}
-				}
-
-				bitmap.UnlockBits(bmData);
-				return returner;
-			}
-		}
-
-		public static class NintendoOn
-		{
-			/// <summary> This rectangle is always lit when Tetris is turned on</summary>
-			public static Rectangle Rectangle { get; } = new Rectangle(35, 92, 3, 3);
-
-			public static int[] Addresses { get; set; }
-
-			static NintendoOn()
-			{
-				SetAddresses();
-			}
-
-			private static void SetAddresses()
-			{
-				List<int> addresses = new List<int>();
-
-				int imageWidth = Image.Width;
-
-				for (int x = 0; x < Rectangle.Width; x++)
-				{
-					for (int y = 0; y < Rectangle.Height; y++)
-					{
-						int address = BytesPerPixel * (x + imageWidth * y);
-						addresses.Add(address);
-					}
-				}
-				Addresses = addresses.ToArray();
-			}
-
-			/// <summary>Check whether the designated rectangle contains any black pixels. The rectangle is selected to be always lit while Tetris is running, regardless of what screen is shown.
-			/// </summary>
-			/// <param name="bitmap"></param>
-			/// <returns></returns>
-			public static unsafe bool Check(Bitmap bitmap)
-			{
-				bool returner = true;
-				BitmapData bmData = bitmap.LockBits(
-				Rectangle,
-				ImageLockMode.ReadOnly,
-				PixelFormat);
-
-				byte* scan0 = (byte*)bmData.Scan0.ToPointer();
-
-				int Nk = bmData.Stride * bmData.Height;
-
-				// Starting with 2 for red (0 = blue, 1 = green), advance by the number of bytes per pixel to check red pixel
-				foreach (var address in Addresses)
-				{
-					if (scan0[address + 2] < Palette.BlackThreshold)
-					{
-						returner = false;
-					}
-				}
-
-				bitmap.UnlockBits(bmData);
-				return returner;
-			}
-
-		}
-
 		public static PixelFormat PixelFormat => PixelFormat.Format24bppRgb;
 
 		public static byte BytesPerPixel;
 
 		public static Rectangle Image = new Rectangle(0, 0, (int)imageWidth, (int)imageHeight);
-
 
 		/// <summary>Output NES resolution (generated resolution = 256 x 240)</summary>
 		private static double NESHeight => 224.0;
@@ -474,7 +354,7 @@ namespace BoomTracker
 						if (numberGuess == 10)
 						{
 							bitmap.UnlockBits(bmData);
-							return  false;
+							return false;
 						}
 
 						bool goodGuess = true;
@@ -587,6 +467,185 @@ namespace BoomTracker
 				bitmap.UnlockBits(bmData);
 				return true;
 			}
+		}
+
+		public static class GameInProgress
+		{
+			/// <summary>This entire rectangle should be black during a game (or paused) and non-black when not during a game</summary>
+			public static Rectangle Rectangle { get; } = new Rectangle(545, 36, 5, 3);
+
+			public static int[] Addresses { get; private set; }
+
+			static GameInProgress()
+			{
+				SetAddresses();
+			}
+
+			private static void SetAddresses()
+			{
+				List<int> addresses = new List<int>();
+
+				int imageWidth = Image.Width;
+
+				for (int x = 0; x < Rectangle.Width; x++)
+				{
+					for (int y = 0; y < Rectangle.Height; y++)
+					{
+						int address = BytesPerPixel * (x + imageWidth * y);
+						addresses.Add(address);
+					}
+				}
+				Addresses = addresses.ToArray();
+			}
+
+			/// <summary>Check whether the designated rectangle contains any non-black pixels. The rectangle is selected to be all black during a game and all non-black during menu screens
+			/// </summary>
+			/// <param name="bitmap"></param>
+			/// <returns></returns>
+			public static unsafe bool Check(Bitmap bitmap)
+			{
+				bool returner = true;
+				BitmapData bmData = bitmap.LockBits(
+				Rectangle,
+				ImageLockMode.ReadOnly,
+				PixelFormat);
+
+				byte* scan0 = (byte*)bmData.Scan0.ToPointer();
+
+				int Nk = bmData.Stride * bmData.Height;
+
+				// Starting with 2 for red (0 = blue, 1 = green), advance by the number of bytes per pixel to check red pixel
+				foreach (var address in Addresses)
+				{
+					if (scan0[address + 2] > Palette.BlackThreshold)
+					{
+						returner = false;
+					}
+				}
+
+				bitmap.UnlockBits(bmData);
+				return returner;
+			}
+		}
+
+		public static class NintendoOn
+		{
+			/// <summary> This rectangle is always lit when Tetris is turned on except when paused</summary>
+			public static Rectangle Rectangle { get; } = new Rectangle(35, 92, 3, 3);
+
+			public static int[] Addresses { get; private set; }
+
+			static NintendoOn()
+			{
+				SetAddresses();
+			}
+
+			private static void SetAddresses()
+			{
+				List<int> addresses = new List<int>();
+
+				int imageWidth = Image.Width;
+
+				for (int x = 0; x < Rectangle.Width; x++)
+				{
+					for (int y = 0; y < Rectangle.Height; y++)
+					{
+						int address = BytesPerPixel * (x + imageWidth * y);
+						addresses.Add(address);
+					}
+				}
+				Addresses = addresses.ToArray();
+			}
+
+			/// <summary>Check whether the designated rectangle contains any black pixels. The rectangle is selected to be always lit while Tetris is running, regardless of what screen is shown.
+			/// </summary>
+			/// <param name="bitmap"></param>
+			/// <returns></returns>
+			public static unsafe bool Check(Bitmap bitmap)
+			{
+				bool returner = true;
+				BitmapData bmData = bitmap.LockBits(
+				Rectangle,
+				ImageLockMode.ReadOnly,
+				PixelFormat);
+
+				byte* scan0 = (byte*)bmData.Scan0.ToPointer();
+
+				int Nk = bmData.Stride * bmData.Height;
+
+				// Starting with 2 for red (0 = blue, 1 = green), advance by the number of bytes per pixel to check red pixel
+				foreach (var address in Addresses)
+				{
+					if (scan0[address + 2] < Palette.BlackThreshold)
+					{
+						returner = false;
+					}
+				}
+
+				bitmap.UnlockBits(bmData);
+				return returner;
+			}
+
+		}
+
+		public static class Pause
+		{
+			/// <summary> This rectangle is always lit when Tetris is paused</summary>
+			public static Rectangle Rectangle { get; } = new Rectangle(347, 245, 3, 3);
+
+			public static int[] Addresses { get; private set; }
+
+			static Pause()
+			{
+				SetAddresses();
+			}
+
+			private static void SetAddresses()
+			{
+				List<int> addresses = new List<int>();
+
+				int imageWidth = Image.Width;
+
+				for (int x = 0; x < Rectangle.Width; x++)
+				{
+					for (int y = 0; y < Rectangle.Height; y++)
+					{
+						int address = BytesPerPixel * (x + imageWidth * y);
+						addresses.Add(address);
+					}
+				}
+				Addresses = addresses.ToArray();
+			}
+
+			/// <summary>Check whether the designated rectangle contains any black pixels. The rectangle is selected to be always lit while Tetris is running, regardless of what screen is shown.
+			/// </summary>
+			/// <param name="bitmap"></param>
+			/// <returns></returns>
+			public static unsafe bool Check(Bitmap bitmap)
+			{
+				bool returner = true;
+				BitmapData bmData = bitmap.LockBits(
+				Rectangle,
+				ImageLockMode.ReadOnly,
+				PixelFormat);
+
+				byte* scan0 = (byte*)bmData.Scan0.ToPointer();
+
+				int Nk = bmData.Stride * bmData.Height;
+
+				// Starting with 2 for red (0 = blue, 1 = green), advance by the number of bytes per pixel to check red pixel
+				foreach (var address in Addresses)
+				{
+					if (scan0[address] < Palette.BlackThreshold)
+					{
+						returner = false;
+					}
+				}
+
+				bitmap.UnlockBits(bmData);
+				return returner;
+			}
+
 		}
 
 		static Tetris()

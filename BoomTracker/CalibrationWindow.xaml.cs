@@ -20,9 +20,12 @@ namespace BoomTracker
 	/// </summary>
 	public partial class CalibrationWindow : Window
 	{
+
+		private CalibrationWindowViewModel CWVM;
 		public CalibrationWindow()
 		{
 			InitializeComponent();
+			CWVM = DataContext as CalibrationWindowViewModel;
 #if DEBUG
 			CalibrationWindowDebugStuff();
 #endif
@@ -68,6 +71,11 @@ namespace BoomTracker
 			{
 			}
 
+		}
+
+		private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+		{
+			CWVM.Stop();
 		}
 #endif
 

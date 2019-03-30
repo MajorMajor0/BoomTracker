@@ -21,7 +21,8 @@ along with BoomTracker.  If not, see<http: //www.gnu.org/licenses/> .-->
 		mc:Ignorable="d"
 		Title="Calibration"
 		Height="450"
-		Width="800">
+		Width="800"
+		Closing="Window_Closing">
 	<Window.DataContext>
 		<local:CalibrationWindowViewModel />
 	</Window.DataContext>

@@ -34,7 +34,6 @@ namespace BoomTracker
 
 		public int PersonalBest => CalculatePB();
 
-
 		private Player currentPlayer;
 		public Player CurrentPlayer
 		{
@@ -77,6 +76,9 @@ namespace BoomTracker
 #endif
 		private bool topOutHold;
 
+		private static SolidColorBrush greenBrush = new SolidColorBrush(Colors.Green);
+		private static SolidColorBrush redBrush = new SolidColorBrush(Colors.Red);
+
 		private bool gameOn;
 		public bool GameOn
 		{
@@ -112,12 +114,42 @@ namespace BoomTracker
 				}
 			}
 		}
-
 		public string GameOnString => gameOn ? "Game On" : "Game Off";
+		public System.Windows.Media.Brush GameOnBrush => gameOn ? greenBrush : redBrush;
 
-		private static SolidColorBrush onBrush = new SolidColorBrush(Colors.Green);
-		private static SolidColorBrush offBrush = new SolidColorBrush(Colors.Red);
-		public System.Windows.Media.Brush GameOnBrush => gameOn ? onBrush : offBrush;
+		private bool nesOn;
+		public bool NesOn
+		{
+			get => nesOn;
+			private set
+			{
+				if (value != nesOn)
+				{
+					nesOn = value;
+
+					OnPropertyChanged(nameof(NesOn));
+					OnPropertyChanged(nameof(NesOnString));
+					OnPropertyChanged(nameof(NesOnBrush));
+				}
+			}
+		}
+		public string NesOnString => nesOn ? "NES On" : "NES Off";
+		public System.Windows.Media.Brush NesOnBrush => nesOn ? greenBrush : redBrush;
+
+		private bool paused;
+		public bool Paused
+		{
+			get => paused;
+			private set
+			{
+				if (value != paused)
+				{
+					paused = value;
+
+					OnPropertyChanged(nameof(Paused));
+				}
+			}
+		}
 
 		private double[] timeAverager = new double[60];
 		private int iav = 0;
@@ -182,7 +214,13 @@ namespace BoomTracker
 				return 0;
 			}
 
-			return Math.Max(CurrentPlayer.PersonalBestScore, Game.CurrentScore);
+			if (Game != null)
+			{
+				return Math.Max(CurrentPlayer.PersonalBestScore, Game.CurrentScore);
+			}
+
+			return CurrentPlayer.PersonalBestScore;
+
 		}
 
 		//private void GamePropertyChanged(object sender, PropertyChangedEventArgs a)
@@ -223,6 +261,7 @@ namespace BoomTracker
 		}
 
 		private static bool block;
+
 		private void OnNewFrame(object sender, NewFrameEventArgs eventArgs)
 		{
 			if (!block)
@@ -246,11 +285,19 @@ namespace BoomTracker
 						}
 					}
 
+					NesOn = Tetris.NintendoOn.Check(bitmap);
+					Paused = !NesOn && Tetris.Pause.Check(bitmap);
+					bool gameInProgress = (NesOn || Paused) && Tetris.GameInProgress.Check(bitmap);
 
-					if (Tetris.GameInProgress.Check(bitmap) && Tetris.NintendoOn.Check(bitmap))
+					if (gameInProgress)
 					{
 						GameOn = true;
-						Game.StoreState(bitmap);
+
+						if (!Paused)
+						{
+							Game.StoreState(bitmap);
+						}
+
 					}
 
 					else
@@ -321,7 +368,6 @@ namespace BoomTracker
 
 		protected void OnPropertyChanged(string prop)
 		{
-			Debug.WriteLine(prop);
 			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));
 		}
 	}
