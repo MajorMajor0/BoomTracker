@@ -38,7 +38,7 @@ namespace BoomTracker
 		public static void Save()
 		{
 			var formatter = new BinaryFormatter();
-			string backupFile = $"{FileLocation.Data.Players}-{DateTime.Now.ToString("yyyy-MM-dd HHmmss")}";
+			string backupFile = FileLocation.Data.PlayersBackup();
 
 			try
 			{

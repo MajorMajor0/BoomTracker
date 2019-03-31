@@ -12,6 +12,7 @@
  * You should have received a copy of the GNU General Public License
  *  along with BoomTracker.  If not, see<http://www.gnu.org/licenses/>.*/
 
+using System;
 using System.IO;
 
 namespace BoomTracker
@@ -38,6 +39,11 @@ namespace BoomTracker
 			public static string Folder => $"{FileLocation.Folder}\\Data";
 
 			public static string Players => $"{Folder}\\Players.dat";
+
+			public static string PlayersBackup()
+			{
+				return $"{Folder}\\Players{DateTime.Now.ToString("yyyy-MM-dd HHmmss")}.dat";
+			}
 
 			public static string Games => $"{Folder}\\Games.dat";
 		}

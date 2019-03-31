@@ -221,10 +221,11 @@ along with BoomTracker.  If not, see<http: //www.gnu.org/licenses/> .-->
 							<TextBlock x:Name="NextTextBlock"
 									   Margin="0,5,0,0"
 									   FontFamily="Tetris"
-									   Foreground="Blue"
-									   Background="White"
+									   Foreground="White"
+									   Background="Transparent"
 									   FontSize="6"
-									   Text="AAAA"
+									   LineHeight="7"
+									   Text="{Binding Game.NextPiece.Display}"
 									   VerticalAlignment="Top"
 									   HorizontalAlignment="Center" />
 

@@ -161,6 +161,15 @@ along with BoomTracker.  If not, see<http: //www.gnu.org/licenses/> .-->
 						 Text="{Binding CalibrationNumber,Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" />
 				<TextBlock Text="  Calibration number" />
 			</StackPanel>
+
+			<StackPanel x:Name="CalibrationNextStackPanel"
+						Margin="0,15,0,0"
+						Orientation="Horizontal">
+				<TextBox Width="15"
+						 HorizontalAlignment="Left"
+						 Text="{Binding CalibrationNextPiece,Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" />
+				<TextBlock Text="  Next calibration character" />
+			</StackPanel>
 		</StackPanel>
 
 	</Grid>

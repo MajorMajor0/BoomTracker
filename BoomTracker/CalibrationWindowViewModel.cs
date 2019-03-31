@@ -67,6 +67,8 @@ namespace BoomTracker
 			}
 		}
 
+		public char CalibrationNextPiece { get; set; } = 'O';
+
 		private IVideoSource videoSource;
 
 		public int RectX { get; set; } = Tetris.PlayingField.Rectangle.Left;
@@ -99,6 +101,7 @@ namespace BoomTracker
 					LevelCalibration(bitmap);
 					LineCalibration(bitmap);
 					GameonCalibration(bitmap);
+					NextCalibration(bitmap);
 
 					if (takeScreen)
 					{
@@ -209,6 +212,20 @@ namespace BoomTracker
 					scan0[address + 1] = 200; // Green
 					scan0[address + 2] = 0; // Red
 				}
+			bitmap.UnlockBits(bmData);
+		}
+
+		private unsafe void NextCalibration(Bitmap bitmap)
+		{
+			BitmapData bmData = bitmap.LockBits(Tetris.Next.Rectangle, ImageLockMode.WriteOnly, Tetris.PixelFormat);
+			byte* scan0 = (byte*)bmData.Scan0.ToPointer();
+
+			foreach (var address in Tetris.Next.Tetrominos[CalibrationNextPiece].Addresses)
+			{
+				scan0[address] = 50;// Blue
+				scan0[address + 1] = 50; // Green
+				scan0[address + 2] = 255; // Red
+			}
 			bitmap.UnlockBits(bmData);
 		}
 

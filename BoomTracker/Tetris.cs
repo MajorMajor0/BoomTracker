@@ -193,13 +193,165 @@ namespace BoomTracker
 				Height = 88
 			};
 
-			public static Tetromino T { get; set; }
-			public static Tetromino J { get; set; }
-			public static Tetromino Z { get; set; }
-			public static Tetromino O { get; set; }
-			public static Tetromino S { get; set; }
-			public static Tetromino L { get; set; }
-			public static Tetromino I { get; set; }
+			public static Dictionary<char, Tetromino> Tetrominos = new Dictionary<char, Tetromino>
+			{
+				{ 'T', new Tetromino { Piece = 'T', Display="AAA\n A"} },
+				{ 'J', new Tetromino { Piece = 'J', Display="CCC\n  C"} },
+				{ 'Z', new Tetromino { Piece = 'Z', Display="CC\n CC" } },
+				{ 'O', new Tetromino { Piece = 'O', Display="AA\nAA"} },
+				{ 'S', new Tetromino { Piece = 'S', Display=" BB\nBB" } },
+				{ 'L', new Tetromino { Piece = 'L', Display="BBB\nB"} },
+				{ 'I', new Tetromino { Piece = 'I', Display="AAAA" } }
+			};
+
+			static Next()
+			{
+				SetPixels();
+				SetRectangles();
+
+				SetAddresses(Tetrominos['T']);
+				SetAddresses(Tetrominos['J']);
+				SetAddresses(Tetrominos['Z']);
+				SetAddresses(Tetrominos['O']);
+				SetAddresses(Tetrominos['S']);
+				SetAddresses(Tetrominos['L']);
+				SetAddresses(Tetrominos['I']);
+			}
+
+			private static void SetPixels()
+			{
+				Tetrominos['T'].Pixels = new[] { new[] { 23, 43 }, new[] { 44, 43 }, new[] { 65, 43 }, new[] { 44, 60 } };
+				Tetrominos['J'].Pixels = new[] { new[] { 23, 43 }, new[] { 44, 43 }, new[] { 65, 43 }, new[] { 65, 60 } };
+				Tetrominos['Z'].Pixels = new[] { new[] { 23, 43 }, new[] { 44, 43 }, new[] { 44, 60 }, new[] { 65, 60 } };
+				Tetrominos['O'].Pixels = new[] { new[] { 34, 43 }, new[] { 54, 43 }, new[] { 34, 60 }, new[] { 55, 60 } };
+				Tetrominos['S'].Pixels = new[] { new[] { 44, 43 }, new[] { 65, 43 }, new[] { 23, 60 }, new[] { 44, 60 } };
+				Tetrominos['L'].Pixels = new[] { new[] { 23, 43 }, new[] { 44, 43 }, new[] { 65, 43 }, new[] { 23, 60 } };
+				Tetrominos['I'].Pixels = new[] { new[] { 12, 51 }, new[] { 34, 51 }, new[] { 55, 51 }, new[] { 75, 51 } };
+			}
+
+			private static void SetRectangles()
+			{
+				int w = 4;
+				int h = 4;
+
+				int dw = w / 2;
+				int dh = h / 2;
+
+				Tetrominos['T'].Rectangles = new Rectangle[]
+				{
+					new Rectangle( 18 - dw, 40 - dh, w, h ), // 23, 43
+					new Rectangle( 44 - dw, 40 - dh, w, h ), // 44, 43
+					new Rectangle( 69 - dw, 40 - dh, w, h ), // 65, 43
+					new Rectangle( 44 - dw, 63 - dh, w, h )  // 44, 60
+				};
+
+				Tetrominos['J'].Rectangles = new Rectangle[]
+				{
+					new Rectangle( 18 - dw, 40 - dh, w, h ), //  3, 43
+					new Rectangle( 44 - dw, 40 - dh, w, h ), // 44, 43
+					new Rectangle( 69 - dw, 40 - dh, w, h ), // 65, 43
+					new Rectangle( 69 - dw, 63 - dh, w, h )  // 65, 60
+				};
+
+				Tetrominos['Z'].Rectangles = new Rectangle[]
+				{
+					new Rectangle( 23 - dw, 43 - dh, w, h ),
+					new Rectangle( 44 - dw, 43 - dh, w, h ),
+					new Rectangle( 44 - dw, 60 - dh, w, h ),
+					new Rectangle( 65 - dw, 60 - dh, w, h )
+				};
+
+				Tetrominos['O'].Rectangles = new Rectangle[]
+				{
+					new Rectangle( 29 - dw, 40 - dh, w, h ), // 34, 43
+					new Rectangle( 59 - dw, 40 - dh, w, h ), // 54, 43
+					new Rectangle( 29 - dw, 63 - dh, w, h ), // 34, 60
+					new Rectangle( 59 - dw, 63 - dh, w, h )  // 55, 60
+				};
+
+				Tetrominos['S'].Rectangles = new Rectangle[]
+				{
+					new Rectangle( 44 - dw, 43 - dh, w, h ),
+					new Rectangle( 65 - dw, 43 - dh, w, h ),
+					new Rectangle( 23 - dw, 60 - dh, w, h ),
+					new Rectangle( 44 - dw, 60 - dh, w, h )
+				};
+
+				Tetrominos['L'].Rectangles = new Rectangle[]
+				{
+					new Rectangle( 18 - dw, 40 - dh, w, h ), // 23, 43
+					new Rectangle( 44 - dw, 40 - dh, w, h ), // 44, 43
+					new Rectangle( 69 - dw, 40 - dh, w, h ), // 65, 43
+					new Rectangle( 18 - dw, 63 - dh, w, h )  // 23, 60
+				};
+
+				Tetrominos['I'].Rectangles = new Rectangle[]
+				{
+					new Rectangle( 8 - dw, 51 - dh, w, h ),//12, 51
+					new Rectangle( 34 - dw, 51 - dh, w, h ),
+					new Rectangle( 55 - dw, 51 - dh, w, h ),
+					new Rectangle( 79 - dw, 51 - dh, w, h )//75, 51
+				};
+			}
+
+			private static void SetAddresses(Tetromino tetromino)
+			{
+				int imageWidth = Image.Width;
+				List<int> addresses = new List<int>();
+
+				foreach (Rectangle rect in tetromino.Rectangles)
+				{
+					int x0 = rect.X;
+					int y0 = rect.Y;
+					for (int x1 = 0; x1 < rect.Width; x1++)
+					{
+						for (int y1 = 0; y1 < rect.Width; y1++)
+						{
+							int x = x0 + x1;
+							int y = y0 + y1;
+
+							int address = BytesPerPixel * (x + imageWidth * y);
+							addresses.Add(address);
+						}
+					}	
+				}
+
+				tetromino.Addresses = addresses.ToArray();
+			}
+
+			public static unsafe bool Read(Bitmap bitmap, out Tetromino nextPiece)
+			{
+				bool returner = false;
+				BitmapData bmData = bitmap.LockBits(Rectangle, ImageLockMode.ReadOnly, PixelFormat);
+				byte* scan0 = (byte*)bmData.Scan0.ToPointer();
+				nextPiece = null;
+
+				foreach (var tet in Tetrominos.Values)
+				{
+					bool goodGuess = true;
+					int i = 0;
+
+					foreach (int address in tet.Addresses)
+					{
+						i++;
+						if (scan0[address] < DigitPixels.ReadThreshold)
+						{
+							goodGuess = false;
+							break;
+						}
+					}
+
+					if (goodGuess)
+					{
+						returner = true;
+						nextPiece = tet;
+						break;
+					}
+				}
+
+				bitmap.UnlockBits(bmData);
+				return returner;
+			}
 		}
 
 		public static class Score
@@ -377,7 +529,6 @@ namespace BoomTracker
 				}
 				bitmap.UnlockBits(bmData);
 				return true;
-				;
 			}
 		}
 

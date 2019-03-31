@@ -110,6 +110,20 @@ namespace BoomTracker
 			}
 		}
 
+		[NonSerialized]
+		private Tetromino nextPiece;
+		public Tetromino NextPiece
+		{
+			get => nextPiece;
+			set
+			{
+				if (value != nextPiece)
+				{
+					nextPiece = value;
+					OnPropertyChanged(nameof(NextPiece));
+				}
+			}
+		}
 
 		public List<State> States { get; set; } = new List<State>();
 
@@ -125,6 +139,8 @@ namespace BoomTracker
 			public int Lines { get; set; }
 
 			public int Score { get; set; }
+
+			public char? Next{ get; set; }
 
 			public State()
 			{
@@ -205,6 +221,11 @@ namespace BoomTracker
 				CurrentLevel = level;
 			}
 
+			if (Tetris.Next.Read(bitmap, out Tetromino nextPiece))
+			{
+				NextPiece = nextPiece;
+			}
+
 			CurrentGrid = state.GetGrid(bitmap, CurrentLevel);
 			if (currentGrid[0][0] == 'D')
 			{
@@ -216,7 +237,7 @@ namespace BoomTracker
 				state.Score = currentScore;
 				state.Lines = currentLines;
 				state.Level = currentLevel;
-
+				state.Next = nextPiece?.Piece;
 				States.Add(state);
 				OnPropertyChanged(nameof(States));
 			}
