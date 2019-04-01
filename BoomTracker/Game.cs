@@ -62,6 +62,11 @@ namespace BoomTracker
 		public int FinalScore => States.Max(x => x.Score);
 
 		[NonSerialized]
+		public int[] Clears = new int[5];
+
+		public int TetrisPercent => currentLines == 0 ? 0 : 400 * Clears[4] / currentLines;
+
+		[NonSerialized]
 		private int currentLevel;
 		public int CurrentLevel
 		{
@@ -83,14 +88,40 @@ namespace BoomTracker
 			get => currentLines;
 			set
 			{
-				if (value == currentLines + 1 ||
-					value == currentLines + 2 ||
-					value == currentLines + 3 ||
-					value == currentLines + 4 ||
-					currentScore == 0)
+				if (value == currentLines + 1)
 				{
 					currentLines = value;
+					Clears[1]++;
 					OnPropertyChanged(nameof(CurrentLines));
+					OnPropertyChanged(nameof(Clears));
+					OnPropertyChanged(nameof(TetrisPercent));
+				}
+
+				else if (value == currentLines + 2)
+				{
+					currentLines = value;
+					Clears[2]++;
+					OnPropertyChanged(nameof(CurrentLines));
+					OnPropertyChanged(nameof(Clears));
+					OnPropertyChanged(nameof(TetrisPercent));
+				}
+
+				else if (value == currentLines + 3)
+				{
+					currentLines = value;
+					Clears[3]++;
+					OnPropertyChanged(nameof(CurrentLines));
+					OnPropertyChanged(nameof(Clears));
+					OnPropertyChanged(nameof(TetrisPercent));
+				}
+
+				else if (value == currentLines + 4)
+				{
+					currentLines = value;
+					Clears[4]++;
+					OnPropertyChanged(nameof(CurrentLines));
+					OnPropertyChanged(nameof(Clears));
+					OnPropertyChanged(nameof(TetrisPercent));
 				}
 			}
 		}
@@ -140,7 +171,7 @@ namespace BoomTracker
 
 			public int Score { get; set; }
 
-			public char? Next{ get; set; }
+			public char? Next { get; set; }
 
 			public State()
 			{
