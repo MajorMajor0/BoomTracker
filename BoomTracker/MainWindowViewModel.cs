@@ -12,6 +12,8 @@
  * You should have received a copy of the GNU General Public License
  *  along with BoomTracker.  If not, see<http://www.gnu.org/licenses/>.*/
 
+using AForge.Video;
+using AForge.Video.DirectShow;
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -22,8 +24,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
-using AForge.Video;
-using AForge.Video.DirectShow;
 
 
 namespace BoomTracker
@@ -216,7 +216,7 @@ namespace BoomTracker
 
 			if (Game != null)
 			{
-				return Math.Max(CurrentPlayer.PersonalBestScore, Game.CurrentScore);
+				return Math.Max(CurrentPlayer.PersonalBestScore, Game?.CurrentScore ?? 0);
 			}
 
 			return CurrentPlayer.PersonalBestScore;

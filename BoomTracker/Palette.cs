@@ -22,7 +22,7 @@ namespace BoomTracker
 	{
 		public static int NLevels { get; set; }
 
-		/// <summary>How far to look above and below teh color value and still get a hit</summary>
+		/// <summary>How far to look above and below the color value and still get a hit</summary>
 		public static int ScanWidth = 20;
 
 		public static int BlackThreshold = 3;

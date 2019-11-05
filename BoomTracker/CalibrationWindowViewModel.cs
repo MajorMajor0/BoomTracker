@@ -220,7 +220,7 @@ namespace BoomTracker
 			BitmapData bmData = bitmap.LockBits(Tetris.Next.Rectangle, ImageLockMode.WriteOnly, Tetris.PixelFormat);
 			byte* scan0 = (byte*)bmData.Scan0.ToPointer();
 
-			foreach (var address in Tetris.Next.Tetrominos[CalibrationNextPiece].Addresses)
+			foreach (var address in Tetris.Tetrominos[CalibrationNextPiece].Addresses)
 			{
 				scan0[address] = 50;// Blue
 				scan0[address + 1] = 50; // Green

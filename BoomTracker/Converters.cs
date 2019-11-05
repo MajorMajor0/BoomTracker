@@ -22,92 +22,132 @@ using System.Windows.Media;
 
 namespace BoomTracker
 {
-	internal class Converters
+
+	public class BackGroundColorConverter : IValueConverter
 	{
-		public class BackGroundColorConverter : IValueConverter
+		private static readonly SolidColorBrush white = new SolidColorBrush(Colors.White);
+		private static readonly SolidColorBrush black = new SolidColorBrush(Colors.Black);
+		public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
 		{
-			private static readonly SolidColorBrush white = new SolidColorBrush(Colors.White);
-			private static readonly SolidColorBrush black = new SolidColorBrush(Colors.Black);
-
-			public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+			if (value is null)
 			{
-				if (value is null)
-				{
-					return black;
-				}
-
-				return white;
+				return black;
 			}
 
-			public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-			{
-				throw new NotImplementedException();
-			}
+			return white;
 		}
 
-		public class CharToColorConverter : IMultiValueConverter
+		public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
 		{
-			private static readonly Brush blackBrush = new SolidColorBrush(Colors.Black);
+			throw new NotImplementedException();
+		}
+	}
 
-			/// <summary>
-			/// Dictionary to match a char value to a brush for display in the playing field
-			/// </summary>
-			public static List<Dictionary<char, SolidColorBrush>> BrushDictionary { get; private set; }
+	public class DroughtColorConverter : IValueConverter
+	{
+		private static readonly SolidColorBrush white = new SolidColorBrush(Colors.White);
+		private static readonly SolidColorBrush red = new SolidColorBrush(Colors.Red);
 
-			public CharToColorConverter()
+		public DroughtColorConverter()
+		{
+			//if (white.CanFreeze)
+			//{
+				white.Freeze();
+			//}
+			//if (red.CanFreeze)
+			//{
+				red.Freeze();
+			//}
+		}
+
+		public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+		{
+			if (value is int && (int)value > 12)
 			{
-				CreateBrushDictionaries();
+				return red;
+			}
+			return white;
+		}
+
+		public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+		{
+			throw new NotImplementedException();
+		}
+	}
+
+	public class CharToColorConverter : IMultiValueConverter
+	{
+		private static readonly SolidColorBrush white = new SolidColorBrush(Colors.White);
+		private static readonly SolidColorBrush black = new SolidColorBrush(Colors.Black);
+
+		/// <summary>
+		/// Dictionary to match a char value to a brush for display in the playing field
+		/// </summary>
+		public static List<Dictionary<char, SolidColorBrush>> BrushDictionary { get; private set; }
+
+		public CharToColorConverter()
+		{
+			CreateBrushDictionaries();
+			//if(white.CanFreeze)
+			//{
+				white.Freeze();
+			//}
+			//if (black.CanFreeze)
+			//{
+				black.Freeze();
+			//}
+		}
+
+		public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
+		{
+			if (values[1] is null || values[0] is null || values[0] == DependencyProperty.UnsetValue || values[1] == DependencyProperty.UnsetValue)
+			{
+				return black;
 			}
 
-			public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
+			int level = (int)values[0];
+			char character = (char)values[1];
+
+			if (BrushDictionary[level].TryGetValue(character, out var brush))
 			{
-				if (values[1] is null || values[0] is null || values[0] == DependencyProperty.UnsetValue || values[1] == DependencyProperty.UnsetValue)
-				{
-					return blackBrush;
-				}
-
-				int level = (int)values[0];
-				char character = (char)values[1];
-
-				if (character == 'B')
-				{
-
-				}
-
-				if (BrushDictionary[level].TryGetValue(character, out var brush))
-				{
-					return brush;
-				}
-
-				return blackBrush;
+				return brush;
 			}
 
-			public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
+			return black;
+		}
+
+		public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
+		{
+			throw new NotImplementedException();
+		}
+
+		private static void CreateBrushDictionaries()
+		{
+			BrushDictionary = new List<Dictionary<char, SolidColorBrush>>();
+
+			// Create a dictionary for each level
+			for (int level = 0; level < Palette.NLevels; level++)
 			{
-				throw new NotImplementedException();
-			}
+				var B = Palette.Mode.B[level].Select(x => (byte)x).ToArray();
+				var C = Palette.Mode.C[level].Select(x => (byte)x).ToArray();
 
-			private static void CreateBrushDictionaries()
-			{
-				BrushDictionary = new List<Dictionary<char, SolidColorBrush>>();
+				var cBrush = new SolidColorBrush(Color.FromRgb(C[0], C[1], C[2]));
+				var bBrush = new SolidColorBrush(Color.FromRgb(B[0], B[1], B[2]));
 
-				// Create a dictionary for each level
-				for (int level = 0; level < Palette.NLevels; level++)
-				{
-					var B = Palette.Mode.B[level].Select(x => (byte)x).ToArray();
-					var C = Palette.Mode.C[level].Select(x => (byte)x).ToArray();
+				bBrush.Freeze();
+				cBrush.Freeze();
 
-					var dict = new Dictionary<char, SolidColorBrush>
+				var dict = new Dictionary<char, SolidColorBrush>
 					{
-						{ 'A', new SolidColorBrush(Color.FromRgb(C[0], C[1], C[2])) },
-						{ 'B', new SolidColorBrush(Color.FromRgb(B[0], B[1], B[2])) },
-						{ 'C', new SolidColorBrush(Color.FromRgb(C[0], C[1], C[2])) },
-						{ 'D', new SolidColorBrush(Color.FromRgb(C[0], C[1], C[2])) }
+						{ 'A', cBrush },
+						{ 'B', bBrush },
+						{ 'C', cBrush },
+						{ 'D', cBrush }
 					};
 
-					BrushDictionary.Add(dict);
-				}
+				BrushDictionary.Add(dict);
 			}
 		}
+
 	}
 }

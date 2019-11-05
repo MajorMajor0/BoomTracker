@@ -183,17 +183,7 @@ namespace BoomTracker
 			}
 		}
 
-		public static class Next
-		{
-			public static Rectangle Rectangle { get; } = new Rectangle
-			{
-				X = 535,
-				Y = 200,
-				Width = 87,
-				Height = 88
-			};
-
-			public static Dictionary<char, Tetromino> Tetrominos = new Dictionary<char, Tetromino>
+		public static Dictionary<char, Tetromino> Tetrominos = new Dictionary<char, Tetromino>
 			{
 				{ 'T', new Tetromino { Piece = 'T', Display="AAA\n A"} },
 				{ 'J', new Tetromino { Piece = 'J', Display="CCC\n  C"} },
@@ -202,6 +192,16 @@ namespace BoomTracker
 				{ 'S', new Tetromino { Piece = 'S', Display=" BB\nBB" } },
 				{ 'L', new Tetromino { Piece = 'L', Display="BBB\nB"} },
 				{ 'I', new Tetromino { Piece = 'I', Display="AAAA" } }
+			};
+
+		public static class Next
+		{
+			public static Rectangle Rectangle { get; } = new Rectangle
+			{
+				X = 535,
+				Y = 200,
+				Width = 87,
+				Height = 88
 			};
 
 			static Next()
@@ -313,7 +313,7 @@ namespace BoomTracker
 							int address = BytesPerPixel * (x + imageWidth * y);
 							addresses.Add(address);
 						}
-					}	
+					}
 				}
 
 				tetromino.Addresses = addresses.ToArray();
@@ -334,7 +334,9 @@ namespace BoomTracker
 					foreach (int address in tet.Addresses)
 					{
 						i++;
-						if (scan0[address] < DigitPixels.ReadThreshold)
+						if (scan0[address] < DigitPixels.ReadThreshold &&
+							scan0[address + 1] < DigitPixels.ReadThreshold &&
+							scan0[address + 2] < DigitPixels.ReadThreshold)
 						{
 							goodGuess = false;
 							break;

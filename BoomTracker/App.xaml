@@ -21,6 +21,8 @@ along with BoomTracker.  If not, see<http: //www.gnu.org/licenses/> .-->
 	<Application.Resources>
 		<ResourceDictionary>
 			<BooleanToVisibilityConverter x:Key="booleanToVisibilityConverter" />
+			<local:DroughtColorConverter x:Key="droughtColorConverter" />
+
 			<Style x:Key="CButtonStyle"
 				   TargetType="Button">
 				<Setter Property="Content"

@@ -28,8 +28,8 @@ namespace BoomTracker
 
 		private void CreatePlayingFieldGrid()
 		{
-			var charToColorConverter = new Converters.CharToColorConverter();
-			var backGroundColorConverter = new Converters.BackGroundColorConverter();
+			var charToColorConverter = new CharToColorConverter();
+			var backGroundColorConverter = new BackGroundColorConverter();
 
 			for(int i = 0; i < 10; i++)
 			{

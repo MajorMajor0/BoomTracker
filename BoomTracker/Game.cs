@@ -53,18 +53,36 @@ namespace BoomTracker
 			}
 		}
 
-		public int StartLevel => States.Min(x => x.Level);
+		public int FinalLevel => States.DefaultIfEmpty().Max(x => x?.Level) ?? 0;
 
-		public int FinalLevel => States.Max(x => x.Level);
+		public int FinalLines => States.DefaultIfEmpty().Max(x => x?.Lines) ?? 0;
 
-		public int FinalLines => States.Max(x => x.Lines);
+		public int FinalScore => States.DefaultIfEmpty().Max(x => x?.Score) ?? 0;
 
-		public int FinalScore => States.Max(x => x.Score);
+		public int StartLevel => States.DefaultIfEmpty().Min(x => x?.Level) ?? 0;
+
+		public List<int> LineDroughts { get; set; } = new List<int>();
+
+		[NonSerialized]
+		private int currentLineDrought;
+		public int CurrentLineDrought
+		{
+			get => currentLineDrought;
+			set
+			{
+				currentLineDrought = value;
+				OnPropertyChanged(nameof(CurrentLineDrought));
+			}
+		}
 
 		[NonSerialized]
 		public int[] Clears = new int[5];
 
 		public int TetrisPercent => currentLines == 0 ? 0 : 400 * Clears[4] / currentLines;
+
+		private int levelIndex;
+
+		private int[] levelBuffer = new int[3];
 
 		[NonSerialized]
 		private int currentLevel;
@@ -73,10 +91,16 @@ namespace BoomTracker
 			get => currentLevel;
 			set
 			{
-				if (value == currentLevel + 1 || currentScore == 0)
+				levelBuffer[levelIndex++] = value;
+				levelIndex %= levelBuffer.Length;
+
+				if (levelBuffer.All(x => x.Equals(value)))
 				{
-					currentLevel = value;
-					OnPropertyChanged(nameof(CurrentLevel));
+					if (value == currentLevel + 1 || currentScore == 0)
+					{
+						currentLevel = value;
+						OnPropertyChanged(nameof(CurrentLevel));
+					}
 				}
 			}
 		}
@@ -127,19 +151,36 @@ namespace BoomTracker
 		}
 
 		[NonSerialized]
+		private int scoreIndex;
+
+		[NonSerialized]
+		private int[] scoreBuffer = new int[3];
+
+		[NonSerialized]
 		private int currentScore;
+
 		public int CurrentScore
 		{
 			get => currentScore;
 			set
 			{
-				if (value > currentScore)
+				scoreBuffer[scoreIndex++] = value;
+				scoreIndex %= scoreBuffer.Length;
+
+				if (scoreBuffer.All(x => x.Equals(value)))
 				{
 					currentScore = value;
-					OnPropertyChanged(nameof(CurrentScore));
 				}
+
+				OnPropertyChanged(nameof(CurrentScore));
 			}
 		}
+
+		[NonSerialized]
+		private int nextIndex;
+
+		[NonSerialized]
+		private Tetromino[] nextBuffer;
 
 		[NonSerialized]
 		private Tetromino nextPiece;
@@ -153,6 +194,51 @@ namespace BoomTracker
 					nextPiece = value;
 					OnPropertyChanged(nameof(NextPiece));
 				}
+
+				//if (value.Piece != 'I')
+				//{
+				//	CurrentLineDrought++;
+				//}
+
+				//else
+				//{
+				//	LineDroughts.Add(currentLineDrought);
+				//	CurrentLineDrought = 0;
+				//}
+
+			}
+		}
+
+
+		private int noPiece;
+
+		[NonSerialized]
+		private Tetromino currentPiece;
+		public Tetromino CurrentPiece
+		{
+			get => currentPiece;
+			set
+			{
+				if (value != currentPiece)
+				{
+					currentPiece = value;
+					OnPropertyChanged(nameof(CurrentPiece));
+				}
+
+				if (noPiece >= 3)
+				{
+					if (value.Piece != 'I')
+					{
+						CurrentLineDrought++;
+					}
+
+					else
+					{
+						LineDroughts.Add(currentLineDrought);
+						CurrentLineDrought = 0;
+					}
+					noPiece = 0;
+				}
 			}
 		}
 
@@ -164,6 +250,8 @@ namespace BoomTracker
 			public DateTime TimeStamp { get; set; } = DateTime.Now;
 
 			public char?[][] Grid { get; set; } = new char?[10][];
+
+			private int[,][] gridColor = new int[10, 20][];
 
 			public int Level { get; set; }
 
@@ -209,6 +297,11 @@ namespace BoomTracker
 						color.Item2 /= Nk;
 						color.Item3 /= Nk;
 
+						gridColor[i, j] = new int[3];
+						gridColor[i, j][0] = color.Item1;
+						gridColor[i, j][1] = color.Item2;
+						gridColor[i, j][2] = color.Item3;
+
 						if (!Palette.ScanDictionary[level].TryGetValue(color, out Grid[i][j]))
 						{
 							Grid[i][j] = null;
@@ -235,8 +328,6 @@ namespace BoomTracker
 		{
 			State state = new State();
 
-			//Task<int[]>[] tasks = new Task<int[]>[3];
-
 			if (Tetris.Score.Read(bitmap, out int score))
 			{
 				CurrentScore = score;
@@ -258,6 +349,9 @@ namespace BoomTracker
 			}
 
 			CurrentGrid = state.GetGrid(bitmap, CurrentLevel);
+
+			SetCurrentPiece();
+
 			if (currentGrid[0][0] == 'D')
 			{
 				IsToppedOut = true;
@@ -281,8 +375,44 @@ namespace BoomTracker
 			TopOut?.Invoke(this, e);
 		}
 
-		public event EventHandler TopOut;
+		private void SetCurrentPiece()
+		{
+			if (currentGrid[3][0] == 'A' && currentGrid[4][0] == 'A' && currentGrid[5][0] == 'A' && currentGrid[6][0] == 'A')
+			{
+				CurrentPiece = Tetris.Tetrominos['I'];
+			}
+			else if (currentGrid[4][0] == 'A' && currentGrid[5][0] == 'A' && currentGrid[4][1] == 'A' && currentGrid[5][1] == 'A')
+			{
+				CurrentPiece = Tetris.Tetrominos['O'];
+			}
+			else if (currentGrid[4][0] == 'A' && currentGrid[5][0] == 'A' && currentGrid[6][0] == 'A' && currentGrid[5][1] == 'A')
+			{
+				CurrentPiece = Tetris.Tetrominos['T'];
+			}
+			else if (currentGrid[4][0] == 'B' && currentGrid[5][0] == 'B' && currentGrid[6][0] == 'B' && currentGrid[4][1] == 'B')
+			{
+				CurrentPiece = Tetris.Tetrominos['L'];
+			}
+			else if (currentGrid[4][0] == 'B' && currentGrid[5][0] == 'B' && currentGrid[5][1] == 'B' && currentGrid[6][1] == 'B')
+			{
+				CurrentPiece = Tetris.Tetrominos['Z'];
+			}
+			else if (currentGrid[4][0] == 'C' && currentGrid[5][0] == 'C' && currentGrid[6][0] == 'C' && currentGrid[6][1] == 'C')
+			{
+				CurrentPiece = Tetris.Tetrominos['J'];
+			}
+			else if (currentGrid[4][1] == 'C' && currentGrid[5][1] == 'C' && currentGrid[5][0] == 'C' && currentGrid[6][0] == 'C')
+			{
+				CurrentPiece = Tetris.Tetrominos['S'];
+			}
 
+			else
+			{
+				noPiece++;
+			}
+		}
+
+		public event EventHandler TopOut;
 
 		public event PropertyChangedEventHandler PropertyChanged;
 
